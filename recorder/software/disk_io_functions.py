@@ -13,7 +13,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
             print("Committing curve data to the hard disk...")
             for arr in data_array_buffer:
                 with h5py.File('captured_traces\\output.hdf5', 'a') as f:
-                    dataset = f.create_dataset('curve' + str(curve_counter), data=arr)
+                    dataset = f.create_dataset('curve' + str(curve_counter), data=arr, dtype='f')
                 curve_counter += 1
             break
 
