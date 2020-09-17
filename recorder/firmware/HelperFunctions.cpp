@@ -62,11 +62,6 @@ void writeToDigitalPot(byte _value)
 	SPI.transfer(_value);
 
 	digitalWrite(DIGITAL_POT_CS_PIN, HIGH);
-	//Serial.println(_value);
-	//if((int)_value == 127){
-		//delay(1000);
-	//}
-
 }
 
 void updateDacOutputVoltage()
