@@ -50,13 +50,13 @@ void loop() {
   }
 #endif
 
-  writeToDigitalPot(digitalPotValue);
+  writeToDigitalPot(DIGITAL_POT_VALUE_LOOKUP_TABLE[digitalPotValue]);
   digitalPotValue++;
   if(digitalPotValue > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE)
   {
 	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
 	  digitalPotValue = 0;
-	  writeToDigitalPot(digitalPotValue);
+	  writeToDigitalPot(DIGITAL_POT_VALUE_LOOKUP_TABLE[digitalPotValue]);
 	  delay(10);
 	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
   }

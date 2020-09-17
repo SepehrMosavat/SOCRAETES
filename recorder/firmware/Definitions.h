@@ -13,6 +13,7 @@
 //#define DEBUG_MODE
 
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
+#define DIGITAL_POT_VALUE_LOOKUP_TABLE digitalPotValueLookupTable_40_points
 
 #define DAC_OUTPUT_PIN A14
 
@@ -36,8 +37,12 @@
 #define ADC_VOLTAGE_DIVIDER_R2 11000 // Low-side resistor
 #define ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR (((double)(ADC_VOLTAGE_DIVIDER_R2 + ADC_VOLTAGE_DIVIDER_R1) / (ADC_VOLTAGE_DIVIDER_R2)))
 
-const short digitalPotValueLookupTable[] = {
-		0, 2
+const short digitalPotValueLookupTable_40_points[] = {
+		0, 1, 2, 3, 4, 5, 6, 7,
+		8, 10, 12, 14, 16, 18, 20, 22,
+		24, 28, 32, 36, 40, 44, 48, 52,
+		54, 56, 60, 65, 70, 75, 80, 85,
+		90, 95, 100, 105, 110, 115, 120, 128
 };
 
 
