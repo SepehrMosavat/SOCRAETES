@@ -5,7 +5,6 @@ import threading
 
 
 def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
-    #output_file = h5py.File('output_file.hdf5', 'a')
     curve_counter = 0
     data_array_buffer = []
 
