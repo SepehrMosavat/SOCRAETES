@@ -1,4 +1,4 @@
-firmware/Release/
-software/.idea/
-software/__pycache__/
-software/venv/
+recorder/software/.idea/
+recorder/software/__pycache__/
+recorder/software/venv/
+recorder/firmware/Release/
