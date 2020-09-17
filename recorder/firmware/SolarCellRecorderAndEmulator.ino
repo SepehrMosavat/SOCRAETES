@@ -60,25 +60,4 @@ void loop() {
 	  //delay(5);
 	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
   }
-
-//  if(isCapturingHarvester)
-//  {
-//    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
-//
-//    // Update the digital potentioemeter's value
-//    if(digitalPotValue > 126)
-//    {
-//      isCapturingHarvester = false;
-//    }
-//    writeToDigitalPot(digitalPotValue++);
-//    delay(10);
-//  }
-//  else
-//  {
-//    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
-//    delay(10);
-//    digitalPotValue = 0;
-//    isCapturingHarvester = true;
-//  }
-  //delay(2000);
 }
