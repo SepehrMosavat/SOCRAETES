@@ -1,0 +1,4 @@
+firmware/Release/
+software/.idea/
+software/__pycache__/
+software/venv/
