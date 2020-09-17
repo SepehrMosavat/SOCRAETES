@@ -2,20 +2,36 @@ import h5py
 import numpy as np
 import queue
 import threading
+import os
 
 from iv_curves_definitions import HarvestingCondition
 
-harvesting_condition = HarvestingCondition('indoor', "8", 'sunny', 'germany', 'essen')
+harvesting_condition = HarvestingCondition('indoor', "5", 'sunny', 'germany', 'essen')
+
+
+def generate_filename():
+    for files in os.walk('captured_traces'):
+        number_of_files_in_directory = len(files[2])
+        highest_filename = files[2][number_of_files_in_directory-1]
+        split_file_extension = highest_filename.split('.')
+        highest_filename_without_extension = split_file_extension[0]
+        parsed_filename = highest_filename_without_extension.split('_')
+        if parsed_filename[0] == 'trace':
+            new_filename = 'trace_' + str(int(parsed_filename[1]) + 1) + '.hdf5'
+        return new_filename
 
 
 def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
     curve_counter = 0
     data_array_buffer = []
 
+    new_filename = generate_filename()
+    new_filename = 'captured_traces\\' + new_filename
+
     while True:
         if _stop_thread_event.isSet():
             print("Committing curve data to the hard disk...")
-            with h5py.File('captured_traces\\output.hdf5', 'a') as f:
+            with h5py.File(new_filename, 'a') as f:
                 harvesting_condition_list = [(np.string_('Indoor/Outdoor'),
                                              np.string_('Light Intensity (out of 10)'),
                                              np.string_('Weather Condition'),
@@ -28,7 +44,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
                                             np.string_(harvesting_condition.city))]
                 dataset = f.create_dataset('harvesting conditions', data=harvesting_condition_list)
             for arr in data_array_buffer:
-                with h5py.File('captured_traces\\output.hdf5', 'a') as f:
+                with h5py.File(new_filename, 'a') as f:
                     dataset = f.create_dataset('curve' + str(curve_counter), data=arr, dtype='f')
                 curve_counter += 1
             break
