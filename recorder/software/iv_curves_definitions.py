@@ -1,5 +1,5 @@
 class IvCurve:
-    number_of_points_in_curve = 128
+    number_of_points_in_curve = 40
 
     def __init__(self, _curve_number):
         self.curve_number = _curve_number
