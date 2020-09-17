@@ -57,7 +57,7 @@ void loop() {
 	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
 	  digitalPotValue = 0;
 	  writeToDigitalPot(DIGITAL_POT_VALUE_LOOKUP_TABLE[digitalPotValue]);
-	  delay(10);
+	  //delay(5);
 	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
   }
 
