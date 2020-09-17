@@ -50,24 +50,35 @@ void loop() {
   }
 #endif
 
-  if(isCapturingHarvester)
+  writeToDigitalPot(digitalPotValue);
+  digitalPotValue++;
+  if(digitalPotValue > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE)
   {
-    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
+	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
+	  digitalPotValue = 0;
+	  writeToDigitalPot(digitalPotValue);
+	  delay(10);
+	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
+  }
 
-    // Update the digital potentioemeter's value
-    if(digitalPotValue++ > 127)
-    {
-      isCapturingHarvester = false;
-    }
-    writeToDigitalPot(digitalPotValue);
-    delay(10);
-  }
-  else
-  {
-    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
-    delay(10);
-    digitalPotValue = 0;
-    isCapturingHarvester = true;
-  }
+//  if(isCapturingHarvester)
+//  {
+//    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
+//
+//    // Update the digital potentioemeter's value
+//    if(digitalPotValue > 126)
+//    {
+//      isCapturingHarvester = false;
+//    }
+//    writeToDigitalPot(digitalPotValue++);
+//    delay(10);
+//  }
+//  else
+//  {
+//    digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
+//    delay(10);
+//    digitalPotValue = 0;
+//    isCapturingHarvester = true;
+//  }
   //delay(2000);
 }
