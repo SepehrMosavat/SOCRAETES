@@ -12,6 +12,9 @@ harvesting_condition = HarvestingCondition('indoor', "5", 'sunny', 'germany', 'e
 def generate_filename() -> str:
     for files in os.walk('captured_traces'):
         number_of_files_in_directory = len(files[2])
+        if number_of_files_in_directory == 0:
+            return 'trace_0.hdf5'
+            # TODO Is this too hacky?
         highest_filename = files[2][number_of_files_in_directory-1]
         split_file_extension = highest_filename.split('.')
         highest_filename_without_extension = split_file_extension[0]
