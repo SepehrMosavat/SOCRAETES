@@ -9,7 +9,7 @@ from iv_curves_definitions import HarvestingCondition
 harvesting_condition = HarvestingCondition('indoor', "5", 'sunny', 'germany', 'essen')
 
 
-def generate_filename():
+def generate_filename() -> str:
     for files in os.walk('captured_traces'):
         number_of_files_in_directory = len(files[2])
         highest_filename = files[2][number_of_files_in_directory-1]
