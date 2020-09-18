@@ -3,6 +3,7 @@ import numpy as np
 import queue
 import threading
 import os
+from datetime import datetime
 
 from iv_curves_definitions import HarvestingCondition
 
@@ -32,20 +33,28 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
     new_filename = generate_filename()
     new_filename = 'captured_traces\\' + new_filename
 
+    start_time = datetime.now()
+    start_time_string = str(start_time.hour) + ':' + str (start_time.minute) + ':' + str(start_time.second)+ '.' + str(start_time.microsecond)
+    start_date_string = str(start_time.day) + '.' + str(start_time.month) + '.' + str(start_time.year)
+
     while True:
         if _stop_thread_event.isSet():
             print("Committing curve data to the hard disk...")
             with h5py.File(new_filename, 'a') as f:
-                harvesting_condition_list = [(np.string_('Indoor/Outdoor'),
+                harvesting_condition_list = [(np.string_('Start Date'),
+                                             np.string_('Start Time (Local Timezone)'),
+                                             np.string_('Indoor/Outdoor'),
                                              np.string_('Light Intensity (out of 10)'),
                                              np.string_('Weather Condition'),
                                              np.string_('Country'),
                                              np.string_('City')),
-                                             (np.string_(harvesting_condition.indoor_or_outdoor),
+                                             (np.string_(start_date_string),
+                                             np.string_(start_time_string),
+                                             np.string_(harvesting_condition.indoor_or_outdoor),
                                              np.string_(harvesting_condition.light_intensity),
                                              np.string_(harvesting_condition.weather_condition),
-                                              np.string_(harvesting_condition.country),
-                                            np.string_(harvesting_condition.city))]
+                                             np.string_(harvesting_condition.country),
+                                             np.string_(harvesting_condition.city))]
                 dataset = f.create_dataset('harvesting conditions', data=harvesting_condition_list)
             for arr in data_array_buffer:
                 with h5py.File(new_filename, 'a') as f:
