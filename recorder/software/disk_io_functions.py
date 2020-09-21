@@ -39,10 +39,14 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
 
     while True:
         if _stop_thread_event.isSet():
+            end_time = datetime.now()
+            end_time_string = str(end_time.hour) + ':' + str(end_time.minute) + ':' + str(end_time.second) + '.' + str(end_time.microsecond)
+
             print("Committing curve data to the hard disk...")
             with h5py.File(new_filename, 'a') as f:
-                harvesting_condition_list = [(np.string_('Start Date'),
+                harvesting_condition_list = [(np.string_('Date'),
                                              np.string_('Start Time (Local Timezone)'),
+                                             np.string_('End Time (Local Timezone)'),
                                              np.string_('Indoor/Outdoor'),
                                              np.string_('Light Intensity (out of 10)'),
                                              np.string_('Weather Condition'),
@@ -50,6 +54,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
                                              np.string_('City')),
                                              (np.string_(start_date_string),
                                              np.string_(start_time_string),
+                                             np.string_(end_time_string),
                                              np.string_(harvesting_condition.indoor_or_outdoor),
                                              np.string_(harvesting_condition.light_intensity),
                                              np.string_(harvesting_condition.weather_condition),
