@@ -34,7 +34,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
     new_filename = 'captured_traces\\' + new_filename
 
     start_time = datetime.now()
-    start_time_string = str(start_time.hour) + ':' + str (start_time.minute) + ':' + str(start_time.second)+ '.' + str(start_time.microsecond)
+    start_time_string = str(start_time.hour) + ':' + str(start_time.minute) + ':' + str(start_time.second) + '.' + str(start_time.microsecond)
     start_date_string = str(start_time.day) + '.' + str(start_time.month) + '.' + str(start_time.year)
 
     while True:
