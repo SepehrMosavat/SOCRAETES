@@ -30,27 +30,43 @@ float shortToVoltage(short _voltage)
 
 int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
 {
-	double returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
-	returnValue /= _pgaGain;
-	returnValue *= ADC_REFERENCE_VOLTAGE;
+	double returnValue;
+	if (_adcValue < 0)
+	{
+		returnValue = 0;
+	}
+	else
+	{
+		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
+		returnValue /= _pgaGain;
+		returnValue *= ADC_REFERENCE_VOLTAGE;
 
 #ifdef ADC_VOLTAGE_DIVIDER_USED
-	returnValue *= ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR;
+		returnValue *= ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR;
 #endif
 
-	returnValue *= 1000000; // Value in uV
+		returnValue *= 1000000; // Value in uV
+	}
 	return (int)returnValue;
 }
 
 int getCurrentFromAdcValue(int _adcValue, int _pgaGain)
 {
-	double returnValue = (double)_adcValue / 65535; // 16-bit ADC resulution
-	returnValue /= _pgaGain;
-	returnValue *= ADC_REFERENCE_VOLTAGE;
+	double returnValue;
+	if(_adcValue < 0)
+	{
+		returnValue = 0;
+	}
+	else
+	{
+		returnValue = (double)_adcValue / 65535; // 16-bit ADC resulution
+		returnValue /= _pgaGain;
+		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
+		returnValue *= 1.2; // Scaling factor (magic number)
 
-	returnValue *= 1000000; // Value in uA
-	returnValue /= CURRENT_SENSE_RESISTOR_VALUE;
-
+		returnValue *= 1000000; // Value in uA
+		returnValue /= CURRENT_SENSE_RESISTOR_VALUE;
+	}
 	return (int)returnValue;
 }
 
