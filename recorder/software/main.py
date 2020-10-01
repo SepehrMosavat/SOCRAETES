@@ -6,11 +6,10 @@ from solar_cell_recorder_functions import process_received_serial_data, read_byt
 from iv_curve_visualization_functions import plot_iv_curve, plot_iv_surface
 from disk_io_functions import write_iv_curves_to_disk
 from solar_cell_recorder_functions import ResourceCleanup
+from system_configurations import PlotOrDiskCommit
 
-visualization_method = 'Curve'
-is_plotting_iv_data = True
-is_writing_data_to_disk = False
-capture_duration = 10
+plot_or_disk_commit = PlotOrDiskCommit(PlotOrDiskCommit.PLOT_CURVE)
+capture_duration = 20
 
 raw_serial_data_queue = queue.Queue()
 captured_curves_queue = queue.Queue()
@@ -27,15 +26,12 @@ write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk
 process_serial_data_thread.start()
 read_byte_thread.start()
 
-if is_writing_data_to_disk is True:
+if plot_or_disk_commit == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
     write_iv_curves_to_disk_thread.start()
-
-if is_plotting_iv_data is True:
-    if visualization_method == 'Curve':
-        plot_iv_curve_thread.start()
-    elif visualization_method == 'Surface':
-        plot_iv_surface_thread.start()
-
+elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_CURVE:
+    plot_iv_curve_thread.start()
+elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_SURFACE:
+    plot_iv_surface_thread.start()
 
 if __name__ == '__main__':
     signal_handler = ResourceCleanup()
