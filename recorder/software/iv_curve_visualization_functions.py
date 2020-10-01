@@ -22,7 +22,10 @@ def plot_iv_curve(iv_curves_queue: queue.Queue):
                 v_value_list.append(i.x)
                 i_value_list.append(i.y)
 
-            plt.axis([0, 4, 0, 1200])
+            plot_x_max = max(v_value_list) + 0.5
+            plot_y_max = max(i_value_list) + 500
+
+            plt.axis([0, plot_x_max, 0, plot_y_max])
             plt.xlabel("Solar Cell Voltage (V)")
             plt.ylabel("Solar Cell Current (uA)")
             plt.title("Solar Cell IV Characteristics")
