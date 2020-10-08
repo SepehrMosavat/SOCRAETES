@@ -22,8 +22,6 @@ int getCurrentFromAdcValue(int, int);
 
 void writeToDigitalPot(byte);
 
-void updateDacOutputVoltage();
-
 void convertIntValuesToByteArrays(unsigned short, int, int, byte*);
 
 void initializeADC();

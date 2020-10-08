@@ -16,7 +16,6 @@ void setup() {
   SPI.begin();
 
   pinMode(DIGITAL_POT_CS_PIN, OUTPUT);
-  pinMode(DAC_OUTPUT_PIN, OUTPUT);
   pinMode(HARVESTER_CAPTURING_STATUS_PIN, OUTPUT);
 
   pinMode(A10, INPUT); //Diff Channel 0 Positive
@@ -29,9 +28,6 @@ int digitalPotValue = 0;
 bool isCapturingHarvester = false;
 
 void loop() {
-  // Read encoder and update DAC voltage accordingly
-  updateDacOutputVoltage();
-
   // Read ADC inputs for voltage and current calculations
   int currentSenseAdcValue = adc->analogReadDifferential(A10, A11, ADC_0);
   int voltageAdcValue = adc->analogRead(A2, ADC_1);

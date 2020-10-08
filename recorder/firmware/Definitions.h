@@ -15,10 +15,6 @@
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
 #define DIGITAL_POT_VALUE_LOOKUP_TABLE digitalPotValueLookupTable_40_points
 
-#define DAC_OUTPUT_PIN A14
-
-#define channelA 2
-#define channelB 3
 
 
 #define DIGITAL_POT_CS_PIN 9
@@ -30,7 +26,6 @@
 #define ADC_REFERENCE_VOLTAGE 3.33
 #define CURRENT_SENSE_PGA_GAIN 4
 #define CURRENT_SENSE_RESISTOR_VALUE 820
-#define DAC_VOLTAGE_STEP 0.05
 
 #define ADC_VOLTAGE_DIVIDER_USED
 #define ADC_VOLTAGE_DIVIDER_R1 13000 // High-side resistor

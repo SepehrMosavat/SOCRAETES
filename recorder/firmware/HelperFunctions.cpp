@@ -13,11 +13,7 @@
 #include <ADC.h>
 #include <ADC_util.h>
 
-Encoder rotaryEncoder(channelA, channelB);
 ADC *adc = new ADC();
-
-float DACvoltage = 0;
-short encoderPosition = 0;
 byte uartByteArray[11];
 
 
@@ -79,27 +75,6 @@ void writeToDigitalPot(byte _value)
 
 	digitalWrite(DIGITAL_POT_CS_PIN, HIGH);
 	delay(4);
-}
-
-void updateDacOutputVoltage()
-{
-	short newEncoderPosition = rotaryEncoder.read();
-	if(newEncoderPosition != encoderPosition)
-	{
-		if(newEncoderPosition < 0)
-		{
-			newEncoderPosition = 0;
-			rotaryEncoder.write(newEncoderPosition);
-		}
-		else if(newEncoderPosition > 255)
-		{
-			newEncoderPosition = 255;
-			rotaryEncoder.write(newEncoderPosition);
-		}
-		encoderPosition = newEncoderPosition;
-
-		analogWrite(DAC_OUTPUT_PIN, encoderPosition);
-	}
 }
 
 void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte* _buffer)
