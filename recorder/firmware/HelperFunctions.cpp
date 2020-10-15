@@ -85,17 +85,16 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
 
 void initializeADC()
 {
-	adc->adc0->setAveraging(64); // set number of averages
-	adc->adc0->setResolution(16); // set bits of resolution
-	adc->adc0->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_HIGH_SPEED); // change the conversion speed
-	adc->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_HIGH_SPEED); // change the sampling speed
+	adc->adc0->setAveraging(2); // set number of averages
+	adc->adc0->setResolution(12); // set bits of resolution
+	adc->adc0->setConversionSpeed(ADC_CONVERSION_SPEED::HIGH_SPEED); // change the conversion speed
+	adc->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::HIGH_SPEED); // change the sampling speed
 	adc->adc0->setReference(ADC_REFERENCE::REF_3V3);
-	adc->adc0->enablePGA(CURRENT_SENSE_PGA_GAIN);
 
-	adc->adc1->setAveraging(64); // set number of averages
-	adc->adc1->setResolution(16); // set bits of resolution
+	adc->adc1->setAveraging(1); // set number of averages
+	adc->adc1->setResolution(12); // set bits of resolution
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_HIGH_SPEED); // change the conversion speed
-	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_HIGH_SPEED); // change the sampling speed
+	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED); // change the sampling speed
 	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
 }
 
