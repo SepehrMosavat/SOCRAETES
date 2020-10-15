@@ -15,11 +15,11 @@ void setup() {
   Serial.begin(115200);
   SPI.begin();
 
-  pinMode(DIGITAL_POT_CS_PIN, OUTPUT);
   pinMode(HARVESTER_CAPTURING_STATUS_PIN, OUTPUT);
 
   pinMode(A10, INPUT); //Diff Channel 0 Positive
   pinMode(A11, INPUT); //Diff Channel 0 Negative
+	analogWriteResolution(12);
 
   initializeADC();
 }
@@ -36,6 +36,7 @@ void loop() {
   int current = getCurrentFromAdcValue(currentSenseAdcValue, CURRENT_SENSE_PGA_GAIN);
 
   convertIntValuesToByteArrays(digitalPotValue, voltage, current, uartByteArray);
+	updateHarvesterLoad();
 
 #ifdef DEBUG_MODE
   Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);

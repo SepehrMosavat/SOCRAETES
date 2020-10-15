@@ -66,17 +66,6 @@ int getCurrentFromAdcValue(int _adcValue, int _pgaGain)
 	return (int)returnValue;
 }
 
-void writeToDigitalPot(byte _value)
-{
-	digitalWrite(DIGITAL_POT_CS_PIN, LOW);
-
-	SPI.transfer(DIGITAL_POT_WIPER0_ADDRESS); // Volatile wiper0 register
-	SPI.transfer(_value);
-
-	digitalWrite(DIGITAL_POT_CS_PIN, HIGH);
-	delay(4);
-}
-
 void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte* _buffer)
 {
 	_buffer[0] = 0xaa; // Start byte

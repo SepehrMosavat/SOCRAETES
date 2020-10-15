@@ -13,14 +13,12 @@
 //#define DEBUG_MODE
 
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
-#define DIGITAL_POT_VALUE_LOOKUP_TABLE digitalPotValueLookupTable_40_points
 
 
-
-#define DIGITAL_POT_CS_PIN 9
-#define DIGITAL_POT_WIPER0_ADDRESS 0
+#define LOAD_MOSFET_DAC_PIN A14
 
 #define HARVESTER_CAPTURING_STATUS_PIN 6
+#define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_0
 
 #define VCC_VOLTAGE 3.33
 #define ADC_REFERENCE_VOLTAGE 3.33
@@ -32,13 +30,14 @@
 #define ADC_VOLTAGE_DIVIDER_R2 11000 // Low-side resistor
 #define ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR (((double)(ADC_VOLTAGE_DIVIDER_R2 + ADC_VOLTAGE_DIVIDER_R1) / (ADC_VOLTAGE_DIVIDER_R2)))
 
-const short digitalPotValueLookupTable_40_points[] = {
-		0, 1, 2, 3, 4, 5, 6, 7,
-		8, 10, 12, 14, 16, 18, 20, 22,
-		24, 28, 32, 36, 40, 44, 48, 52,
-		54, 56, 60, 65, 70, 75, 80, 85,
-		90, 95, 100, 105, 110, 115, 120, 128
+const int loadMosfetDACValuesLUT_40_points_0[] = {
+		1500, 1525, 1550, 1575, 1600, 1625, 1650, 1675,
+		1700, 1725, 1750, 1775, 1800, 1825, 1850, 1875,
+		1900, 1925, 1950, 1975, 2000, 2025, 2050, 2075,
+		2100, 2125, 2150, 2175, 2200, 2225, 2250, 2275,
+		2300, 2325, 2350, 2375, 2400, 2425, 2450, 2475
 };
 
+#define LOAD_MOSFET_DAC_VALUES_LUT_OFFSET 50 // This offset is used for fine-tuning the gate voltage of the MOSFETs
 
 #endif /* DEFINITIONS_H_ */

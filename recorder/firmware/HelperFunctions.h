@@ -20,11 +20,12 @@ int getVoltageFromAdcValue(int, int);
 
 int getCurrentFromAdcValue(int, int);
 
-void writeToDigitalPot(byte);
 
 void convertIntValuesToByteArrays(unsigned short, int, int, byte*);
 
 void initializeADC();
+
+void updateHarvesterLoad();
 
 
 #endif /* HELPERFUNCTIONS_H_ */
