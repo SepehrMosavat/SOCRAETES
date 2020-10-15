@@ -33,7 +33,7 @@ int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
+		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
 		returnValue /= _pgaGain;
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
