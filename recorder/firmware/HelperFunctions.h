@@ -18,8 +18,7 @@ float shortToVoltage(short);
 
 int getVoltageFromAdcValue(int, int);
 
-int getCurrentFromAdcValue(int, int);
-
+int getCurrentFromAdcValue(int);
 
 void convertIntValuesToByteArrays(unsigned short, int, int, byte*);
 

@@ -46,7 +46,7 @@ int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
 	return (int)returnValue;
 }
 
-int getCurrentFromAdcValue(int _adcValue, int _pgaGain)
+int getCurrentFromAdcValue(int _adcValue)
 {
 	double returnValue;
 	if(_adcValue < 0)

@@ -31,9 +31,9 @@ void loop() {
   // Read ADC inputs for voltage and current calculations
   int currentSenseAdcValue = adc->analogReadDifferential(A10, A11, ADC_0);
   int voltageAdcValue = adc->analogRead(A2, ADC_1);
+	int current = getCurrentFromAdcValue(currentSenseAdcValue);
 
   int voltage = getVoltageFromAdcValue(voltageAdcValue, 1);
-  int current = getCurrentFromAdcValue(currentSenseAdcValue, CURRENT_SENSE_PGA_GAIN);
 
   convertIntValuesToByteArrays(digitalPotValue, voltage, current, uartByteArray);
 	updateHarvesterLoad();
