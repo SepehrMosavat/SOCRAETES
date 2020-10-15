@@ -14,7 +14,6 @@ void setup() {
 	Serial.begin(115200);
 	SPI.begin();
 
-  pinMode(HARVESTER_CAPTURING_STATUS_PIN, OUTPUT);
 	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
 	pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
 
@@ -22,8 +21,6 @@ void setup() {
 
 	initializeADC();
 }
-
-bool isCapturingHarvester = false;
 
 void loop() {
 	// Read harvester voltage and current from ADC lines
