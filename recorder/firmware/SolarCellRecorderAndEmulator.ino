@@ -46,4 +46,5 @@ void loop() {
 	}
 #endif
 
+	delay(10);
 }
