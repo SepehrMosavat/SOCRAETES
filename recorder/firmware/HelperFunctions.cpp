@@ -55,13 +55,12 @@ int getCurrentFromAdcValue(int _adcValue, int _pgaGain)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 65535; // 16-bit ADC resulution
-		returnValue /= _pgaGain;
+		returnValue = (double)_adcValue / 4095; // 13-bit ADC resolution
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
-		returnValue *= 1.2; // Scaling factor (magic number)
-
 		returnValue *= 1000000; // Value in uA
-		returnValue /= CURRENT_SENSE_RESISTOR_VALUE;
+
+		returnValue /= CURRENT_SENSE_AMPLIFIER_GAIN;
+		returnValue /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
 	}
 	return (int)returnValue;
 }
