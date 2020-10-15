@@ -16,8 +16,6 @@ void setup() {
 
   pinMode(HARVESTER_CAPTURING_STATUS_PIN, OUTPUT);
 
-  pinMode(A10, INPUT); //Diff Channel 0 Positive
-  pinMode(A11, INPUT); //Diff Channel 0 Negative
 	analogWriteResolution(12);
 
 	initializeADC();
@@ -26,8 +24,8 @@ void setup() {
 bool isCapturingHarvester = false;
 
 void loop() {
-  // Read ADC inputs for voltage and current calculations
-  int currentSenseAdcValue = adc->analogReadDifferential(A10, A11, ADC_0);
+	// Read harvester voltage and current from ADC lines
+	int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
 	int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
 	int current = getCurrentFromAdcValue(currentSenseAdcValue);
 
