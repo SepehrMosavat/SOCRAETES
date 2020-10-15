@@ -26,8 +26,8 @@
 #define CURRENT_SENSE_RESISTOR_VALUE 820
 
 #define ADC_VOLTAGE_DIVIDER_USED
-#define ADC_VOLTAGE_DIVIDER_R1 13000 // High-side resistor
-#define ADC_VOLTAGE_DIVIDER_R2 11000 // Low-side resistor
+#define ADC_VOLTAGE_DIVIDER_R1 2000000 // High-side resistor
+#define ADC_VOLTAGE_DIVIDER_R2 2000000 // Low-side resistor
 #define ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR (((double)(ADC_VOLTAGE_DIVIDER_R2 + ADC_VOLTAGE_DIVIDER_R1) / (ADC_VOLTAGE_DIVIDER_R2)))
 
 const int loadMosfetDACValuesLUT_40_points_0[] = {
