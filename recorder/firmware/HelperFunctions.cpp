@@ -55,7 +55,7 @@ int getCurrentFromAdcValue(int _adcValue)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 4095; // 13-bit ADC resolution
+		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
 		returnValue *= 1000000; // Value in uA
 
@@ -85,7 +85,7 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
 void initializeADC()
 {
 	adc->adc0->setAveraging(2); // set number of averages
-	adc->adc0->setResolution(12); // set bits of resolution
+	adc->adc0->setResolution(16); // set bits of resolution
 	adc->adc0->setConversionSpeed(ADC_CONVERSION_SPEED::HIGH_SPEED); // change the conversion speed
 	adc->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::HIGH_SPEED); // change the sampling speed
 	adc->adc0->setReference(ADC_REFERENCE::REF_3V3);
