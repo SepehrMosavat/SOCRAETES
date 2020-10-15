@@ -15,6 +15,8 @@ void setup() {
 	SPI.begin();
 
   pinMode(HARVESTER_CAPTURING_STATUS_PIN, OUTPUT);
+	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
+	pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
 
 	analogWriteResolution(12);
 
