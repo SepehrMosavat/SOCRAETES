@@ -10,6 +10,7 @@
 
 extern byte uartByteArray[11];
 extern ADC *adc;
+extern int ivCurveSequenceNumber;
 
 void setup() {
   Serial.begin(115200);
@@ -24,7 +25,6 @@ void setup() {
   initializeADC();
 }
 
-int digitalPotValue = 0;
 bool isCapturingHarvester = false;
 
 void loop() {
@@ -47,13 +47,4 @@ void loop() {
   }
 #endif
 
-  writeToDigitalPot(DIGITAL_POT_VALUE_LOOKUP_TABLE[digitalPotValue]);
-  digitalPotValue++;
-  if(digitalPotValue > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE)
-  {
-	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, LOW);
-	  digitalPotValue = 0;
-	  writeToDigitalPot(DIGITAL_POT_VALUE_LOOKUP_TABLE[digitalPotValue]);
-	  digitalWrite(HARVESTER_CAPTURING_STATUS_PIN, HIGH);
-  }
 }

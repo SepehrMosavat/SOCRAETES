@@ -15,7 +15,7 @@
 
 ADC *adc = new ADC();
 byte uartByteArray[11];
-
+int ivCurveSequenceNumber = 0;
 
 float shortToVoltage(short _voltage)
 {
@@ -97,4 +97,16 @@ void initializeADC()
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_HIGH_SPEED); // change the conversion speed
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_HIGH_SPEED); // change the sampling speed
 	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
+}
+
+void updateHarvesterLoad()
+{
+	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
+	ivCurveSequenceNumber++;
+	if(ivCurveSequenceNumber > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE)
+	{
+		ivCurveSequenceNumber = 0;
+		analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
+		delay(20);
+	}
 }
