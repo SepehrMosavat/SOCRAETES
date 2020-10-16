@@ -99,6 +99,9 @@ void initializeADC()
 
 void updateHarvesterLoad()
 {
+#ifdef CALIBRATION_MODE
+	analogWrite(LOAD_MOSFET_DAC_PIN, 4535);
+#else
 	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 	ivCurveSequenceNumber++;
 	if(ivCurveSequenceNumber > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE)
@@ -107,4 +110,5 @@ void updateHarvesterLoad()
 		analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 		delay(20);
 	}
+#endif
 }

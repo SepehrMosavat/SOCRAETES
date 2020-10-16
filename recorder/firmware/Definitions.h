@@ -12,6 +12,10 @@
 
 //#define DEBUG_MODE
 
+#ifdef DEBUG_MODE
+#define CALIBRATION_MODE
+#endif
+
 // Teensy 3.2 Board Pin Definitions
 #define HARVESTER_VOLTAGE_ADC_PIN A3
 #define HARVESTER_CURRENT_ADC_PIN A1
