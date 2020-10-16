@@ -37,7 +37,7 @@ void loop() {
 
 #ifdef DEBUG_MODE
 	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);
-	delay(20);
+	delay(200);
 #else
 	for(int i = 0; i < 11; i++)
 	{
