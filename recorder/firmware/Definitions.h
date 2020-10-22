@@ -45,6 +45,14 @@ const int loadMosfetDACValuesLUT_40_points_0[] = {
 		2300, 2325, 2350, 2375, 2400, 2425, 2450, 2475
 };
 
+const int loadMosfetDACValuesLUT_40_points_1[] = {
+		1500, 1525, 1550, 1575, 1600, 1625, 1650, 1675,
+		1700, 1725, 1750, 1800, 1850, 1900, 1950, 2000,
+		2050, 2100, 2150, 2200, 2250, 2300, 2350, 2400,
+		2450, 2500, 2550, 2600, 2650, 2700, 2750, 2800,
+		2850, 2900, 2950, 3000, 3050, 3100, 3150, 3200
+};
+
 #define LOAD_MOSFET_DAC_VALUES_LUT_OFFSET 50 // This offset is used for fine-tuning the gate voltage of the MOSFETs
 
 #endif /* DEFINITIONS_H_ */
