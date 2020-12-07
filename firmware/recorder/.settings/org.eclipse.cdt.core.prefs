@@ -85,7 +85,7 @@ environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.MCU/oper
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.MCU/value=mk20dx256
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PATH/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PATH/operation=replace
-environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PATH/value=C\:\\Sourcetree_Projects\\SolarCellRecorderAndEmulator\\recorder\\firmware\\Release
+environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PATH/value=C\:\\Sourcetree_Projects\\SOCRAETES\\firmware\\recorder\\Release
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PROJECT_NAME/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PROJECT_NAME/operation=replace
 environment/project/io.sloeber.core.toolChain.release.628580791/A.BUILD.PROJECT_NAME/value=${ProjName}
@@ -394,7 +394,7 @@ environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.COM_PORT/
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.COM_PORT/value=COM15
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.ECLIPSE_LOCATION/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.ECLIPSE_LOCATION/operation=replace
-environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.ECLIPSE_LOCATION/value=${eclipse_home}
+environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.ECLIPSE_LOCATION/value=C\:\\Program Files\\eclipse\\
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.EXTRA.ALL/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.EXTRA.ALL/operation=replace
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.EXTRA.ALL/value=
@@ -433,7 +433,7 @@ environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PACKAGE_I
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PACKAGE_ID/value=teensy
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PROJECT_NAME/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PROJECT_NAME/operation=replace
-environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PROJECT_NAME/value=SolarCellRecorderAndEmulator
+environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.PROJECT_NAME/value=SOCRAETES_recorder
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.SELECTED.PLATFORM/delimiter=;
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.SELECTED.PLATFORM/operation=replace
 environment/project/io.sloeber.core.toolChain.release.628580791/JANTJE.SELECTED.PLATFORM/value=C\:/Program Files (x86)/Arduino/hardware/teensy/avr
