@@ -7,11 +7,11 @@
  *      Networked Embedded Systems (NES)
  */
 
-#include "HelperFunctions.h"
 #include <SPI.h>
 #include <Encoder.h>
 #include <ADC.h>
 #include <ADC_util.h>
+#include "Functions.h"
 
 ADC *adc = new ADC();
 byte uartByteArray[11];

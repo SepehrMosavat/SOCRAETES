@@ -7,8 +7,8 @@
  *      Networked Embedded Systems (NES)
  */
 
-#ifndef HELPERFUNCTIONS_H_
-#define HELPERFUNCTIONS_H_
+#ifndef FUNCTIONS_H_
+#define FUNCTIONS_H_
 
 
 #include "Definitions.h"
@@ -27,4 +27,4 @@ void initializeADC();
 void updateHarvesterLoad();
 
 
-#endif /* HELPERFUNCTIONS_H_ */
+#endif /* FUNCTIONS_H_ */

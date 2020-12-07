@@ -24,6 +24,11 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/ADC}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/SPI}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.cpp.sketch.input.658432743" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
 							</tool>
@@ -34,6 +39,11 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/ADC}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/SPI}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.c.sketch.input.510311356" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
 							</tool>
@@ -44,6 +54,11 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder/utility}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/Encoder}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SolarCellRecorderAndEmulator/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/ADC}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder/utility}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/Encoder}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SOCRAETES_recorder/libraries/SPI}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.S.sketch.input.1922765254" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
 							</tool>

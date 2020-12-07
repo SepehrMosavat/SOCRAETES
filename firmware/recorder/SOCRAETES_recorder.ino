@@ -4,7 +4,7 @@
 #include <SPI.h>
 
 #include "Definitions.h"
-#include "HelperFunctions.h"
+#include "Functions.h"
 
 extern byte uartByteArray[11];
 extern ADC *adc;
