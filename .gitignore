@@ -2,3 +2,7 @@ recorder/software/.idea/
 recorder/software/__pycache__/
 recorder/software/venv/
 recorder/firmware/Release/
+
+__pycache__
+PythonVEnv
+.idea
