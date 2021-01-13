@@ -26,5 +26,7 @@ void initializeADC();
 
 void updateHarvesterLoad();
 
+void startupDelay();
+
 
 #endif /* FUNCTIONS_H_ */

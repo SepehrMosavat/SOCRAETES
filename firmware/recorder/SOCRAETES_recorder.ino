@@ -19,6 +19,11 @@ void setup() {
 
 	analogWriteResolution(12);
 
+	pinMode(LED_BUILTIN, OUTPUT);
+
+	startupDelay();
+	digitalWrite(LED_BUILTIN, HIGH);
+
 	initializeADC();
 }
 
