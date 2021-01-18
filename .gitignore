@@ -1,8 +1,11 @@
-recorder/software/.idea/
-recorder/software/__pycache__/
-recorder/software/venv/
-recorder/firmware/Release/
+firmware/recorder/.settings/
+firmware/recorder/Release/
+firmware/recorder/.cproject
+firmware/recorder/.project
+firmware/recorder/spec.d
+software/emulator/.idea/
+software/emulator/__pycache__/
 software/emulator/venv/
-software/recorder/.idea/.gitignore
-software/recorder/__pycache__/
 software/recorder/.idea/
+software/recorder/__pycache__/
+software/recorder/venv/
