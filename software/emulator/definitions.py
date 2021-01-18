@@ -12,4 +12,10 @@ class CurveEmulationMethod(Enum):
     EMULATE_TRACE_FROM_ARRAY = 1
 
 
+class DebugMode(Enum):
+    NO_DEBUG = 0
+    DEBUG_WITHOUT_HARDWARE = 1
+    DEBUG_WITH_HARDWARE = 2
+
+
 zero_output_emulation_parameters = EmulationParameters(0, 0)
