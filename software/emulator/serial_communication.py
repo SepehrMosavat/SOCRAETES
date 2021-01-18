@@ -1,14 +1,14 @@
 import queue
 from threading import Event
-import sys
 
 import serial
 
+from definitions import DebugMode
 from system_configurations import DEBUG_MODE
 
 
 def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event: Event, _port):
-    if DEBUG_MODE is False:
+    if DEBUG_MODE is DebugMode.NO_DEBUG or DEBUG_MODE is DebugMode.DEBUG_WITH_HARDWARE:
         try:
             ser = serial.Serial(
                 port=_port,
@@ -42,12 +42,12 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
                                                       byteorder='big', signed=False)  # SC current
             outgoing_serial_byte_array = outgoing_serial_byte_array + b'\x55'  # End of sequence
 
-            if DEBUG_MODE is False:
+            if DEBUG_MODE is DebugMode.NO_DEBUG or DEBUG_MODE is DebugMode.DEBUG_WITH_HARDWARE:
                 ser.write(outgoing_serial_byte_array)
-                # time.sleep(0.5)
-                serial_bytes_received = ser.readline()
-                print(serial_bytes_received.decode('UTF-8'))
-            else:
+                if DEBUG_MODE is DebugMode.DEBUG_WITH_HARDWARE:
+                    serial_bytes_received = ser.readline()
+                    print(serial_bytes_received.decode('UTF-8'))
+            elif DEBUG_MODE is DebugMode.DEBUG_WITHOUT_HARDWARE:
                 print('OC voltage: ' +
                       str(int(curve_emulation_parameters.open_circuit_voltage)) +
                       ' uV, SC current: ' +

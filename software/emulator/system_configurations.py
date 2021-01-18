@@ -1,1 +1,3 @@
-DEBUG_MODE = False
+from definitions import DebugMode
+
+DEBUG_MODE = DebugMode.NO_DEBUG
