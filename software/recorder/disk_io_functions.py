@@ -3,11 +3,10 @@ import queue
 import threading
 from datetime import datetime
 
-from iv_curves_definitions import HarvestingCondition
 import h5py
 import numpy as np
 
-harvesting_condition = HarvestingCondition('indoor', "5", 'sunny', 'germany', 'essen')
+from iv_curves_definitions import HarvestingCondition
 
 
 def generate_filename() -> str:
@@ -26,7 +25,8 @@ def generate_filename() -> str:
         return new_filename
 
 
-def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
+def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesting_condition: HarvestingCondition,
+                            _stop_thread_event: threading.Event):
     curve_counter = 0
     data_array_buffer = []
 
@@ -45,21 +45,21 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
             print("Committing curve data to the hard disk...")
             with h5py.File(new_filename, 'a') as f:
                 harvesting_condition_list = [(np.string_('Date'),
-                                             np.string_('Start Time (Local Timezone)'),
-                                             np.string_('End Time (Local Timezone)'),
-                                             np.string_('Indoor/Outdoor'),
-                                             np.string_('Light Intensity (out of 10)'),
-                                             np.string_('Weather Condition'),
-                                             np.string_('Country'),
-                                             np.string_('City')),
+                                              np.string_('Start Time (Local Timezone)'),
+                                              np.string_('End Time (Local Timezone)'),
+                                              np.string_('Indoor/Outdoor'),
+                                              np.string_('Light Intensity (Lux)'),
+                                              np.string_('Weather Condition'),
+                                              np.string_('Country'),
+                                              np.string_('City')),
                                              (np.string_(start_date_string),
-                                             np.string_(start_time_string),
-                                             np.string_(end_time_string),
-                                             np.string_(harvesting_condition.indoor_or_outdoor),
-                                             np.string_(harvesting_condition.light_intensity),
-                                             np.string_(harvesting_condition.weather_condition),
-                                             np.string_(harvesting_condition.country),
-                                             np.string_(harvesting_condition.city))]
+                                              np.string_(start_time_string),
+                                              np.string_(end_time_string),
+                                              np.string_(_harvesting_condition.indoor_or_outdoor),
+                                              np.string_(_harvesting_condition.light_intensity),
+                                              np.string_(_harvesting_condition.weather_condition),
+                                              np.string_(_harvesting_condition.country),
+                                              np.string_(_harvesting_condition.city))]
                 dataset = f.create_dataset('harvesting conditions', data=harvesting_condition_list)
             for arr in data_array_buffer:
                 with h5py.File(new_filename, 'a') as f:
@@ -77,10 +77,3 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _stop_thread_event: t
 
             data_array = np.array([x_temp, y_temp], dtype=float)
             data_array_buffer.append(data_array)
-
-
-
-
-
-
-
