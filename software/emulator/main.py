@@ -23,7 +23,7 @@ def interrupt_signal_handler(_signal, _frame):
     stop_thread_event.set()
 
 
-def cli(port, source='array', file='trace.hdf5', array=[[1, 0], [1, 1000]]):
+def cli(port, source='array', file='trace_0.hdf5', array=[[1, 0], [1, 1000]]):
     global serial_port
     global curve_emulation_method
     global trace_emulation_source
