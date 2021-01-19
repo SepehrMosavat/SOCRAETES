@@ -18,7 +18,7 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
                 bytesize=serial.EIGHTBITS
             )
         except serial.SerialException:
-            print("Could not open the specified serial port")
+            print('Could not open the specified serial port')
             _stop_thread_event.set()
             return None
 
@@ -26,9 +26,9 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
         ser.open()
 
         if ser.isOpen():
-            print("Serial port opened successfully")
+            print('Serial port opened successfully')
         else:
-            print("Serial port could not be opened")
+            print('Serial port could not be opened')
 
     while True:
         if not _trace_emulation_queue.empty():
