@@ -9,14 +9,14 @@ from iv_curves_definitions import IvCurve, CurvePoint
 
 
 # Function for reading the COM port values
-def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue):
     ser = serial.Serial(
-        port='COM15',
         baudrate=115200,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
         bytesize=serial.EIGHTBITS
     )
+def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, _stop_thread_event: threading.Event):
+            port=_port,
 
     ser.close()
     ser.open()
