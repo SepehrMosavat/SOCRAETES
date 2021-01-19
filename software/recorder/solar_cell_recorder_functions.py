@@ -70,7 +70,6 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                 # Start capturing IV curve
                 is_iv_curve_being_captured = True
                 captured_curve = IvCurve(curve_number_counter)
-                #print("Capturing")
 
             if is_iv_curve_being_captured is True:
                 if point_sequence_number == captured_curve.number_of_points_in_curve:
