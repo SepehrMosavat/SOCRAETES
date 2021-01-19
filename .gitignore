@@ -9,3 +9,8 @@ software/emulator/venv/
 software/recorder/.idea/
 software/recorder/__pycache__/
 software/recorder/venv/
+firmware/emulator/.settings/
+firmware/emulator/.cproject
+firmware/emulator/.gitignore
+firmware/emulator/.project
+firmware/emulator/spec.d
