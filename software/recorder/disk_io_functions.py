@@ -1,11 +1,11 @@
-import h5py
-import numpy as np
+import os
 import queue
 import threading
-import os
 from datetime import datetime
 
 from iv_curves_definitions import HarvestingCondition
+import h5py
+import numpy as np
 
 harvesting_condition = HarvestingCondition('indoor', "5", 'sunny', 'germany', 'essen')
 
