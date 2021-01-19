@@ -19,13 +19,7 @@ raw_serial_data_queue = queue.Queue()
 captured_curves_queue = queue.Queue()
 stop_thread_event = threading.Event()
 
-plot_iv_curve_thread = threading.Thread(target=plot_iv_curve, args=(captured_curves_queue,))
-plot_iv_surface_thread = threading.Thread(target=plot_iv_surface, args=(captured_curves_queue,))
-write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk, args=(captured_curves_queue,
-                                                                                        stop_thread_event,))
 
-process_serial_data_thread.start()
-read_byte_thread.start()
 def timer_function(_time_duration):
     time.sleep(_time_duration)
     stop_thread_event.set()
@@ -53,12 +47,6 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
     capture_duration = duration
     harvesting_conditions = HarvestingCondition(environment, str(lux), weather, country, city)
 
-if plot_or_disk_commit == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
-    write_iv_curves_to_disk_thread.start()
-elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_CURVE:
-    plot_iv_curve_thread.start()
-elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_SURFACE:
-    plot_iv_surface_thread.start()
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, interrupt_signal_handler)
@@ -71,4 +59,21 @@ if __name__ == '__main__':
                                                                                              stop_thread_event,))
 
     timer_thread.daemon = True
+    read_byte_thread.daemon = True
+    process_serial_data_thread.daemon = True
+
+    process_serial_data_thread.start()
+    read_byte_thread.start()
+    if data_handling_mode == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
+        timer_thread.start()
+        write_iv_curves_to_disk(captured_curves_queue, file_name_for_trace_saving, harvesting_conditions,
+                                stop_thread_event)
+    elif data_handling_mode == PlotOrDiskCommit.PLOT_CURVE:
+        plot_iv_curve(captured_curves_queue, stop_thread_event)
+    elif data_handling_mode == PlotOrDiskCommit.PLOT_SURFACE:
+        plot_iv_surface(captured_curves_queue, stop_thread_event)
     while True:
+        if stop_thread_event.isSet():
+            print('Recording finished. Exiting...')
+            time.sleep(1)
+            sys.exit()
