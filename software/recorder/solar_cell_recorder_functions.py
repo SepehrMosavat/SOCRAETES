@@ -6,16 +6,7 @@ import signal
 from iv_curves_definitions import IvCurve, CurvePoint
 
 
-class ResourceCleanup:
-    kill_now = False
 
-    def __init__(self):
-        signal.signal(signal.SIGABRT, self.perform_cleanup)
-        signal.signal(signal.SIGTERM, self.perform_cleanup)
-
-    def perform_cleanup(self, signum, frame):
-        self.kill_now = True
-        print("Signal received" + str(signum))
 
 
 # Function for reading the COM port values
