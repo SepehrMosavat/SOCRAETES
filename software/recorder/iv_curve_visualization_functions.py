@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 plt.rcParams['toolbar'] = 'None'
 
 
-def plot_iv_curve(iv_curves_queue: queue.Queue):
+def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
     while True:
         if not iv_curves_queue.empty():
             curve = iv_curves_queue.get()
@@ -35,9 +35,11 @@ def plot_iv_curve(iv_curves_queue: queue.Queue):
             plt.clf()
 
         time.sleep(0.01)
+        if _stop_thread_event.isSet():
+            break
 
 
-def plot_iv_surface(iv_curves_queue: queue.Queue):
+def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
     z_axis = 0
     start_time = datetime.datetime.now()
     fig = plt.figure()
@@ -56,6 +58,8 @@ def plot_iv_surface(iv_curves_queue: queue.Queue):
     # plt.show()
 
     while True:
+        if _stop_thread_event.isSet():
+            break
         if not iv_curves_queue.empty():
             curve = iv_curves_queue.get()
 
