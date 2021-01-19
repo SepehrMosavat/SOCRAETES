@@ -9,7 +9,8 @@ import numpy as np
 from iv_curves_definitions import HarvestingCondition
 
 
-def generate_filename() -> str:
+def generate_filename(_file_name) -> str:
+    if _file_name == 'AUTO-GENERATE':
         for files in os.walk('captured_traces'):
             number_of_files_in_directory = len(files[2])
             if number_of_files_in_directory == 0:
@@ -24,7 +25,9 @@ def generate_filename() -> str:
                     highest_file_index = int(index_of_trace_file[1])
             new_filename = 'trace_' + str(highest_file_index + 1) + '.hdf5'
             # TODO Add more error handling for the files already present in the directory
-        return new_filename
+            return new_filename
+    else:
+        return _file_name
 
 
 def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesting_condition: HarvestingCondition,
@@ -32,7 +35,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
     curve_counter = 0
     data_array_buffer = []
 
-    new_filename = generate_filename()
+    new_filename = generate_filename(_file_name)
     new_filename = 'captured_traces\\' + new_filename
 
     start_time = datetime.now()
