@@ -64,16 +64,8 @@ elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_SURFACE:
     plot_iv_surface_thread.start()
 
 if __name__ == '__main__':
-    signal_handler = ResourceCleanup()
-    counter = 0
     signal.signal(signal.SIGINT, interrupt_signal_handler)
     fire.Fire(cli)
     timer_thread = threading.Thread(target=timer_function, args=(capture_duration,))
     timer_thread.daemon = True
     while True:
-        time.sleep(1)
-        counter += 1
-        if counter == capture_duration:
-            stop_thread_event.set()
-            time.sleep(5)
-            break;
