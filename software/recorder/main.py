@@ -4,12 +4,16 @@ import queue
 
 from solar_cell_recorder_functions import process_received_serial_data, read_byte_array_from_serial_port
 from iv_curve_visualization_functions import plot_iv_curve, plot_iv_surface
+import fire
 from disk_io_functions import write_iv_curves_to_disk
 from solar_cell_recorder_functions import ResourceCleanup
 from system_configurations import PlotOrDiskCommit
 
-plot_or_disk_commit = PlotOrDiskCommit(PlotOrDiskCommit.PLOT_CURVE)
-capture_duration = 20
+serial_port = None
+data_handling_mode = None
+file_name_for_trace_saving = None
+capture_duration = None
+harvesting_conditions = None
 
 raw_serial_data_queue = queue.Queue()
 captured_curves_queue = queue.Queue()
@@ -25,6 +29,23 @@ write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk
 
 process_serial_data_thread.start()
 read_byte_thread.start()
+def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment='indoor', lux=50, weather='sunny',
+        country='N/A', city='N/A'):
+    global serial_port
+    global data_handling_mode
+    global file_name_for_trace_saving
+    global capture_duration
+    global harvesting_conditions
+    serial_port = port
+    if mode == 'plot-curve':
+        data_handling_mode = PlotOrDiskCommit.PLOT_CURVE
+    elif mode == 'plot-surface':
+        data_handling_mode = PlotOrDiskCommit.PLOT_SURFACE
+    elif mode == 'commit-to-file':
+        data_handling_mode = PlotOrDiskCommit.COMMIT_TRACE_TO_DISK
+    file_name_for_trace_saving = file
+    capture_duration = duration
+    harvesting_conditions = HarvestingCondition(environment, str(lux), weather, country, city)
 
 if plot_or_disk_commit == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
     write_iv_curves_to_disk_thread.start()
@@ -36,6 +57,7 @@ elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_SURFACE:
 if __name__ == '__main__':
     signal_handler = ResourceCleanup()
     counter = 0
+    fire.Fire(cli)
     while True:
         time.sleep(1)
         counter += 1
