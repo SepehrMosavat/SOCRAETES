@@ -37,6 +37,9 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
         print("Serial port could not be opened")
 
     while True:
+        if _stop_thread_event.isSet():
+            ser.close()
+            sys.exit()
         serial_bytes_received = ser.read(11)
         serial_bytes_received_as_bytearray = bytearray(serial_bytes_received)
 
@@ -45,10 +48,13 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
 
 
 # Function for processing received byte arrays and extract the IV curves from them
-def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_curves_queue: queue.Queue):
+def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_curves_queue: queue.Queue,
+                                 _stop_thread_event: threading.Event):
     is_iv_curve_being_captured = False
     curve_number_counter = 0
     while True:
+        if _stop_thread_event.isSet():
+            sys.exit()
         if not raw_serial_data_queue.empty():
             serial_bytes_received_as_bytearray = raw_serial_data_queue.get()
 
