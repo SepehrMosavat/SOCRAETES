@@ -1,12 +1,11 @@
-import serial
 import queue
+import sys
+import threading
 import time
-import signal
+
+import serial
 
 from iv_curves_definitions import IvCurve, CurvePoint
-
-
-
 
 
 # Function for reading the COM port values
