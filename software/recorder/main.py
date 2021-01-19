@@ -29,6 +29,11 @@ write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk
 
 process_serial_data_thread.start()
 read_byte_thread.start()
+def timer_function(_time_duration):
+    time.sleep(_time_duration)
+    stop_thread_event.set()
+
+
 def interrupt_signal_handler(_signal, _frame):
     stop_thread_event.set()
 
@@ -63,6 +68,8 @@ if __name__ == '__main__':
     counter = 0
     signal.signal(signal.SIGINT, interrupt_signal_handler)
     fire.Fire(cli)
+    timer_thread = threading.Thread(target=timer_function, args=(capture_duration,))
+    timer_thread.daemon = True
     while True:
         time.sleep(1)
         counter += 1
