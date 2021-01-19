@@ -1,14 +1,11 @@
-import queue
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import time
 import datetime
-from mpl_toolkits import mplot3d
-import numpy as np
+import queue
+import threading
+import time
+
+import matplotlib.pyplot as plt
 
 plt.rcParams['toolbar'] = 'None'
-
-from iv_curves_definitions import IvCurve, CurvePoint
 
 
 def plot_iv_curve(iv_curves_queue: queue.Queue):
