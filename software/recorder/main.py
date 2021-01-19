@@ -29,6 +29,10 @@ write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk
 
 process_serial_data_thread.start()
 read_byte_thread.start()
+def interrupt_signal_handler(_signal, _frame):
+    stop_thread_event.set()
+
+
 def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment='indoor', lux=50, weather='sunny',
         country='N/A', city='N/A'):
     global serial_port
@@ -57,6 +61,7 @@ elif plot_or_disk_commit == PlotOrDiskCommit.PLOT_SURFACE:
 if __name__ == '__main__':
     signal_handler = ResourceCleanup()
     counter = 0
+    signal.signal(signal.SIGINT, interrupt_signal_handler)
     fire.Fire(cli)
     while True:
         time.sleep(1)
