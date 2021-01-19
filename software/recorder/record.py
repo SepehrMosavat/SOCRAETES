@@ -34,6 +34,30 @@ def interrupt_signal_handler(_signal, _frame):
 
 def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment='indoor', lux=50, weather='sunny',
         country='N/A', city='N/A'):
+    """
+    :param port: The serial port used for communication with the hardware.
+    :param mode: The data handling mode will determine the behavior of the application:\n
+    plot-curve: Plots 2D I-V curves of the connected harvester over.\n
+    plot-surface: Plots 3D I-V curves of the connected harvester over time.\n
+    commit-to-file: Saves the I-V curves of the connected harvester to an HDF5 file.\n
+    Default value: plot-curve
+    :param file: The file name of the HDF5 file in commit-to-file mode. If not specified, the file name will be
+    auto-generated.
+    :param duration: The duration of capturing the trace in commit-to-file mode.\n
+    Default value: 30 seconds
+    :param environment: The environment in which energy harvesting is carried out. Only used in commit-to-file mode.\n
+    Default value: indoor
+    :param lux: The light intensity (in Lux) of the environment in which energy harvesting is carried out.
+    Only used in commit-to-file mode.\n
+    Default value: 50 Lux
+    :param weather: The weather condition during energy harvesting. Only used in commit-to-file mode.\n
+    Default value: sunny
+    :param country: The country in which energy harvesting is carried out. Only used in commit-to-file mode.\n
+    Default value: N\A
+    :param city: The city in which energy harvesting is carried out. Only used in commit-to-file mode.\n
+    Default value: N\A
+    :return:
+    """
     global serial_port
     global data_handling_mode
     global file_name_for_trace_saving

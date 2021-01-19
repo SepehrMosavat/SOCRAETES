@@ -24,6 +24,19 @@ def interrupt_signal_handler(_signal, _frame):
 
 
 def cli(port, source='array', file='trace_0.hdf5', array=[[1, 0], [1, 1000]]):
+    """
+    :param port: The serial port used for communication with the hardware.
+    :param source: The source of emulation data:\n
+    array: A user-specified array containing the emulation parameters. (see array below)
+    file: An HDF5 file containing the traces previously recorded.
+    Default value: array
+    :param file: The file name of the HDF5 file used for emulation from a file.\n
+    Default value: trace_0.hdf5
+    :param array: An array in form of [[<DELAY BETWEEN CURVES (s)>,0],[OPEN CIRCUIT VOLTAGE (V)>,<SHORT CIRCUIT CURRENT (uA)>],...]\n
+    Default value: [[1,0],[1,1000]], which will result in the following parameters: OC voltage: 1v,
+    SC current: 1000uA = 1mA, and 1 second of delay between each curve.
+    :return:
+    """
     global serial_port
     global curve_emulation_method
     global trace_emulation_source
