@@ -9,17 +9,28 @@ from iv_curves_definitions import IvCurve, CurvePoint
 
 
 # Function for reading the COM port values
-    ser = serial.Serial(
-        baudrate=115200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS
-    )
 def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, _stop_thread_event: threading.Event):
+    try:
+        ser = serial.Serial(
             port=_port,
+            baudrate=115200,
+            parity=serial.PARITY_NONE,
+            stopbits=serial.STOPBITS_ONE,
+            bytesize=serial.EIGHTBITS
+        )
+    except serial.SerialException:
+        print('Could not open the specified serial port')
+        _stop_thread_event.set()
+        return None
 
     ser.close()
-    ser.open()
+    try:
+        ser.open()
+    except serial.SerialException:
+        print(_port)
+        print('Could not open the specified serial port')
+        _stop_thread_event.set()
+        return None
     if ser.isOpen():
         print("Serial port open")
     else:
