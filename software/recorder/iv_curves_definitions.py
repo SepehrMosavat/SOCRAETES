@@ -21,11 +21,10 @@ class CurvePoint:
 
 
 class HarvestingCondition:
-    def __init__(self, _indoor_or_outdoor: str, _light_intensity: str, _weather_condition: str, _country: str, _city: str):
+    def __init__(self, _indoor_or_outdoor: str, _light_intensity: str, _weather_condition: str, _country: str,
+                 _city: str):
         self.indoor_or_outdoor = _indoor_or_outdoor
         self.light_intensity = _light_intensity
         self.weather_condition = _weather_condition
         self.country = _country
         self.city = _city
-
-
