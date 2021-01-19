@@ -26,7 +26,6 @@ def plot_iv_curve(iv_curves_queue: queue.Queue):
             plt.xlabel("Solar Cell Voltage (V)")
             plt.ylabel("Solar Cell Current (uA)")
             plt.title("Solar Cell IV Characteristics")
-            # plt.canvas.set_window_title("Hello")
             #plt.ion()
             #plt.show()
 
