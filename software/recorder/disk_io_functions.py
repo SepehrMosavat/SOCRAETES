@@ -10,17 +10,19 @@ from iv_curves_definitions import HarvestingCondition
 
 
 def generate_filename() -> str:
-    for files in os.walk('captured_traces'):
-        number_of_files_in_directory = len(files[2])
-        if number_of_files_in_directory == 0:
-            return 'trace_0.hdf5'
-            # TODO Is this too hacky?
-        highest_filename = files[2][number_of_files_in_directory-1]
-        split_file_extension = highest_filename.split('.')
-        highest_filename_without_extension = split_file_extension[0]
-        parsed_filename = highest_filename_without_extension.split('_')
-        if parsed_filename[0] == 'trace':
-            new_filename = 'trace_' + str(int(parsed_filename[1]) + 1) + '.hdf5'
+        for files in os.walk('captured_traces'):
+            number_of_files_in_directory = len(files[2])
+            if number_of_files_in_directory == 0:
+                return 'trace_0.hdf5'
+                # TODO Is this too hacky?
+            list_of_file_names = files[2]
+            highest_file_index = 0
+            for file_name_without_extension in list_of_file_names:
+                file_name_without_extension = file_name_without_extension.split('.')
+                index_of_trace_file = file_name_without_extension[0].split('_')
+                if int(index_of_trace_file[1]) > highest_file_index:
+                    highest_file_index = int(index_of_trace_file[1])
+            new_filename = 'trace_' + str(highest_file_index + 1) + '.hdf5'
             # TODO Add more error handling for the files already present in the directory
         return new_filename
 
