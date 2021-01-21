@@ -43,7 +43,8 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
         serial_bytes_received = ser.read(11)
         serial_bytes_received_as_bytearray = bytearray(serial_bytes_received)
 
-        if serial_bytes_received_as_bytearray[0] == 170 or serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
+        # 0xAA
+        if serial_bytes_received_as_bytearray[0] == 170 or serial_bytes_received_as_bytearray[10] == 85:
             raw_serial_data_queue.put(serial_bytes_received_as_bytearray)
 
 
@@ -63,8 +64,10 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
 
             point_sequence_number = serial_bytes_received_as_bytearray[1]
 
-            voltage = int.from_bytes(voltage_bytes, byteorder='little', signed=False)
-            current = int.from_bytes(current_bytes, byteorder='little', signed=False)
+            voltage = int.from_bytes(
+                voltage_bytes, byteorder='little', signed=False)
+            current = int.from_bytes(
+                current_bytes, byteorder='little', signed=False)
 
             if point_sequence_number == 1 and is_iv_curve_being_captured is False:
                 # Start capturing IV curve
@@ -79,7 +82,8 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     curve_number_counter += 1
                     print("Curve captured: " + str(captured_curve.curve_number))
 
-                captured_curve_point = CurvePoint(point_sequence_number, voltage / 1000000, current)
+                captured_curve_point = CurvePoint(
+                    point_sequence_number, voltage / 1000000, current)
                 captured_curve.add_point_to_curve(captured_curve_point)
 
             time.sleep(0.001)
