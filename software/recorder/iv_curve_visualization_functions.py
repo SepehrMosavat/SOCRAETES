@@ -1,3 +1,4 @@
+from iv_curves_definitions import IvCurve, CurvePoint
 import queue
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -7,8 +8,6 @@ from mpl_toolkits import mplot3d
 import numpy as np
 
 plt.rcParams['toolbar'] = 'None'
-
-from iv_curves_definitions import IvCurve, CurvePoint
 
 
 def plot_iv_curve(iv_curves_queue: queue.Queue):
@@ -30,8 +29,8 @@ def plot_iv_curve(iv_curves_queue: queue.Queue):
             plt.ylabel("Solar Cell Current (uA)")
             plt.title("Solar Cell IV Characteristics")
             # plt.canvas.set_window_title("Hello")
-            #plt.ion()
-            #plt.show()
+            # plt.ion()
+            # plt.show()
 
             plt.plot(v_value_list, i_value_list)
             plt.draw()
@@ -77,11 +76,10 @@ def plot_iv_surface(iv_curves_queue: queue.Queue):
 
             ax.plot3D(v_value_list, i_value_list, z_axis)
 
-            #plt.show()
+            # plt.show()
             # plt.draw()
             plt.pause(0.0001)
-            #plt.clf()
+            # plt.clf()
             z_axis += 1
 
         time.sleep(0.001)
-

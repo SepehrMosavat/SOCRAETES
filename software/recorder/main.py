@@ -15,11 +15,14 @@ raw_serial_data_queue = queue.Queue()
 captured_curves_queue = queue.Queue()
 stop_thread_event = threading.Event()
 
-read_byte_thread = threading.Thread(target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,))
+read_byte_thread = threading.Thread(
+    target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,))
 process_serial_data_thread = threading.Thread(target=process_received_serial_data, args=(raw_serial_data_queue,
                                                                                          captured_curves_queue,))
-plot_iv_curve_thread = threading.Thread(target=plot_iv_curve, args=(captured_curves_queue,))
-plot_iv_surface_thread = threading.Thread(target=plot_iv_surface, args=(captured_curves_queue,))
+plot_iv_curve_thread = threading.Thread(
+    target=plot_iv_curve, args=(captured_curves_queue,))
+plot_iv_surface_thread = threading.Thread(
+    target=plot_iv_surface, args=(captured_curves_queue,))
 write_iv_curves_to_disk_thread = threading.Thread(target=write_iv_curves_to_disk, args=(captured_curves_queue,
                                                                                         stop_thread_event,))
 
@@ -42,4 +45,4 @@ if __name__ == '__main__':
         if counter == capture_duration:
             stop_thread_event.set()
             time.sleep(5)
-            break;
+            break
