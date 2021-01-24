@@ -72,13 +72,15 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
         data_handling_mode = PlotOrDiskCommit.COMMIT_TRACE_TO_DISK
     file_name_for_trace_saving = file
     capture_duration = duration
-    harvesting_conditions = HarvestingCondition(environment, str(lux), weather, country, city)
+    harvesting_conditions = HarvestingCondition(
+        environment, str(lux), weather, country, city)
 
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, interrupt_signal_handler)
     fire.Fire(cli)
-    timer_thread = threading.Thread(target=timer_function, args=(capture_duration,))
+    timer_thread = threading.Thread(
+        target=timer_function, args=(capture_duration,))
     read_byte_thread = threading.Thread(target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,
                                                                                        serial_port, stop_thread_event,))
     process_serial_data_thread = threading.Thread(target=process_received_serial_data, args=(raw_serial_data_queue,

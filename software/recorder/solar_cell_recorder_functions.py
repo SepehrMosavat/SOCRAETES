@@ -80,6 +80,7 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     is_iv_curve_being_captured = False
                     captured_curves_queue.put(captured_curve)
                     curve_number_counter += 1
+                    captured_curve.encode_to_json()
                     print("Curve captured: " + str(captured_curve.curve_number))
 
                 captured_curve_point = CurvePoint(
