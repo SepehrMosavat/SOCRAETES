@@ -22,8 +22,6 @@ class IvCurve:
 
         curve_dict["curve_points"] = encoded_curve_point_list
 
-        print(json.dumps(curve_dict, ensure_ascii=False))
-
     def print(self):
         for i in self.curve_points_list:
             print("V: " + str(i.x) + ", I: " + str(i.y))
