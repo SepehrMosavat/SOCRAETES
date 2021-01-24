@@ -37,7 +37,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
     data_array_buffer = []
 
     new_filename = generate_filename(_file_name)
-    new_filename = 'captured_traces\\' + new_filename
+    new_filename = 'captured_traces\\' + str(new_filename)
 
     start_time = datetime.now()
     start_time_string = str(start_time.hour) + ':' + str(start_time.minute) + ':' + str(start_time.second) + '.' +\

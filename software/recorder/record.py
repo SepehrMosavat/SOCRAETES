@@ -82,10 +82,17 @@ if __name__ == '__main__':
     timer_thread = threading.Thread(
         target=timer_function, args=(capture_duration,))
     read_byte_thread = threading.Thread(target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,
-                                                                                       serial_port, stop_thread_event,))
+                                                                                       serial_port, stop_thread_event, ))
+
+    """ Important check: determines if socket connection should be established at all """
+    if data_handling_mode == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
+        iscommittingtodisk: bool = True
+    else:
+        iscommittingtodisk: bool = False
+
     process_serial_data_thread = threading.Thread(target=process_received_serial_data, args=(raw_serial_data_queue,
                                                                                              captured_curves_queue,
-                                                                                             stop_thread_event,))
+                                                                                             stop_thread_event, iscommittingtodisk))
 
     timer_thread.daemon = True
     read_byte_thread.daemon = True

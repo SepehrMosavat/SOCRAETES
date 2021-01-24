@@ -5,6 +5,7 @@ import time
 
 import serial
 
+from socket_comm_functions import start_socket_transmission, send_curve
 from iv_curves_definitions import IvCurve, CurvePoint
 
 
@@ -50,7 +51,11 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
 
 # Function for processing received byte arrays and extract the IV curves from them
 def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_curves_queue: queue.Queue,
-                                 _stop_thread_event: threading.Event):
+                                 _stop_thread_event: threading.Event, iscommittingtodisk: bool):
+
+    if not iscommittingtodisk:
+        start_socket_transmission()
+
     is_iv_curve_being_captured = False
     curve_number_counter = 0
     while True:
@@ -80,7 +85,13 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     is_iv_curve_being_captured = False
                     captured_curves_queue.put(captured_curve)
                     curve_number_counter += 1
-                    captured_curve.encode_to_json()
+
+                    if not iscommittingtodisk:
+                        """ Encode Captured Curve to JSON """
+                        json_curve = captured_curve.encode_to_json()
+                        """ Send JSON encoded Curve via Socket """
+                        send_curve(json_curve)
+
                     print("Curve captured: " + str(captured_curve.curve_number))
 
                 captured_curve_point = CurvePoint(

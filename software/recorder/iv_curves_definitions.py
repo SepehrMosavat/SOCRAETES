@@ -11,7 +11,7 @@ class IvCurve:
     def add_point_to_curve(self, _curve_point):
         self.curve_points_list.append(_curve_point)
 
-    def encode_to_json(self):
+    def encode_to_json(self) -> json:
         curve_dict = {}
 
         curve_dict["curve_number"] = self.curve_number
@@ -21,6 +21,9 @@ class IvCurve:
             encoded_curve_point_list.append(i.asdict())
 
         curve_dict["curve_points"] = encoded_curve_point_list
+
+        """ Convert Python Dict into JSON object """
+        return json.dumps(curve_dict)
 
     def print(self):
         for i in self.curve_points_list:
