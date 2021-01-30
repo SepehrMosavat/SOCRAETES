@@ -14,13 +14,13 @@ class IvCurve:
     def encode_to_json(self) -> json:
         curve_dict = {}
 
-        curve_dict["curve_number"] = self.curve_number
+        curve_dict["curveNumber"] = self.curve_number
 
         encoded_curve_point_list = []
         for i in self.curve_points_list:
             encoded_curve_point_list.append(i.asdict())
 
-        curve_dict["curve_points"] = encoded_curve_point_list
+        curve_dict["curvePoints"] = encoded_curve_point_list
 
         """ Convert Python Dict into JSON object """
         return json.dumps(curve_dict)
@@ -37,7 +37,7 @@ class CurvePoint:
         self.y = _y
 
     def asdict(self):
-        return {"seq_nr": self.sequence_number, "volt": self.x, "micro_ampere": self.y}
+        return {"sequenceNumber": self.sequence_number, "voltage": self.x, "microAmperage": self.y}
 
 
 class HarvestingCondition:
