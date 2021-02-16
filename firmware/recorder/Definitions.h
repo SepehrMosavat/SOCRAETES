@@ -29,8 +29,7 @@
 #define ADC_REFERENCE_VOLTAGE 3.3
 
 #define CURRENT_SENSE_AMPLIFIER_GAIN 20
-#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 2.9 // For harvester up to ~55mA current output
-//#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 9 // For harvester up to ~25mA current output
+#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 1 // For modifying the measurement range
 #define CURRENT_SENSE_AMPLIFIER_GAIN (1 + (50000 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
 
 #define ADC_VOLTAGE_DIVIDER_USED
