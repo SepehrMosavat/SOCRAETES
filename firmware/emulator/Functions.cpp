@@ -23,7 +23,7 @@ int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
 {
 	double dacVoltage = (double)_SCCurrentForEmulation / 1000000;
-	dacVoltage *= 51;
+	dacVoltage *= CURRENT_EMULATION_RANGE_RESISTOR;
 	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 	return (int)(dacVoltage * 4095);
 
