@@ -31,6 +31,7 @@
 #define CURRENT_SENSE_AMPLIFIER_GAIN 20
 #define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 2.9 // For harvester up to ~55mA current output
 //#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 9 // For harvester up to ~25mA current output
+#define CURRENT_SENSE_AMPLIFIER_GAIN (1 + (50000 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
 
 #define ADC_VOLTAGE_DIVIDER_USED
 #define ADC_VOLTAGE_DIVIDER_R1 1800 // High-side resistor
