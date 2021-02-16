@@ -17310,7 +17310,7 @@ Source: www.kingbright.com</description>
 </classes>
 <parts>
 <part name="U1" library="PDM1-S5-D12-S" deviceset="PDM1-S5-D12-S" device=""/>
-<part name="HARVESTER" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" deviceset="AK300/2" device="" package3d_urn="urn:adsk.eagle:package:9881/1"/>
+<part name="HARVESTER_TERMINAL" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" deviceset="AK300/2" device="" package3d_urn="urn:adsk.eagle:package:9881/1"/>
 <part name="D1" library="diode" library_urn="urn:adsk.eagle:library:210" deviceset="ZENER-DIODE" device="ZD-7.5" package3d_urn="urn:adsk.eagle:package:43411/1" value="3v3"/>
 <part name="U2" library="LM6132BIN" deviceset="LM6132BIN" device=""/>
 <part name="U3" library="INA121PA" deviceset="INA121PA" device="" value="Value"/>
@@ -17357,23 +17357,32 @@ Source: www.kingbright.com</description>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="SUPPLY21" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
-<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="300R"/>
+<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R"/>
 <part name="LED_PWR" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
 </parts>
 <sheets>
 <sheet>
 <plain>
+<text x="215.9" y="20.32" size="2.54" layer="94">SOCRAETES Emulator</text>
+<text x="215.9" y="15.24" size="2.54" layer="94">V 1.1.4</text>
+<text x="215.9" y="10.16" size="2.54" layer="94">Author: S.Mosavat</text>
+<text x="162.56" y="7.62" size="2.54" layer="94">University of Duisburg-Essens
+Networked Embedded Systems
+Group (NES)
+https://www.nes.uni-due.de/</text>
+<text x="43.18" y="104.14" size="1.778" layer="97">I_max_record = 3.3 / (R_shunt * GAIN_ia)
+GAIN_ia = 1 + (50k / R_GAIN)</text>
 </plain>
 <instances>
 <instance part="U1" gate="G$1" x="187.96" y="160.02" smashed="yes">
 <attribute name="NAME" x="185.4093" y="167.64801875" size="2.54268125" layer="95"/>
 <attribute name="VALUE" x="175.2477" y="149.8477" size="2.54308125" layer="96" align="top-left"/>
 </instance>
-<instance part="HARVESTER" gate="-1" x="132.08" y="20.32" smashed="yes" rot="R270">
+<instance part="HARVESTER_TERMINAL" gate="-1" x="132.08" y="20.32" smashed="yes" rot="R270">
 <attribute name="NAME" x="132.969" y="21.59" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="HARVESTER" gate="-2" x="127" y="20.32" smashed="yes" rot="R270">
+<instance part="HARVESTER_TERMINAL" gate="-2" x="127" y="20.32" smashed="yes" rot="R270">
 <attribute name="NAME" x="127.889" y="21.59" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="123.317" y="24.13" size="1.778" layer="96" rot="R270"/>
 </instance>
@@ -17402,11 +17411,7 @@ Source: www.kingbright.com</description>
 <attribute name="NAME" x="46.99" y="115.3414" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="46.99" y="120.142" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="217.17" y="15.24" size="2.54" layer="94"/>
-<attribute name="LAST_DATE_TIME" x="217.17" y="10.16" size="2.286" layer="94"/>
-<attribute name="SHEET" x="230.505" y="5.08" size="2.54" layer="94"/>
-</instance>
+<instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes"/>
 <instance part="U5" gate="A" x="241.3" y="109.22" smashed="yes" rot="R180">
 <attribute name="NAME" x="220.6244" y="107.7214" size="2.0828" layer="95" ratio="6" rot="SR180"/>
 <attribute name="VALUE" x="226.3394" y="120.4214" size="2.0828" layer="96" ratio="6" rot="SR180"/>
@@ -17609,7 +17614,7 @@ Source: www.kingbright.com</description>
 <wire x1="68.58" y1="53.34" x2="73.66" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="HARVESTER" gate="-2" pin="KL"/>
+<pinref part="HARVESTER_TERMINAL" gate="-2" pin="KL"/>
 <pinref part="SUPPLY15" gate="GND" pin="GND"/>
 </segment>
 <segment>
@@ -17666,11 +17671,10 @@ Source: www.kingbright.com</description>
 <segment>
 <pinref part="U1" gate="G$1" pin="-VO"/>
 <pinref part="C3" gate="G$1" pin="-"/>
-<wire x1="203.2" y1="160.02" x2="213.36" y2="160.02" width="0.1524" layer="91"/>
+<wire x1="203.2" y1="160.02" x2="214.675275" y2="160.02" width="0.1524" layer="91"/>
 <pinref part="P-1" gate="1" pin="-12V"/>
 <wire x1="214.675275" y1="160.02" x2="220.98" y2="160.02" width="0.1524" layer="91"/>
 <wire x1="214.675275" y1="158.317796875" x2="214.675275" y2="160.02" width="0.1524" layer="91"/>
-<wire x1="214.675275" y1="160.02" x2="213.36" y2="160.02" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="P-2" gate="1" pin="-12V"/>
@@ -17720,7 +17724,7 @@ Source: www.kingbright.com</description>
 </net>
 <net name="HARVESTER+" class="0">
 <segment>
-<pinref part="HARVESTER" gate="-1" pin="KL"/>
+<pinref part="HARVESTER_TERMINAL" gate="-1" pin="KL"/>
 <wire x1="132.08" y1="15.24" x2="132.08" y2="12.7" width="0.1524" layer="91"/>
 <label x="129.54" y="10.16" size="1.778" layer="95"/>
 </segment>
@@ -17869,6 +17873,10 @@ Source: www.kingbright.com</description>
 </schematic>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
