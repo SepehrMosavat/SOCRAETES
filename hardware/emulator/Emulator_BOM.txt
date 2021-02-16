@@ -1,0 +1,2 @@
+The Bill of Materials for the SOCRAETES Emulator can be found here:
+https://octopart.com/bom-tool/IVWPdzGF
