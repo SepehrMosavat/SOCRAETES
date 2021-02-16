@@ -33,8 +33,8 @@
 //#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 9 // For harvester up to ~25mA current output
 
 #define ADC_VOLTAGE_DIVIDER_USED
-#define ADC_VOLTAGE_DIVIDER_R1 2000000 // High-side resistor
-#define ADC_VOLTAGE_DIVIDER_R2 2000000 // Low-side resistor
+#define ADC_VOLTAGE_DIVIDER_R1 1800 // High-side resistor
+#define ADC_VOLTAGE_DIVIDER_R2 1800 // Low-side resistor
 #define ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR (((double)(ADC_VOLTAGE_DIVIDER_R2 + ADC_VOLTAGE_DIVIDER_R1) / (ADC_VOLTAGE_DIVIDER_R2)))
 
 const int loadMosfetDACValuesLUT_40_points_0[] = {
