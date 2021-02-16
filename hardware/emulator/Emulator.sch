@@ -19272,7 +19272,7 @@ grid 5.08 mm</description>
 </classes>
 <parts>
 <part name="U1" library="PDM1-S5-D12-S" deviceset="PDM1-S5-D12-S" device=""/>
-<part name="EMULATOR" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" deviceset="AK300/2" device="" package3d_urn="urn:adsk.eagle:package:9881/1"/>
+<part name="EMULATOR_TERMINAL" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" deviceset="AK300/2" device="" package3d_urn="urn:adsk.eagle:package:9881/1"/>
 <part name="D1" library="diode" library_urn="urn:adsk.eagle:library:210" deviceset="ZENER-DIODE" device="ZD-7.5" package3d_urn="urn:adsk.eagle:package:43411/1" value="3v3"/>
 <part name="U2" library="LM6132BIN" deviceset="LM6132BIN" device=""/>
 <part name="U6" library="Teensy_3_and_LC_Series_Boards_v1.4" deviceset="TEENSY_3.6_DIL" device=""/>
@@ -19309,7 +19309,7 @@ grid 5.08 mm</description>
 <part name="+3V1" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="+3V2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="SUPPLY21" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
-<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="300R"/>
+<part name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R"/>
 <part name="LED_PWR" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
 <part name="U3" library="OPA2277PA" deviceset="OPA2277PA" device=""/>
 <part name="R1" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
@@ -19341,16 +19341,25 @@ grid 5.08 mm</description>
 <wire x1="119.38" y1="96.52" x2="119.38" y2="154.94" width="0.508" layer="97" style="longdash"/>
 <wire x1="119.38" y1="154.94" x2="81.28" y2="154.94" width="0.508" layer="97" style="longdash"/>
 <text x="93.98" y="157.48" size="1.778" layer="97">Solar Cell Model</text>
+<text x="33.02" y="157.48" size="1.778" layer="97">Maximum Emulation Current: 3.3 / R_Range
+Example: 3.3 / 51 = 0,064705 A = 64,7 mA</text>
+<text x="215.9" y="20.32" size="2.54" layer="94">SOCRAETES Emulator</text>
+<text x="215.9" y="15.24" size="2.54" layer="94">V 1.1.4</text>
+<text x="215.9" y="10.16" size="2.54" layer="94">Author: S.Mosavat</text>
+<text x="162.56" y="7.62" size="2.54" layer="94">University of Duisburg-Essens
+Networked Embedded Systems
+Group (NES)
+https://www.nes.uni-due.de/</text>
 </plain>
 <instances>
 <instance part="U1" gate="G$1" x="208.28" y="160.02" smashed="yes">
 <attribute name="NAME" x="205.7293" y="167.64801875" size="2.54268125" layer="95"/>
 <attribute name="VALUE" x="195.5677" y="149.8477" size="2.54308125" layer="96" align="top-left"/>
 </instance>
-<instance part="EMULATOR" gate="-1" x="215.9" y="43.18" smashed="yes" rot="R270">
+<instance part="EMULATOR_TERMINAL" gate="-1" x="215.9" y="43.18" smashed="yes" rot="R270">
 <attribute name="NAME" x="216.789" y="44.45" size="1.778" layer="95" rot="R90"/>
 </instance>
-<instance part="EMULATOR" gate="-2" x="210.82" y="43.18" smashed="yes" rot="R270">
+<instance part="EMULATOR_TERMINAL" gate="-2" x="210.82" y="43.18" smashed="yes" rot="R270">
 <attribute name="NAME" x="211.709" y="44.45" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="207.137" y="46.99" size="1.778" layer="96" rot="R270"/>
 </instance>
@@ -19367,8 +19376,6 @@ grid 5.08 mm</description>
 <attribute name="VALUE" x="147.066" y="55.88" size="1.27" layer="96" font="vector" ratio="15"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="217.17" y="15.24" size="2.54" layer="94"/>
-<attribute name="LAST_DATE_TIME" x="217.17" y="10.16" size="2.286" layer="94"/>
 <attribute name="SHEET" x="230.505" y="5.08" size="2.54" layer="94"/>
 </instance>
 <instance part="U5" gate="A" x="248.92" y="129.54" smashed="yes" rot="R180">
@@ -19605,7 +19612,7 @@ grid 5.08 mm</description>
 <wire x1="93.98" y1="45.72" x2="99.06" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="EMULATOR" gate="-2" pin="KL"/>
+<pinref part="EMULATOR_TERMINAL" gate="-2" pin="KL"/>
 <pinref part="SUPPLY15" gate="GND" pin="GND"/>
 </segment>
 <segment>
@@ -19803,7 +19810,7 @@ grid 5.08 mm</description>
 </net>
 <net name="HARVESTER_EMULATION" class="0">
 <segment>
-<pinref part="EMULATOR" gate="-1" pin="KL"/>
+<pinref part="EMULATOR_TERMINAL" gate="-1" pin="KL"/>
 <wire x1="215.9" y1="38.1" x2="215.9" y2="35.56" width="0.1524" layer="91"/>
 <label x="241.3" y="35.56" size="1.778" layer="95" rot="R180"/>
 </segment>
@@ -19904,6 +19911,10 @@ grid 5.08 mm</description>
 </schematic>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
