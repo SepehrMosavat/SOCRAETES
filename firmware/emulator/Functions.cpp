@@ -15,7 +15,7 @@ int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 {
 	double dacVoltage = (double)_OCVoltageForEmulation / 3; // TODO magic number
 	dacVoltage /= 1000000.;
-	dacVoltage /= 3.3;
+	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 //	Serial.println(dacVoltage*4095);
 	return (int)(dacVoltage * 4095);
 }
@@ -24,7 +24,7 @@ int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
 {
 	double dacVoltage = (double)_SCCurrentForEmulation / 1000000;
 	dacVoltage *= 51;
-	dacVoltage /= 3.3;
+	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 	return (int)(dacVoltage * 4095);
 
 }
