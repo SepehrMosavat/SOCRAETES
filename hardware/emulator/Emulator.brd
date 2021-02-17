@@ -78,7 +78,7 @@
 <wire x1="65.512" y1="0" x2="65.512" y2="72.06" width="0" layer="20"/>
 <wire x1="65.512" y1="72.06" x2="0" y2="72.06" width="0" layer="20"/>
 <wire x1="0" y1="72.06" x2="0" y2="0" width="0" layer="20"/>
-<text x="60.452" y="3.048" size="1.016" layer="25" rot="R90">SOCRAETES Emulator V 1.1.4
+<text x="60.452" y="3.048" size="1.016" layer="25" rot="R90">SOCRAETES Emulator v0.1.2
 University of Duisburg-Essen
 Networked Embedded Systems (NES)</text>
 <hole x="61.976" y="68.58" drill="3"/>

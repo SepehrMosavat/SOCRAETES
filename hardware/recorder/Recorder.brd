@@ -79,7 +79,7 @@
 <board>
 <plain>
 <text x="62.23" y="29.21" size="1.778" layer="25" rot="R90">HRVST +      -</text>
-<text x="58.4708" y="27.94" size="1.016" layer="25" rot="R270">SOCRAETES Recorder V 1.1.4
+<text x="58.4708" y="27.94" size="1.016" layer="25" rot="R270">SOCRAETES Recorder v0.1.2
 University of Duisburg-Essen
 Networked Embedded Systems (NES)</text>
 <hole x="2.7432" y="70.9422" drill="3"/>
