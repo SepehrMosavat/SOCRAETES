@@ -16,7 +16,7 @@
 #define CALIBRATION_MODE
 #endif
 
-// Teensy 3.2 Board Pin Definitions
+// Teensy 3.6 Board Pin Definitions
 #define HARVESTER_VOLTAGE_ADC_PIN A3
 #define HARVESTER_CURRENT_ADC_PIN A2
 #define LOAD_MOSFET_DAC_PIN A21
