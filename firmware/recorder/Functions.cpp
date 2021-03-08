@@ -33,7 +33,7 @@ int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
+		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
 		returnValue /= _pgaGain;
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
@@ -91,7 +91,7 @@ void initializeADC()
 	adc->adc0->setReference(ADC_REFERENCE::REF_3V3);
 
 	adc->adc1->setAveraging(1); // set number of averages
-	adc->adc1->setResolution(12); // set bits of resolution
+	adc->adc1->setResolution(16); // set bits of resolution
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_HIGH_SPEED); // change the conversion speed
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::MED_SPEED); // change the sampling speed
 	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
