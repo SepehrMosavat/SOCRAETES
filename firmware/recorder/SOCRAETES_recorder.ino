@@ -50,5 +50,5 @@ void loop() {
 	}
 #endif
 
-	delay(10);
+	delay(3);
 }
