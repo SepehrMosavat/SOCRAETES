@@ -17,8 +17,8 @@
 #endif
 
 // Teensy 3.6 Board Pin Definitions
-#define HARVESTER_VOLTAGE_ADC_PIN A3
-#define HARVESTER_CURRENT_ADC_PIN A2
+#define HARVESTER_VOLTAGE_ADC_PIN A2
+#define HARVESTER_CURRENT_ADC_PIN A3
 #define LOAD_MOSFET_DAC_PIN A21
 
 // System-wide Parameter Definitions
