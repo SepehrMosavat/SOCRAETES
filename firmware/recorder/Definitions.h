@@ -31,13 +31,19 @@
 // For choosing the suitable gain for the current sense amplifier
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 49.9 // Gain = 1003
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 100 // Gain = 501
-//#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 511 // Gain = 99
-#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 1020 // Gain = 50
+#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 511 // Gain = 99
+//#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 1020 // Gain = 50
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 2610 // Gain = 20
 
-#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 1 // For modifying the measurement range
+#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 0.5 // For modifying the measurement range
 
 #define CURRENT_SENSE_AMPLIFIER_GAIN (1 + (50000 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
+
+/* These values are meant for accounting for component tolerances of the current sensing circuit.
+ * Care must be taken that the current readings do not get negative as a result of these values.
+ */
+#define CURRENT_SENSE_CALIBRATION_FACTOR 0.95
+#define CURRENT_SENSE_CALIBRATION_OFFSET 20
 
 #define ADC_VOLTAGE_DIVIDER_USED
 #define ADC_VOLTAGE_DIVIDER_R1 1800 // High-side resistor
