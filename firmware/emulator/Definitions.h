@@ -16,7 +16,14 @@
 
 #define MAXIMUM_DAC_VOLTAGE 3.3
 
-#define CURRENT_EMULATION_RANGE_RESISTOR 49.9 // For setting the maximum emulation current
+#define CURRENT_EMULATION_RANGE_RESISTOR 51 // For setting the maximum emulation current
+
+/*
+ * This offset accounts for the DC bias of the DAC output used for the SC current emulation.
+ * At the moment this value needs to be figured out experimentally for each piece of emulator
+ * hardware due to the component tolerances.
+ */
+#define CURREN_EMULATION_DAC_OFFSET 0
 
 enum SignalCode
 {
