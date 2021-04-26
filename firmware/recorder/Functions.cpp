@@ -24,7 +24,7 @@ float shortToVoltage(short _voltage)
 	return returnValue*VCC_VOLTAGE;
 }
 
-int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
+int getVoltageFromAdcValue(int _adcValue)
 {
 	double returnValue;
 	if (_adcValue < 0)
@@ -34,7 +34,6 @@ int getVoltageFromAdcValue(int _adcValue, int _pgaGain)
 	else
 	{
 		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
-		returnValue /= _pgaGain;
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
 #ifdef ADC_VOLTAGE_DIVIDER_USED

@@ -16,7 +16,7 @@
 
 float shortToVoltage(short);
 
-int getVoltageFromAdcValue(int, int);
+int getVoltageFromAdcValue(int);
 
 int getCurrentFromAdcValue(int);
 

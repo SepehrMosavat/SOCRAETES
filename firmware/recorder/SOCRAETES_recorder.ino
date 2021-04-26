@@ -32,8 +32,9 @@ void loop() {
 	int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
 	int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
 
+
 	// Calculate harvester voltage and current from raw ADC values
-	int voltage = getVoltageFromAdcValue(voltageAdcValue, 1);
+	int voltage = getVoltageFromAdcValue(voltageAdcValue);
 	int current = getCurrentFromAdcValue(currentSenseAdcValue);
 
 	convertIntValuesToByteArrays(ivCurveSequenceNumber, voltage, current, uartByteArray);
