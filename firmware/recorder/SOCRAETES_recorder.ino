@@ -11,7 +11,7 @@ extern ADC *adc;
 extern int ivCurveSequenceNumber;
 
 void setup() {
-	Serial.begin(115200);
+	Serial.begin(0);
 	SPI.begin();
 
 	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
