@@ -9,6 +9,8 @@ void setup()
 	Serial.begin(115200);
 	analogWriteResolution(12);
 
+	pinMode(LED_BUILTIN, OUTPUT);
+
 	initializeOutputToZero();
 }
 
@@ -17,6 +19,7 @@ int voltage, current = 0;
 byte byteCounter = 0;
 int incommingVoltageAndCurrentBuffer = 0;
 bool isReceivingData = false;
+
 
 void loop()
 {
@@ -35,6 +38,7 @@ void loop()
 			isReceivingData = false;
 //			Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
 			emulateVoltageAndCurrent(voltage, current);
+			digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle LED on each curve change
 		}
 		else
 		{
