@@ -103,7 +103,7 @@ void initializeADC()
 void updateHarvesterLoad()
 {
 #ifdef CALIBRATION_MODE
-	analogWrite(LOAD_MOSFET_DAC_PIN, 4535);
+	analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
 #else
 	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 	ivCurveSequenceNumber++;

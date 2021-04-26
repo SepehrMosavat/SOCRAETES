@@ -14,6 +14,7 @@
 
 #ifdef DEBUG_MODE
 #define CALIBRATION_MODE
+#define CALIBRATION_MODE_LOAD_MOSFET_VALUE 4095
 #endif
 
 // Teensy 3.6 Board Pin Definitions
