@@ -61,7 +61,9 @@ int getCurrentFromAdcValue(int _adcValue)
 		returnValue /= CURRENT_SENSE_AMPLIFIER_GAIN;
 		returnValue /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
 	}
-	return (int)returnValue;
+
+	returnValue = (int)(returnValue * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
+	return (returnValue < 0) ? 0 : returnValue;
 }
 
 void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte* _buffer)
