@@ -23,7 +23,7 @@
 
 // System-wide Parameter Definitions
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
-#define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_0
+#define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_2
 
 #define VCC_VOLTAGE 3.33
 #define ADC_REFERENCE_VOLTAGE 3.3
@@ -64,6 +64,14 @@ const int loadMosfetDACValuesLUT_40_points_1[] = {
 		2050, 2100, 2150, 2200, 2250, 2300, 2350, 2400,
 		2450, 2500, 2550, 2600, 2650, 2700, 2750, 2800,
 		2850, 2900, 2950, 3000, 3050, 3100, 3150, 3200
+};
+
+const int loadMosfetDACValuesLUT_40_points_2[] = {
+		1630, 1660, 1690, 1720, 1750, 1780, 1810, 1840,
+		1870, 1900, 1930, 1960, 1991, 2021, 2050, 2080,
+		2110, 2140, 2170, 2200, 2230, 2260, 2290, 2310,
+		2340, 2370, 2400, 2430, 2460, 2490, 2520, 2550,
+		2580, 2610, 2640, 2670, 2700, 2730, 2765, 2800
 };
 
 #define LOAD_MOSFET_DAC_VALUES_LUT_OFFSET 50 // This offset is used for fine-tuning the gate voltage of the MOSFETs
