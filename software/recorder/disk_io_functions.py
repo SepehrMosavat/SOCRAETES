@@ -1,3 +1,4 @@
+import logging
 import os
 import queue
 import threading
@@ -7,6 +8,13 @@ import h5py
 import numpy as np
 
 from iv_curves_definitions import HarvestingCondition
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+console_log_handler = logging.StreamHandler()
+console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
+console_log_handler.setFormatter(console_log_formatter)
+logger.addHandler(console_log_handler)
 
 
 def generate_filename(_file_name) -> str:
@@ -49,7 +57,7 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
             end_time_string = str(end_time.hour) + ':' + str(end_time.minute) + ':' + str(end_time.second) + '.' +\
                               str(end_time.microsecond)
 
-            print("Committing curve data to the hard disk...")
+            logger.info("Committing curve data to the hard disk...")
             with h5py.File(new_filename, 'a') as f:
                 harvesting_condition_list = [(np.string_('Date'),
                                               np.string_('Start Time (Local Timezone)'),

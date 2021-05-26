@@ -1,3 +1,4 @@
+import logging
 import queue
 import time
 from datetime import datetime
@@ -7,6 +8,13 @@ import h5py
 import numpy as np
 
 from definitions import EmulationParameters, CurveEmulationMethod, zero_output_emulation_parameters
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+console_log_handler = logging.StreamHandler()
+console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
+console_log_handler.setFormatter(console_log_formatter)
+logger.addHandler(console_log_handler)
 
 
 def get_number_of_curves_in_trace(_trace_emulation_file) -> int:
@@ -37,7 +45,7 @@ def file_handling(_trace_emulation_file_name):
     try:
         trace_emulation_file = h5py.File(_trace_emulation_file_name, 'r')
     except OSError:
-        print("Could not open the specified file")
+        logger.error("Could not open the specified file")
         return None
     # trace_emulation_file.close() # TODO Close the trace file after finishing with it
     return trace_emulation_file
@@ -60,7 +68,7 @@ def emulate_curve(_trace_emulation_source, _trace_emulation_queue: queue.Queue, 
             return
         sleep_time_between_curves = get_sleep_time_between_curves(trace_emulation_file)
         number_of_curves_in_trace = get_number_of_curves_in_trace(trace_emulation_file)
-        print('Dynamic curve emulation started for file name \'' + str(trace_emulation_file_name) +
+        logger.info('Dynamic curve emulation started for file name \'' + str(trace_emulation_file_name) +
               '\' with ' + str(number_of_curves_in_trace) + ' curves in the trace and with ' +
               str(sleep_time_between_curves) + ' seconds of delay between each curve')
         current_emulated_curve_number = 0

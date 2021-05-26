@@ -1,3 +1,4 @@
+import logging
 import queue
 from threading import Event
 
@@ -5,6 +6,13 @@ import serial
 
 from definitions import DebugMode
 from system_configurations import DEBUG_MODE
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+console_log_handler = logging.StreamHandler()
+console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
+console_log_handler.setFormatter(console_log_formatter)
+logger.addHandler(console_log_handler)
 
 
 def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event: Event, _port):
@@ -18,7 +26,7 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
                 bytesize=serial.EIGHTBITS
             )
         except serial.SerialException:
-            print('Could not open the specified serial port')
+            logger.error('Could not open the specified serial port')
             _stop_thread_event.set()
             return None
 
@@ -26,11 +34,11 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
         ser.open()
 
         if ser.isOpen():
-            print('Serial port opened successfully')
+            logger.info('Serial port opened successfully')
         else:
-            print('Serial port could not be opened')
+            logger.error('Serial port could not be opened')
 
-    print('Emulation Started...')
+    logger.info('Emulation Started...')
     curve_counter = 0
     while True:
         if not _trace_emulation_queue.empty():
@@ -46,15 +54,15 @@ def serial_port_handling(_trace_emulation_queue: queue.Queue, _stop_thread_event
 
             if DEBUG_MODE is DebugMode.NO_DEBUG or DEBUG_MODE is DebugMode.DEBUG_WITH_HARDWARE:
                 ser.write(outgoing_serial_byte_array)
-                print(f'Curve {curve_counter:5}' +
+                logger.info(f'Curve {curve_counter:5}' +
                       f':   OC voltage: {int(curve_emulation_parameters.open_circuit_voltage):7}' +
                       f' uV, SC current: {int(curve_emulation_parameters.short_circuit_current):5}' +
                       ' uA')
                 if DEBUG_MODE is DebugMode.DEBUG_WITH_HARDWARE:
                     serial_bytes_received = ser.readline()
-                    print(serial_bytes_received.decode('UTF-8'))
+                    logger.debug(serial_bytes_received.decode('UTF-8'))
             elif DEBUG_MODE is DebugMode.DEBUG_WITHOUT_HARDWARE:
-                print(f'Curve {curve_counter:5}' +
+                logger.debug(f'Curve {curve_counter:5}' +
                       f':   OC voltage: {int(curve_emulation_parameters.open_circuit_voltage):7}' +
                       f' uV, SC current: {int(curve_emulation_parameters.short_circuit_current):5}' +
                       ' uA')

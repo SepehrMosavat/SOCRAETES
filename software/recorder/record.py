@@ -1,3 +1,4 @@
+import logging
 import queue
 import signal
 import sys
@@ -11,6 +12,14 @@ from disk_io_functions import write_iv_curves_to_disk
 from iv_curve_visualization_functions import plot_iv_curve, plot_iv_surface
 from iv_curves_definitions import HarvestingCondition
 from solar_cell_recorder_functions import process_received_serial_data, read_byte_array_from_serial_port
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+console_log_handler = logging.StreamHandler()
+console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
+console_log_handler.setFormatter(console_log_formatter)
+logger.addHandler(console_log_handler)
+
 
 serial_port = None
 data_handling_mode = None
@@ -101,6 +110,6 @@ if __name__ == '__main__':
         plot_iv_surface(captured_curves_queue, stop_thread_event)
     while True:
         if stop_thread_event.isSet():
-            print('Recording finished. Exiting...')
+            logger.info('Recording finished. Exiting...')
             time.sleep(1)
             sys.exit()

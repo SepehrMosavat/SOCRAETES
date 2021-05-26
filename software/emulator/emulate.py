@@ -1,3 +1,4 @@
+import logging
 import queue
 import signal
 import sys
@@ -17,6 +18,13 @@ curve_emulation_method = None
 
 trace_emulation_queue = queue.Queue()
 stop_thread_event = threading.Event()
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+console_log_handler = logging.StreamHandler()
+console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
+console_log_handler.setFormatter(console_log_formatter)
+logger.addHandler(console_log_handler)
 
 
 def interrupt_signal_handler(_signal, _frame):
@@ -62,7 +70,7 @@ if __name__ == '__main__':
     curve_emulation_thread.start()
     while True:
         if stop_thread_event.isSet():
-            print("Emulation finished. Exiting...")
+            logger.info("Emulation finished. Exiting...")
             time.sleep(1)
             sys.exit()
         time.sleep(1)
