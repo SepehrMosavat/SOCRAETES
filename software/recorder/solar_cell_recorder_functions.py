@@ -53,6 +53,8 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
 
         if serial_bytes_received_as_bytearray[0] == 170 or serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
             raw_serial_data_queue.put(serial_bytes_received_as_bytearray)
+        else:
+            ser.flushInput()
 
 
 # Function for processing received byte arrays and extract the IV curves from them
