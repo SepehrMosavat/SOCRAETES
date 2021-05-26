@@ -103,3 +103,28 @@ def emulate_curve(_trace_emulation_source, _trace_emulation_queue: queue.Queue, 
                 time.sleep(sleep_time_between_curves)
                 current_emulated_curve_number = current_emulated_curve_number + 1
             current_emulated_curve_number = 0
+
+
+def emulate_intermittence(_timing_array: int, _trace_emulation_queue: queue.Queue, _stop_thread_event: Event):
+    power_on_period = _timing_array[0]
+    power_off_period = _timing_array[1]
+    curve_parameters_for_emulation = EmulationParameters
+    curve_parameters_for_emulation.short_circuit_current = 50000 # I_max_load = 50 mA
+    curve_parameters_for_emulation.open_circuit_voltage = 3300000 # V_load = 3.3 V
+    is_load_powered = False
+    while True:
+        if _stop_thread_event.isSet():
+            _trace_emulation_queue.put(zero_output_emulation_parameters)
+            break
+        else:
+            if is_load_powered:
+                _trace_emulation_queue.put(curve_parameters_for_emulation)
+                time.sleep(power_on_period)
+                is_load_powered = False
+                continue
+            else: # Load is not powered
+                _trace_emulation_queue.put(zero_output_emulation_parameters)
+                time.sleep(power_off_period)
+                is_load_powered = True
+                continue
+
