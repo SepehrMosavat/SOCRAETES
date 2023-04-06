@@ -82,6 +82,9 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                 captured_curve = IvCurve(curve_number_counter)
 
             if is_iv_curve_being_captured is True:
+                captured_curve_point = CurvePoint(point_sequence_number, voltage / 1000000, current)
+                captured_curve.add_point_to_curve(captured_curve_point)
+
                 if len(captured_curve.curve_points_list) == IvCurve.number_of_points_in_curve:
                     is_iv_curve_being_captured = False
                     captured_curves_queue.put(captured_curve)
@@ -89,7 +92,4 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     logger.info("Curve captured: " + str(captured_curve.curve_number))
                     continue
 
-                captured_curve_point = CurvePoint(point_sequence_number, voltage / 1000000, current)
-                captured_curve.add_point_to_curve(captured_curve_point)
-
-            time.sleep(0.001)
+        time.sleep(0.001)
