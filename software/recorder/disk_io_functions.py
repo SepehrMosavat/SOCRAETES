@@ -3,6 +3,7 @@ import os
 import queue
 import threading
 from datetime import datetime
+import time
 
 import h5py
 import numpy as np
@@ -92,3 +93,5 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
 
             data_array = np.array([x_temp, y_temp], dtype=float)
             data_array_buffer.append(data_array)
+
+        time.sleep(0.001)
