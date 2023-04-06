@@ -111,7 +111,7 @@ void updateHarvesterLoad()
 	{
 		ivCurveSequenceNumber = 0;
 		analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
-		delay(20);
+		delay(10);
 	}
 #endif
 }
