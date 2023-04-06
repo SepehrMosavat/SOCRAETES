@@ -17367,7 +17367,7 @@ Source: www.kingbright.com</description>
 <text x="215.9" y="20.32" size="2.54" layer="94">SOCRAETES Emulator</text>
 <text x="215.9" y="15.24" size="2.54" layer="94">V 1.1.4</text>
 <text x="215.9" y="10.16" size="2.54" layer="94">Author: S.Mosavat</text>
-<text x="162.56" y="7.62" size="2.54" layer="94">University of Duisburg-Essens
+<text x="162.56" y="7.62" size="2.54" layer="94">University of Duisburg-Essen
 Networked Embedded Systems
 Group (NES)
 https://www.nes.uni-due.de/</text>
