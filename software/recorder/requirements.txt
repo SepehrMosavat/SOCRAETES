@@ -1,4 +1,4 @@
-h5py==2.10.0
+h5py
 matplotlib==3.3.3
 numpy==1.19.5
 fire==0.3.1

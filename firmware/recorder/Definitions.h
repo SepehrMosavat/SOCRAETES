@@ -11,6 +11,7 @@
 #define DEFINITIONS_H_
 
 //#define DEBUG_MODE
+#define STAND_ALONE 1
 
 #ifdef DEBUG_MODE
 #define CALIBRATION_MODE

@@ -12,10 +12,14 @@
 #include <ADC.h>
 #include <ADC_util.h>
 #include "Functions.h"
+#include <SD.h>
+#include <TimeLib.h>
+#include <Definitions.h>
 
 ADC *adc = new ADC();
 byte uartByteArray[11];
 int ivCurveSequenceNumber = 0;
+char filename[80];
 
 float shortToVoltage(short _voltage)
 {
@@ -124,3 +128,114 @@ void startupDelay()
 		delay(500);
 	}
 }
+#if STAND_ALONE
+
+int setup_SD()
+{
+	int chipSelect = BUILTIN_SDCARD;
+
+	//Check if a SD card is available
+	if (!SD.begin(chipSelect))
+	{
+	    Serial.println("Card failed, or not present");
+	    return -1;
+	}
+
+	//Create directory for storing data
+	if (!SD.exists("/recording_data"))
+		SD.mkdir("/recording_data");
+
+	//Create file name which isn't used already
+	for (unsigned long i = 0; i<UINT_MAX; i++)
+	{
+
+		sprintf(filename,"/recording_data/measurement%lu.csv",i);
+
+		if (!SD.exists(filename))
+			break;
+	}
+
+
+	//read harvesting information from configuration file
+	File config_file = SD.open("configuration_file.txt", FILE_READ);
+	if (!config_file)
+	{
+	    Serial.print("The configuration file couldn't be found");
+	    return -1;
+	}
+
+	String harvesting_info_temp;
+	String buffer;
+	harvesting_info_temp = config_file.readStringUntil('\n');
+	int index_of_sc= harvesting_info_temp.indexOf('=');
+	harvesting_info_temp= harvesting_info_temp.substring(index_of_sc + 1);
+	while (config_file.available()) {
+	    buffer = config_file.readStringUntil('\n');
+	    int index_of_eq= buffer.indexOf('=');
+	    buffer= buffer.substring(index_of_eq +1);
+	    harvesting_info_temp += ";" + buffer;
+	  }
+
+	String harvesting_info[6];
+
+	for(int i = 0; i<5; i++)
+	{
+	    int index_of_sc= harvesting_info_temp.indexOf(';');
+	    harvesting_info[i] = harvesting_info_temp.substring(0, index_of_sc -1);
+	    harvesting_info_temp= harvesting_info_temp.substring(index_of_sc + 1);
+	}
+	harvesting_info[5] = harvesting_info_temp;
+
+
+
+	config_file.close();
+
+
+	File rec_file = SD.open(filename, FILE_WRITE);
+
+	char header_info[800];
+
+	int duration = harvesting_info[0].toInt() + 3600*hour() + 60*minute() +second();
+	int end_day = duration / 86400;
+	duration = duration - (86400*end_day);
+	int end_hour = duration / 3600;
+	duration = duration - (end_hour*3600);
+	int end_minutes= duration / 60;
+	duration = duration - (end_minutes*60);
+	int end_seconds = duration;
+	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d:000;%02d:%02d:%02d:0000;%s;%d;%s;%s;%s",day(),
+			month(),year(),hour(), minute(), second(), end_hour, end_minutes, end_seconds,
+			harvesting_info[1].c_str() ,int(harvesting_info[2].toInt()),harvesting_info[3].c_str(),harvesting_info[4].c_str(), harvesting_info[5].c_str());
+	rec_file.println(header_info);
+	rec_file.close();
+
+	return harvesting_info[0].toInt();
+
+}
+
+void write_data_to_SD(unsigned short _sequence_number, int _voltage, int _current)
+{
+	File rec_file = SD.open(filename, FILE_WRITE);
+	rec_file.print(_sequence_number);rec_file.print(";");
+	rec_file.print(_voltage);rec_file.print(";");
+	rec_file.println(_current);
+}
+
+time_t getTeensy3Time()
+{
+  return Teensy3Clock.get();
+}
+
+void setup_time()
+{
+
+	setSyncProvider(getTeensy3Time);
+
+	if (timeStatus()!= timeSet) {
+	    Serial.println("Unable to sync with the RTC");
+	  } else {
+	    Serial.println("RTC has set the system time");
+	  }
+}
+
+#endif
