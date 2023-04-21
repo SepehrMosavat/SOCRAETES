@@ -20,6 +20,10 @@ logger.addHandler(console_log_handler)
 
 
 def generate_filename(_file_name) -> str:
+
+    if not os.path.exists('captured_traces'):
+        os.mkdir('captured_traces')
+
     if _file_name == 'AUTO-GENERATE':
         for files in os.walk('captured_traces'):
             number_of_files_in_directory = len(files[2])
