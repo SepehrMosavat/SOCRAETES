@@ -146,10 +146,10 @@ int setup_SD()
 		SD.mkdir("/recording_data");
 
 	//Create file name which isn't used already
-	for (unsigned long i = 0; i<UINT_MAX; i++)
+	for (unsigned int i = 0; i<UINT_MAX; i++)
 	{
 
-		sprintf(filename,"/recording_data/measurement%lu.csv",i);
+		sprintf(filename,"/recording_data/measurement%u.csv",i);
 
 		if (!SD.exists(filename))
 			break;
