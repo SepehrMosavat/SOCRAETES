@@ -43,7 +43,7 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
     z_axis = 0
     start_time = datetime.datetime.now()
     fig = plt.figure()
-    ax = plt.gca(projection="3d")
+    ax = fig.add_subplot(projection='3d')
 
     # plt.ion()
 

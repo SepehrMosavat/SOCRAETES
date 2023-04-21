@@ -8,8 +8,7 @@ import csv
 import h5py
 import numpy as np
 import sys
-from iv_curves_definitions import HarvestingCondition
-from iv_curves_definitions import IvCurve, CurvePoint
+from iv_curves_definitions import HarvestingCondition, IvCurve, CurvePoint
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
