@@ -167,18 +167,21 @@ int setup_SD()
 	String harvesting_info_temp;
 	String buffer;
 	harvesting_info_temp = config_file.readStringUntil('\n');
-	int index_of_sc= harvesting_info_temp.indexOf('=');
-	harvesting_info_temp= harvesting_info_temp.substring(index_of_sc + 1);
+	int index_of_sc = harvesting_info_temp.indexOf('=');
+	// Store everything after the = sign in harvesting_info_temp
+	harvesting_info_temp = harvesting_info_temp.substring(index_of_sc + 1);
+
+	// Concatenate everything to one string with delimiter ;
 	while (config_file.available()) {
 	    buffer = config_file.readStringUntil('\n');
 	    int index_of_eq= buffer.indexOf('=');
-	    buffer= buffer.substring(index_of_eq +1);
+	    buffer = buffer.substring(index_of_eq +1);
 	    harvesting_info_temp += ";" + buffer;
 	  }
 
 	String harvesting_info[6];
 
-	for(int i = 0; i<5; i++)
+	for(int i = 0; i < 5; i++)
 	{
 	    int index_of_sc= harvesting_info_temp.indexOf(';');
 	    harvesting_info[i] = harvesting_info_temp.substring(0, index_of_sc -1);
@@ -186,7 +189,12 @@ int setup_SD()
 	}
 	harvesting_info[5] = harvesting_info_temp;
 
-
+	//	harvesting_info[0] = duration 
+	//	harvesting_info[1] = Indoor/Outdoor
+	//	harvesting_info[2] = Lux
+	//	harvesting_info[3] = weather
+	//	harvesting_info[4] = Country
+	//	harvesting_info[5] = City
 
 	config_file.close();
 
@@ -216,9 +224,12 @@ int setup_SD()
 void write_data_to_SD(unsigned short _sequence_number, int _voltage, int _current)
 {
 	File rec_file = SD.open(filename, FILE_WRITE);
-	rec_file.print(_sequence_number);rec_file.print(";");
-	rec_file.print(_voltage);rec_file.print(";");
+	rec_file.print(_sequence_number);
+	rec_file.print(";");
+	rec_file.print(_voltage);
+	rec_file.print(";");
 	rec_file.println(_current);
+	rec_file.close();
 }
 
 time_t getTeensy3Time()
