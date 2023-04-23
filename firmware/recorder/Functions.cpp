@@ -203,6 +203,8 @@ int setup_SD()
 
 	char header_info[800];
 
+
+	// convert duration to end date
 	int duration = harvesting_info[0].toInt() + 3600*hour() + 60*minute() +second();
 	int end_day = duration / 86400;
 	duration = duration - (86400*end_day);
@@ -211,6 +213,8 @@ int setup_SD()
 	int end_minutes= duration / 60;
 	duration = duration - (end_minutes*60);
 	int end_seconds = duration;
+
+	// Store harvesting information in recording file
 	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d:000;%02d:%02d:%02d:0000;%s;%d;%s;%s;%s",day(),
 			month(),year(),hour(), minute(), second(), end_hour, end_minutes, end_seconds,
 			harvesting_info[1].c_str() ,int(harvesting_info[2].toInt()),harvesting_info[3].c_str(),harvesting_info[4].c_str(), harvesting_info[5].c_str());
