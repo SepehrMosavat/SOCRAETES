@@ -184,10 +184,15 @@ int setup_SD()
 	for(int i = 0; i < 5; i++)
 	{
 	    int index_of_sc= harvesting_info_temp.indexOf(';');
-	    harvesting_info[i] = harvesting_info_temp.substring(0, index_of_sc -1);
+	    harvesting_info[i] = harvesting_info_temp.substring(0, index_of_sc);
 	    harvesting_info_temp= harvesting_info_temp.substring(index_of_sc + 1);
 	}
 	harvesting_info[5] = harvesting_info_temp;
+
+	for(int i = 0; i < 6; i++)
+	{
+		Serial.println(harvesting_info[i]);
+	}
 
 	//	harvesting_info[0] = duration 
 	//	harvesting_info[1] = Indoor/Outdoor
