@@ -30,6 +30,10 @@ void startupDelay();
 
 int setup_SD();
 
+int readConfigFile(void);
+
+int createNewFile(void);
+
 void write_data_to_SD(unsigned short, int, int);
 
 void setup_time();

@@ -16,10 +16,17 @@
 #include <TimeLib.h>
 #include <Definitions.h>
 
+#define NUM_OF_CONFIGLINES 6
+
 ADC *adc = new ADC();
 byte uartByteArray[11];
 int ivCurveSequenceNumber = 0;
-char filename[80];
+
+static char filename[80];
+
+static String harvesting_info[NUM_OF_CONFIGLINES];
+
+static unsigned int lastindex;
 
 float shortToVoltage(short _voltage)
 {
@@ -132,7 +139,7 @@ void startupDelay()
 
 int setup_SD()
 {
-	int chipSelect = BUILTIN_SDCARD;
+	const int chipSelect = BUILTIN_SDCARD;
 
 	//Check if a SD card is available
 	if (!SD.begin(chipSelect))
@@ -144,18 +151,25 @@ int setup_SD()
 	//Create directory for storing data
 	if (!SD.exists("/recording_data"))
 		SD.mkdir("/recording_data");
-
+	
 	//Create file name which isn't used already
-	for (unsigned int i = 0; i<UINT_MAX; i++)
+	for (unsigned int i = 0; i < UINT_MAX; i++)
 	{
 
 		sprintf(filename,"/recording_data/measurement%u.csv",i);
 
 		if (!SD.exists(filename))
+		{
+			lastindex = i;
 			break;
+		}
 	}
 
+	return 0;
+}
 
+int readConfigFile(void)
+{
 	//read harvesting information from configuration file
 	File config_file = SD.open("configuration_file.txt", FILE_READ);
 	if (!config_file)
@@ -164,32 +178,15 @@ int setup_SD()
 	    return -1;
 	}
 
-	String harvesting_info_temp;
-	String buffer;
-	harvesting_info_temp = config_file.readStringUntil('\n');
-	int index_of_sc = harvesting_info_temp.indexOf('=');
-	// Store everything after the = sign in harvesting_info_temp
-	harvesting_info_temp = harvesting_info_temp.substring(index_of_sc + 1);
-
-	// Concatenate everything to one string with delimiter ;
-	while (config_file.available()) {
-	    buffer = config_file.readStringUntil('\n');
-	    int index_of_eq= buffer.indexOf('=');
-	    buffer = buffer.substring(index_of_eq +1);
-	    harvesting_info_temp += ";" + buffer;
-	  }
-
-	String harvesting_info[6];
-
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
 	{
-	    int index_of_sc= harvesting_info_temp.indexOf(';');
-	    harvesting_info[i] = harvesting_info_temp.substring(0, index_of_sc);
-	    harvesting_info_temp= harvesting_info_temp.substring(index_of_sc + 1);
+		String harvesting_info_temp = config_file.readStringUntil('\n');
+		int index_of_sc = harvesting_info_temp.indexOf('=');
+		// Store everything after the = sign in harvesting_info_temp
+		harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1);
 	}
-	harvesting_info[5] = harvesting_info_temp;
 
-	for(int i = 0; i < 6; i++)
+	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
 	{
 		Serial.println(harvesting_info[i]);
 	}
@@ -202,15 +199,20 @@ int setup_SD()
 	//	harvesting_info[5] = City
 
 	config_file.close();
+	return 0;
 
+}
+
+int createNewFile(void)
+{
+	sprintf(filename,"/recording_data/measurement%u.csv", lastindex++ );
 
 	File rec_file = SD.open(filename, FILE_WRITE);
 
 	char header_info[800];
 
-
 	// convert duration to end date
-	int duration = harvesting_info[0].toInt() + 3600*hour() + 60*minute() +second();
+	time_t duration = harvesting_info[0].toInt() + now();
 	int end_day = duration / 86400;
 	duration = duration - (86400*end_day);
 	int end_hour = duration / 3600;
@@ -220,7 +222,7 @@ int setup_SD()
 	int end_seconds = duration;
 
 	// Store harvesting information in recording file
-	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d:000;%02d:%02d:%02d:0000;%s;%d;%s;%s;%s",day(),
+	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%d;%s;%s;%s",day(),
 			month(),year(),hour(), minute(), second(), end_hour, end_minutes, end_seconds,
 			harvesting_info[1].c_str() ,int(harvesting_info[2].toInt()),harvesting_info[3].c_str(),harvesting_info[4].c_str(), harvesting_info[5].c_str());
 	rec_file.println(header_info);
