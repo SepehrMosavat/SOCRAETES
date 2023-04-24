@@ -59,8 +59,8 @@ void loop() {
 	{
 		delay(500);
 		Serial.println("Card failed, or not present");
-		 duration = setup_SD();
-		 ivCurveSequenceNumber = 40;
+		duration = setup_SD();
+		ivCurveSequenceNumber = 40;
 	}
 	write_data_to_SD((ivCurveSequenceNumber),voltage, current);
 	 if (now() > end_timestamp)

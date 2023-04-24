@@ -112,7 +112,7 @@ def convert_csv_to_hdf5( captured_curves_queue: queue.Queue, _stop_thread_event:
     for files in os.walk('recording_data'):
         list_of_file_names = files[2]
         if document in files[2]:
-            document= 'recording_data\\' + document
+            document = os.path.join('recording_data', document)
             with open(document, 'r') as csv_datei:
                 reader = list(csv.reader(csv_datei, delimiter=';'))
                 for i in range (1,len(reader)):
@@ -156,7 +156,7 @@ def read_harvesting_info_sd(document):
     for files in os.walk('recording_data'):
         list_of_file_names = files[2]
         if document in files[2]:
-            document= 'recording_data\\' + document
+            document = os.path.join('recording_data', document)
             
             with open(document, 'r') as csv_datei:
                 reader = list(csv.reader(csv_datei, delimiter=';'))

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import logging
 import queue
 import signal
@@ -66,10 +66,13 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
     Default value: N\A
     :param city: The city in which energy harvesting is carried out. Only used in commit-to-file mode.\n
     Default value: N\A
-    :param read_from_sd: reads the data from a csv-file. Set to "one-file" and set flag doc_no, if you want to convert one specific document.\n
+    :param read_from_sd: Reads the data from csv-files located in the subfolder recording_data.
+    Set to "one-file" and set flag doc_no, if you want to convert one specific document.
     Set flag to "all" if you want to convert all csv-files to hdf-files.\n
     Default value: False
-    :param doc_name: if flag read_from_sd is set to "one-file" pls set this flag to the file name you want to convert (e.g measurement3.csv)\n
+    :param doc_name: if flag read_from_sd is set to "one-file" please set this flag to the file name
+    you want to convert (e.g measurement3.csv)\n
+    Default value: N\A
     :return:
     """
     global serial_port
