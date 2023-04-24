@@ -122,7 +122,6 @@ void updateHarvesterLoad()
 	{
 		ivCurveSequenceNumber = 0;
 		analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
-		delay(10);
 	}
 #endif
 }
@@ -234,6 +233,8 @@ int createNewFile(void)
 
 void write_data_to_SD(unsigned short _sequence_number, int _voltage, int _current)
 {
+	// sizeof(short) + 2 * sizeof(int) + '\n'
+	// Writing around 2 + 2 * 4 + 1 = 11 byte
 	File rec_file = SD.open(filename, FILE_WRITE);
 	rec_file.print(_sequence_number);
 	rec_file.print(";");

@@ -10,8 +10,11 @@
 extern byte uartByteArray[11];
 extern ADC *adc;
 extern int ivCurveSequenceNumber;
-static time_t end_timestamp;
-static time_t duration;
+static time_t end_timestamp_s;
+static time_t duration_s;
+
+static const uint32_t cycleTime_ms = 10;
+static uint32_t timeStamp_ms;
 
 void setup() {
 	Serial.begin(0);
@@ -33,13 +36,15 @@ void setup() {
 	setup_time();
 	setup_SD();
 	readConfigFile();
-	duration = createNewFile();
-	end_timestamp = now() + duration;
+	duration_s = createNewFile();
+	end_timestamp_s = now() + duration_s;
 	ivCurveSequenceNumber = 40; 
 #endif
 }
 
 void loop() {
+
+	timeStamp_ms = millis();
 	digitalToggle(LED_BUILTIN);
 	// Read harvester voltage and current from ADC lines
 	int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
@@ -49,31 +54,21 @@ void loop() {
 	// Calculate harvester voltage and current from raw ADC values
 	int voltage = getVoltageFromAdcValue(voltageAdcValue);
 	int current = getCurrentFromAdcValue(currentSenseAdcValue);
-	
-	
 
-	
 
 #ifdef DEBUG_MODE
 	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);
 	delay(200);
 #elif STAND_ALONE
-	// while (duration < 0)
-	// {
-	// 	delay(500);
-	// 	Serial.println("Card failed, or not present");
-	// 	duration = createNewFile();
-	// 	ivCurveSequenceNumber = 40;
-	// }
 	write_data_to_SD((ivCurveSequenceNumber),voltage, current);
-	 if (now() > end_timestamp)
-	 {
+	if (now() > end_timestamp_s)
+	{
 		Serial.printf("new recording\n");
 		ivCurveSequenceNumber = 40;
-		duration = createNewFile();
-	 	end_timestamp = now() + duration;
-		
-	 }
+		duration_s = createNewFile();
+		end_timestamp_s = now() + duration_s;
+
+	}
 #else
 	convertIntValuesToByteArrays(ivCurveSequenceNumber, voltage, current, uartByteArray);
 	for(int i = 0; i < 11; i++)
@@ -82,5 +77,8 @@ void loop() {
 	}
 #endif
 	updateHarvesterLoad();  
-	delay(100);
+	while ( (millis() - timeStamp_ms) < cycleTime_ms )
+	{
+		;
+	}
 }
