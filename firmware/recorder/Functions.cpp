@@ -28,6 +28,9 @@ static String harvesting_info[NUM_OF_CONFIGLINES];
 
 static unsigned int lastindex;
 
+// Initialize this value unequal to zero. It is set in readConfigFile()
+static time_t fileRecDuration_s = 60;
+
 float shortToVoltage(short _voltage)
 {
 	float returnValue;
@@ -188,7 +191,7 @@ int readConfigFile(void)
 	{
 		Serial.println(harvesting_info[i]);
 	}
-
+	fileRecDuration_s = harvesting_info[0].toInt();
 	//	harvesting_info[0] = duration 
 	//	harvesting_info[1] = Indoor/Outdoor
 	//	harvesting_info[2] = Lux
@@ -210,7 +213,7 @@ time_t createNewFile(void)
 	char header_info[800];
 
 	// convert duration to end date
-	time_t duration = harvesting_info[0].toInt() + now();
+	time_t duration = fileRecDuration_s + now();
 
 	time_t retval = duration;
 
