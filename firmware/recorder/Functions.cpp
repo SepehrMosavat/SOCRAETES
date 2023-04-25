@@ -19,7 +19,7 @@
 #define NUM_OF_CONFIGLINES 6
 
 ADC *adc = new ADC();
-byte uartByteArray[11];
+
 uint8_t ivCurveSequenceNumber = 0;
 
 static char filename[80];

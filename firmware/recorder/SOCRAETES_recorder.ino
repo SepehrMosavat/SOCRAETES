@@ -7,12 +7,16 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-extern byte uartByteArray[11];
 extern ADC *adc;
+
 extern uint8_t ivCurveSequenceNumber;
+
 static time_t end_timestamp_s;
 
+static byte uartByteArray[11];
+
 static const uint32_t cycleTime_ms = 100;
+
 static uint32_t timeStamp_ms;
 
 void setup() {
