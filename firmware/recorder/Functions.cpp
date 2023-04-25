@@ -77,7 +77,7 @@ int getCurrentFromAdcValue(int _adcValue)
 	return (returnValue < 0) ? 0 : returnValue;
 }
 
-void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte* _buffer)
+void convertIntValuesToByteArrays(uint8_t _sequence_number, int _voltage, int _current, byte* _buffer)
 {
 	_buffer[0] = 0xaa; // Start byte
 	_buffer[1] = _sequence_number; // TODO: IV curve point sequence number
@@ -231,10 +231,10 @@ int createNewFile(void)
 
 }
 
-void write_data_to_SD(unsigned short _sequence_number, int _voltage, int _current)
+void write_data_to_SD(uint8_t _sequence_number, int _voltage, int _current)
 {
-	// sizeof(short) + 2 * sizeof(int) + '\n'
-	// Writing around 2 + 2 * 4 + 1 = 11 byte
+	// 1 + 2 * sizeof(int) + 2 * ';' + '\n'
+	// Writing around 1 + 2 * 4 + 2 * 1 + 1 = 12 byte
 	File rec_file = SD.open(filename, FILE_WRITE);
 	rec_file.print(_sequence_number);
 	rec_file.print(";");

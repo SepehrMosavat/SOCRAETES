@@ -9,7 +9,7 @@
 
 extern byte uartByteArray[11];
 extern ADC *adc;
-extern int ivCurveSequenceNumber;
+extern uint8_t ivCurveSequenceNumber;
 static time_t end_timestamp_s;
 static time_t duration_s;
 

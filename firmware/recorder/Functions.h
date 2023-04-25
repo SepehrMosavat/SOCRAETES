@@ -20,7 +20,7 @@ int getVoltageFromAdcValue(int);
 
 int getCurrentFromAdcValue(int);
 
-void convertIntValuesToByteArrays(unsigned short, int, int, byte*);
+void convertIntValuesToByteArrays(uint8_t, int, int, byte*);
 
 void initializeADC();
 
@@ -34,7 +34,7 @@ int readConfigFile(void);
 
 int createNewFile(void);
 
-void write_data_to_SD(unsigned short, int, int);
+void write_data_to_SD(uint8_t, int, int);
 
 void setup_time();
 
