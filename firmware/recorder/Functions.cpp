@@ -201,7 +201,7 @@ int readConfigFile(void)
 
 }
 
-int createNewFile(void)
+time_t createNewFile(void)
 {
 	sprintf(filename,"/recording_data/measurement%u.csv", lastindex++ );
 
@@ -211,12 +211,15 @@ int createNewFile(void)
 
 	// convert duration to end date
 	time_t duration = harvesting_info[0].toInt() + now();
+
+	time_t retval = duration;
+
 	int end_day = duration / 86400;
-	duration = duration - (86400*end_day);
+	duration = duration - (86400 * end_day);
 	int end_hour = duration / 3600;
-	duration = duration - (end_hour*3600);
+	duration = duration - (end_hour * 3600);
 	int end_minutes = duration / 60;
-	duration = duration - (end_minutes*60);
+	duration = duration - (end_minutes * 60);
 	int end_seconds = duration;
 
 	// Store harvesting information in recording file
@@ -226,7 +229,7 @@ int createNewFile(void)
 	rec_file.println(header_info);
 	rec_file.close();
 
-	return harvesting_info[0].toInt();
+	return retval;
 
 }
 

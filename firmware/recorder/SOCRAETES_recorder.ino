@@ -11,7 +11,6 @@ extern byte uartByteArray[11];
 extern ADC *adc;
 extern uint8_t ivCurveSequenceNumber;
 static time_t end_timestamp_s;
-static time_t duration_s;
 
 static const uint32_t cycleTime_ms = 100;
 static uint32_t timeStamp_ms;
@@ -36,8 +35,7 @@ void setup() {
 	setup_time();
 	setup_SD();
 	readConfigFile();
-	duration_s = createNewFile();
-	end_timestamp_s = now() + duration_s;
+	end_timestamp_s = createNewFile();
 	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
 #endif
 	// Set DACs for first measurement
@@ -66,9 +64,7 @@ void loop() {
 	{
 		Serial.printf("new recording\n");
 		ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE;
-		duration_s = createNewFile();
-		end_timestamp_s = now() + duration_s;
-
+		end_timestamp_s = createNewFile();
 	}
 #else
 	convertIntValuesToByteArrays(ivCurveSequenceNumber, voltage, current, uartByteArray);

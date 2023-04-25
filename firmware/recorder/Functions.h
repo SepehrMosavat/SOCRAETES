@@ -32,11 +32,11 @@ int setup_SD();
 
 int readConfigFile(void);
 
-int createNewFile(void);
+/* Returns the timestamp when to stop recording to the created file */
+time_t createNewFile(void);
 
 void write_data_to_SD(uint8_t, int, int);
 
 void setup_time();
-
 
 #endif /* FUNCTIONS_H_ */
