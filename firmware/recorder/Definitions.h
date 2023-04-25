@@ -24,7 +24,7 @@
 #define LOAD_MOSFET_DAC_PIN A21
 
 // System-wide Parameter Definitions
-#define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
+#define NUMBER_OF_CAPTURED_POINTS_IN_CURVE 40
 #define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_2
 
 #define VCC_VOLTAGE 3.33
@@ -52,7 +52,7 @@
 #define ADC_VOLTAGE_DIVIDER_R2 1800 // Low-side resistor
 #define ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR (((double)(ADC_VOLTAGE_DIVIDER_R2 + ADC_VOLTAGE_DIVIDER_R1) / (ADC_VOLTAGE_DIVIDER_R2)))
 
-const int loadMosfetDACValuesLUT_40_points_0[] = {
+const int loadMosfetDACValuesLUT_40_points_0[NUMBER_OF_CAPTURED_POINTS_IN_CURVE] = {
 		1500, 1525, 1550, 1575, 1600, 1625, 1650, 1675,
 		1700, 1725, 1750, 1775, 1800, 1825, 1850, 1875,
 		1900, 1925, 1950, 1975, 2000, 2025, 2050, 2075,
@@ -60,7 +60,7 @@ const int loadMosfetDACValuesLUT_40_points_0[] = {
 		2300, 2325, 2350, 2375, 2400, 2425, 2450, 2475
 };
 
-const int loadMosfetDACValuesLUT_40_points_1[] = {
+const int loadMosfetDACValuesLUT_40_points_1[NUMBER_OF_CAPTURED_POINTS_IN_CURVE] = {
 		1500, 1525, 1550, 1575, 1600, 1625, 1650, 1675,
 		1700, 1725, 1750, 1800, 1850, 1900, 1950, 2000,
 		2050, 2100, 2150, 2200, 2250, 2300, 2350, 2400,
@@ -68,7 +68,7 @@ const int loadMosfetDACValuesLUT_40_points_1[] = {
 		2850, 2900, 2950, 3000, 3050, 3100, 3150, 3200
 };
 
-const int loadMosfetDACValuesLUT_40_points_2[] = {
+const int loadMosfetDACValuesLUT_40_points_2[NUMBER_OF_CAPTURED_POINTS_IN_CURVE] = {
 		1630, 1660, 1690, 1720, 1750, 1780, 1810, 1840,
 		1870, 1900, 1930, 1960, 1991, 2021, 2050, 2080,
 		2110, 2140, 2170, 2200, 2230, 2260, 2290, 2310,

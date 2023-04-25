@@ -13,7 +13,7 @@ extern uint8_t ivCurveSequenceNumber;
 static time_t end_timestamp_s;
 static time_t duration_s;
 
-static const uint32_t cycleTime_ms = 10;
+static const uint32_t cycleTime_ms = 100;
 static uint32_t timeStamp_ms;
 
 void setup() {
@@ -38,8 +38,10 @@ void setup() {
 	readConfigFile();
 	duration_s = createNewFile();
 	end_timestamp_s = now() + duration_s;
-	ivCurveSequenceNumber = 40; 
+	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
 #endif
+	// Set DACs for first measurement
+	updateHarvesterLoad();	
 }
 
 void loop() {
@@ -55,7 +57,6 @@ void loop() {
 	int voltage = getVoltageFromAdcValue(voltageAdcValue);
 	int current = getCurrentFromAdcValue(currentSenseAdcValue);
 
-
 #ifdef DEBUG_MODE
 	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);
 	delay(200);
@@ -64,7 +65,7 @@ void loop() {
 	if (now() > end_timestamp_s)
 	{
 		Serial.printf("new recording\n");
-		ivCurveSequenceNumber = 40;
+		ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE;
 		duration_s = createNewFile();
 		end_timestamp_s = now() + duration_s;
 
@@ -76,7 +77,9 @@ void loop() {
 		Serial.write(uartByteArray[i]);
 	}
 #endif
+
 	updateHarvesterLoad();  
+
 	while ( (millis() - timeStamp_ms) < cycleTime_ms )
 	{
 		;

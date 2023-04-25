@@ -20,7 +20,7 @@
 
 ADC *adc = new ADC();
 byte uartByteArray[11];
-int ivCurveSequenceNumber = 0;
+uint8_t ivCurveSequenceNumber = 0;
 
 static char filename[80];
 
@@ -116,13 +116,12 @@ void updateHarvesterLoad()
 #ifdef CALIBRATION_MODE
 	analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
 #else
-	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 	ivCurveSequenceNumber++;
-	if(ivCurveSequenceNumber > NUMBER_OF_CAPUTURED_POINTS_IN_CURVE - 1)
+	if( ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE )
 	{
 		ivCurveSequenceNumber = 0;
-		analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 	}
+	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 #endif
 }
 
@@ -216,14 +215,14 @@ int createNewFile(void)
 	duration = duration - (86400*end_day);
 	int end_hour = duration / 3600;
 	duration = duration - (end_hour*3600);
-	int end_minutes= duration / 60;
+	int end_minutes = duration / 60;
 	duration = duration - (end_minutes*60);
 	int end_seconds = duration;
 
 	// Store harvesting information in recording file
-	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%d;%s;%s;%s",day(),
-			month(),year(),hour(), minute(), second(), end_hour, end_minutes, end_seconds,
-			harvesting_info[1].c_str() ,int(harvesting_info[2].toInt()),harvesting_info[3].c_str(),harvesting_info[4].c_str(), harvesting_info[5].c_str());
+	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%s;%s;%s;%s", day(), 
+			month(), year(), hour(), minute(), second(), end_hour, end_minutes, end_seconds, 
+			harvesting_info[1].c_str() ,harvesting_info[2].c_str(), harvesting_info[3].c_str(), harvesting_info[4].c_str(), harvesting_info[5].c_str());
 	rec_file.println(header_info);
 	rec_file.close();
 
