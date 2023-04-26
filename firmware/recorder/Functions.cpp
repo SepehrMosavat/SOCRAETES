@@ -184,7 +184,7 @@ int readConfigFile(void)
 		String harvesting_info_temp = config_file.readStringUntil('\n');
 		int index_of_sc = harvesting_info_temp.indexOf('=');
 		// Store everything after the = sign in harvesting_info_temp
-		harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1);
+		harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, harvesting_info_temp.length() -1);
 	}
 
 	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
