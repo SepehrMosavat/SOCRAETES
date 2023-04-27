@@ -184,7 +184,20 @@ int readConfigFile(void)
 		String harvesting_info_temp = config_file.readStringUntil('\n');
 		int index_of_sc = harvesting_info_temp.indexOf('=');
 		// Store everything after the = sign in harvesting_info_temp
-		harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, harvesting_info_temp.length() -1);
+		// and check for DOS or unix line endings
+
+		int strLen = harvesting_info_temp.length();
+		
+		// harvesting_info_temp.charAt(strLen) is the null terminator '\0'
+		if ( harvesting_info_temp.charAt(strLen - 1) == '\r' )
+		{
+			harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, strLen - 1);
+		}
+		else
+		{
+			harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, strLen);
+		}
+
 	}
 
 	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
