@@ -5,3 +5,6 @@
 .ccls
 compile_commands.json
 Makefile
+*.cproject
+*.project
+.settings/
