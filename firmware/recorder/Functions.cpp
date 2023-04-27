@@ -124,9 +124,22 @@ void updateHarvesterLoad()
 
 void startupDelay()
 {
-	for(int i = 0; i < 30; i++)
+#ifndef CALIBRATION_MODE
+	int ledDelay = 15;
+	int pwmStep = 10;
+
+	for(int i = 0; i < 1024; i += pwmStep)
 	{
-		digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-		delay(500);
+		analogWrite(STATUS_LED, i);
+		delay(ledDelay);
 	}
+
+	for(int i = 1024; i >= 0; i -= pwmStep)
+	{
+		analogWrite(STATUS_LED, i);
+		delay(ledDelay);
+	}
+
+	pinMode(STATUS_LED, OUTPUT);
+#endif
 }
