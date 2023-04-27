@@ -13,9 +13,11 @@ extern uint8_t ivCurveSequenceNumber;
 
 static time_t end_timestamp_s;
 
+#if ! defined(DEBUG_MODE) && ! defined(STAND_ALONE)
 static byte uartByteArray[11];
+#endif
 
-static const uint32_t cycleTime_ms = 100;
+static const uint32_t cycleTime_ms = 200;
 
 static uint32_t timeStamp_ms;
 
