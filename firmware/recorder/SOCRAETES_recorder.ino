@@ -39,8 +39,14 @@ void setup() {
 
 #if STAND_ALONE
 	setup_time();
-	setup_SD();
-	readConfigFile();
+	while( setup_SD() != 0 )
+	{
+		delay(500);
+	}
+	while( readConfigFile() != 0 )
+	{
+		delay(500);
+	}
 	end_timestamp_s = createNewFile();
 	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
 #endif
