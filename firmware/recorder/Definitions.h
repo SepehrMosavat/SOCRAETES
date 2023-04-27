@@ -17,10 +17,11 @@
 #define CALIBRATION_MODE_LOAD_MOSFET_VALUE 4095
 #endif
 
-// Teensy 3.6 Board Pin Definitions
-#define HARVESTER_VOLTAGE_ADC_PIN A2
-#define HARVESTER_CURRENT_ADC_PIN A3
-#define LOAD_MOSFET_DAC_PIN A21
+#define STATUS_LED 1
+
+// Teensy 4.1 Board Pin Definitions
+#define HARVESTER_VOLTAGE_ADC_PIN A15
+#define HARVESTER_CURRENT_ADC_PIN A14
 
 // System-wide Parameter Definitions
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
