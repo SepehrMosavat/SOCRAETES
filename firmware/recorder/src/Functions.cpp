@@ -88,19 +88,11 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
 
 void initializeADC()
 {
-	// Initialize the current-sense ADC
-	//	adc->adc0->setAveraging(0); // set number of averages
-	//	adc->adc0->setResolution(12); // set bits of resolution
-	//	adc->adc0->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
-	//	adc->adc0->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
-	//	adc->adc0->setReference(ADC_REFERENCE::REF_3V3);
-
-	// Initialize the voltage-sense ADC
+	// Initialize the current-sense and voltage-sense ADC
 	adc->adc1->setAveraging(0); // set number of averages
 	adc->adc1->setResolution(12); // set bits of resolution
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
-	//	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
 }
 
 int i = 1100;
