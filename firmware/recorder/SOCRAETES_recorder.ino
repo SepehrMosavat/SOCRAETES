@@ -47,8 +47,13 @@ void loop() {
 	updateHarvesterLoad();
 
 #ifdef DEBUG_MODE
+#ifdef CALIBRATION_MODE
+	Serial.printf("Calibration mode: V: %d, I: %d\n", voltage, current);
+	delay(20);
+#else
 	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);
-	delay(200);
+	delay(20);
+#endif
 #else
 	for(int i = 0; i < 11; i++)
 	{
