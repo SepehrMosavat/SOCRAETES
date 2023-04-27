@@ -27,8 +27,8 @@
 #define NUMBER_OF_CAPUTURED_POINTS_IN_CURVE 40
 #define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_2
 
-#define VCC_VOLTAGE 3.33
-#define ADC_REFERENCE_VOLTAGE 3.3
+#define VCC_VOLTAGE 3.326
+#define ADC_REFERENCE_VOLTAGE 3.326
 
 // For choosing the suitable gain for the current sense amplifier
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 49.9 // Gain = 1003
