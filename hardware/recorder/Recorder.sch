@@ -11523,6 +11523,9 @@ Source: &lt;a href="https://ms.componentsearchengine.com/Datasheets/1/EDS224Z3R6
 <part name="C13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u"/>
 <part name="C12" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u"/>
 <part name="SUPPLY30" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
+<part name="SUPPLY31" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
+<part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R"/>
+<part name="ERROR" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
 </parts>
 <sheets>
 <sheet>
@@ -11661,6 +11664,13 @@ https://www.nes.uni-due.de/</text>
 <pinref part="U8" gate="G$1" pin="OUT1B"/>
 <wire x1="132.08" y1="106.68" x2="134.62" y2="106.68" width="0.1524" layer="91"/>
 <label x="134.62" y="106.68" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="ERROR_LED" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="OUT2"/>
+<wire x1="132.08" y1="114.3" x2="134.62" y2="114.3" width="0.1524" layer="91"/>
+<label x="134.62" y="114.3" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -12249,6 +12259,17 @@ GAIN_ia = 200: I_max_record = 8.25 mA</text>
 <instance part="SUPPLY30" gate="GND" x="71.12" y="129.54" smashed="yes">
 <attribute name="VALUE" x="69.215" y="126.365" size="1.778" layer="96"/>
 </instance>
+<instance part="SUPPLY31" gate="GND" x="109.22" y="17.78" smashed="yes">
+<attribute name="VALUE" x="112.395" y="17.145" size="1.778" layer="96"/>
+</instance>
+<instance part="R6" gate="G$1" x="109.22" y="38.1" smashed="yes" rot="R90">
+<attribute name="NAME" x="107.7214" y="34.29" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="112.522" y="34.29" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="ERROR" gate="G$1" x="109.22" y="27.94" smashed="yes">
+<attribute name="NAME" x="105.156" y="20.828" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="114.935" y="23.368" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -12332,6 +12353,11 @@ GAIN_ia = 200: I_max_record = 8.25 mA</text>
 <pinref part="C12" gate="G$1" pin="1"/>
 <wire x1="71.12" y1="132.08" x2="71.12" y2="134.62" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="134.62" x2="76.2" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY31" gate="GND" pin="GND"/>
+<pinref part="ERROR" gate="G$1" pin="C"/>
+<wire x1="109.22" y1="20.32" x2="109.22" y2="22.86" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="HARVESTER+" class="0">
@@ -12457,6 +12483,20 @@ GAIN_ia = 200: I_max_record = 8.25 mA</text>
 <pinref part="MODE" gate="G$1" pin="2"/>
 <wire x1="147.32" y1="38.1" x2="152.4" y2="38.1" width="0.1524" layer="91"/>
 <label x="152.4" y="38.1" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="R6" gate="G$1" pin="1"/>
+<pinref part="ERROR" gate="G$1" pin="A"/>
+<wire x1="109.22" y1="33.02" x2="109.22" y2="30.48" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="ERROR_LED" class="0">
+<segment>
+<pinref part="R6" gate="G$1" pin="2"/>
+<wire x1="109.22" y1="43.18" x2="109.22" y2="45.72" width="0.1524" layer="91"/>
+<label x="109.22" y="45.72" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 </nets>

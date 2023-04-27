@@ -13191,6 +13191,9 @@ W = angled&lt;p&gt;
 <part name="C13" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u"/>
 <part name="C14" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u"/>
 <part name="C15" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="C-EU" device="025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="200p"/>
+<part name="SUPPLY30" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
+<part name="R11" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R"/>
+<part name="ERROR" library="led" library_urn="urn:adsk.eagle:library:259" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:15799/2"/>
 </parts>
 <sheets>
 <sheet>
@@ -13282,6 +13285,13 @@ https://www.nes.uni-due.de/</text>
 <pinref part="U8" gate="G$1" pin="OUT1B"/>
 <wire x1="137.16" y1="104.14" x2="139.7" y2="104.14" width="0.1524" layer="91"/>
 <label x="139.7" y="104.14" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="ERROR_LED" class="0">
+<segment>
+<pinref part="U8" gate="G$1" pin="OUT2"/>
+<wire x1="137.16" y1="111.76" x2="139.7" y2="111.76" width="0.1524" layer="91"/>
+<label x="139.7" y="111.76" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -13845,15 +13855,15 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <attribute name="NAME" x="72.136" y="25.908" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="81.915" y="28.448" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="MODE" gate="G$1" x="104.14" y="35.56" smashed="yes">
-<attribute name="VALUE" x="102.87" y="27.94" size="1.778" layer="96"/>
-<attribute name="NAME" x="102.87" y="41.402" size="1.778" layer="95"/>
+<instance part="MODE" gate="G$1" x="127" y="35.56" smashed="yes">
+<attribute name="VALUE" x="125.73" y="27.94" size="1.778" layer="96"/>
+<attribute name="NAME" x="125.73" y="41.402" size="1.778" layer="95"/>
 </instance>
-<instance part="+3V4" gate="G$1" x="116.84" y="45.72" smashed="yes">
-<attribute name="VALUE" x="114.3" y="43.18" size="1.778" layer="96" rot="R90"/>
+<instance part="+3V4" gate="G$1" x="139.7" y="45.72" smashed="yes">
+<attribute name="VALUE" x="137.16" y="43.18" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="SUPPLY9" gate="GND" x="116.84" y="27.94" smashed="yes">
-<attribute name="VALUE" x="114.935" y="26.035" size="1.778" layer="96" rot="R90"/>
+<instance part="SUPPLY9" gate="GND" x="139.7" y="27.94" smashed="yes">
+<attribute name="VALUE" x="137.795" y="26.035" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="C11" gate="G$1" x="152.4" y="142.24" smashed="yes">
 <attribute name="NAME" x="153.924" y="142.621" size="1.778" layer="95"/>
@@ -13882,6 +13892,17 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <instance part="C14" gate="G$1" x="157.48" y="109.22" smashed="yes" rot="R180">
 <attribute name="NAME" x="152.781" y="112.776" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="160.401" y="112.776" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="SUPPLY30" gate="GND" x="99.06" y="22.86" smashed="yes">
+<attribute name="VALUE" x="102.235" y="22.225" size="1.778" layer="96"/>
+</instance>
+<instance part="R11" gate="G$1" x="99.06" y="43.18" smashed="yes" rot="R90">
+<attribute name="NAME" x="97.5614" y="39.37" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="102.362" y="39.37" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="ERROR" gate="G$1" x="99.06" y="33.02" smashed="yes">
+<attribute name="NAME" x="94.996" y="25.908" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="104.775" y="28.448" size="1.778" layer="96" rot="R90"/>
 </instance>
 </instances>
 <busses>
@@ -13941,8 +13962,8 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <segment>
 <pinref part="MODE" gate="G$1" pin="1"/>
 <pinref part="SUPPLY9" gate="GND" pin="GND"/>
-<wire x1="111.76" y1="33.02" x2="116.84" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="33.02" x2="116.84" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="33.02" x2="139.7" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="33.02" x2="139.7" y2="30.48" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="SUPPLY3" gate="GND" pin="GND"/>
@@ -13965,6 +13986,11 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <pinref part="C14" gate="G$1" pin="1"/>
 <pinref part="SUPPLY29" gate="GND" pin="GND"/>
 <wire x1="157.48" y1="106.68" x2="157.48" y2="104.14" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="SUPPLY30" gate="GND" pin="GND"/>
+<pinref part="ERROR" gate="G$1" pin="C"/>
+<wire x1="99.06" y1="25.4" x2="99.06" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="-12V" class="0">
@@ -14006,8 +14032,8 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <segment>
 <pinref part="MODE" gate="G$1" pin="3"/>
 <pinref part="+3V4" gate="G$1" pin="+3V3"/>
-<wire x1="111.76" y1="38.1" x2="116.84" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="38.1" x2="116.84" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="134.62" y1="38.1" x2="139.7" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="38.1" x2="139.7" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -14088,8 +14114,22 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 <net name="JUMPER_SELECT_MODE" class="0">
 <segment>
 <pinref part="MODE" gate="G$1" pin="2"/>
-<wire x1="111.76" y1="35.56" x2="116.84" y2="35.56" width="0.1524" layer="91"/>
-<label x="116.84" y="35.56" size="1.778" layer="95" xref="yes"/>
+<wire x1="134.62" y1="35.56" x2="139.7" y2="35.56" width="0.1524" layer="91"/>
+<label x="139.7" y="35.56" size="1.778" layer="95" xref="yes"/>
+</segment>
+</net>
+<net name="N$4" class="0">
+<segment>
+<pinref part="R11" gate="G$1" pin="1"/>
+<pinref part="ERROR" gate="G$1" pin="A"/>
+<wire x1="99.06" y1="38.1" x2="99.06" y2="35.56" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="ERROR_LED" class="0">
+<segment>
+<pinref part="R11" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="48.26" x2="99.06" y2="50.8" width="0.1524" layer="91"/>
+<label x="99.06" y="50.8" size="1.778" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
 </nets>
