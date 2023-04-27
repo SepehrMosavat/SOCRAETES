@@ -61,5 +61,12 @@ void loop() {
 	}
 #endif
 
+
+	if(uartByteArray[1] == NUMBER_OF_CAPUTURED_POINTS_IN_CURVE - 1){
+		digitalToggle(STATUS_LED);
+		delay(500);
+	}
+
+
 	delay(3);
 }

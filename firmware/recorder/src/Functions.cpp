@@ -103,10 +103,61 @@ void initializeADC()
 	//	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
 }
 
+int i = 1100;
+int first=0, second=0;
+bool calibrated = 0;
 void updateHarvesterLoad()
 {
 #ifdef CALIBRATION_MODE
-	analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
+	dac.setVoltageA(CALIBRATION_MODE_LOAD_MOSFET_VALUE);
+	dac.updateDAC();
+	delay(100);
+	// analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
+
+	//		analogWrite(LOAD_MOSFET_DAC_PIN, i);
+
+	/*
+	int currentCalibrationValue = 0;
+
+	long long sum = 0;
+	if(!calibrated) {
+		dac.setVoltageA(0);
+		dac.updateDAC();
+		delay(100);
+		for(int i = 0; i < 500; i++) {
+			int temp = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
+			sum += temp;
+		}
+		currentCalibrationValue = sum / 500;
+		Serial.printf("Calibration value: %d\n", currentCalibrationValue);
+		calibrated = 1;
+	}
+
+	dac.setVoltageA(0);
+	dac.updateDAC();
+	delay(50);
+
+	int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1) - currentCalibrationValue;
+	int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
+
+	int current = getCurrentFromAdcValue(currentSenseAdcValue);
+	int voltage = getVoltageFromAdcValue(voltageAdcValue);
+
+	//	Serial.printf("V: %d, I: %d\n", voltageAdcValue, currentSenseAdcValue);
+	Serial.printf("V: %d, I: %d\n", voltage, current - 300);
+	 */
+	/*
+	dac.setVoltageA(i);
+	dac.updateDAC();
+	delay(100);
+
+	i += 15;
+	//	Serial.printf("i: %d, first: %d, second: %d, diff: %d -> ", i, first, second, second-first);
+	//	second=first;
+	if(i > 1600) {
+		i = 1100;
+	}
+	 */
 #else
 	dac.setVoltageA(LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 	dac.updateDAC();
