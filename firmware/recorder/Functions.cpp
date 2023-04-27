@@ -16,7 +16,12 @@
 #include <TimeLib.h>
 #include <Definitions.h>
 
-#define NUM_OF_CONFIGLINES 7
+#define NUM_OF_CONFIGLINES 6
+// See: https://forum.pjrc.com/threads/60696-Teensy-4-software-reset
+static void resetFunc(void)
+{
+	SCB_AIRCR = 0x05FA0004;
+}
 
 ADC *adc = new ADC();
 
@@ -141,7 +146,6 @@ void startupDelay()
 int setup_SD()
 {
 	const int chipSelect = BUILTIN_SDCARD;
-
 	//Check if a SD card is available
 	if (!SD.begin(chipSelect))
 	{
@@ -254,6 +258,15 @@ time_t createNewFile(void)
 
 void write_data_to_SD(uint8_t _sequence_number, int _voltage, int _current)
 {
+	if ( !SD.mediaPresent() )
+	{
+		while ( !SD.mediaPresent() )
+		{
+			delay(500);
+		}
+		resetFunc();	
+	}
+
 	// 1 + 2 * sizeof(int) + 2 * ';' + '\n'
 	// Writing around 1 + 2 * 4 + 2 * 1 + 1 = 12 byte
 	File rec_file = SD.open(filename, FILE_WRITE);
