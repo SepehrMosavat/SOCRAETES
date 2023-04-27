@@ -16,7 +16,7 @@
 #include <TimeLib.h>
 #include <Definitions.h>
 
-#define NUM_OF_CONFIGLINES 6
+#define NUM_OF_CONFIGLINES 7
 // See: https://forum.pjrc.com/threads/60696-Teensy-4-software-reset
 static void resetFunc(void)
 {
