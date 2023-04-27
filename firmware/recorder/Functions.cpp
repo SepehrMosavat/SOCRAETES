@@ -12,10 +12,13 @@
 #include <ADC.h>
 #include <ADC_util.h>
 #include "Functions.h"
+#include "MCP48xx/src/MCP48xx.h"
 
 ADC *adc = new ADC();
 byte uartByteArray[11];
 int ivCurveSequenceNumber = 0;
+
+extern MCP4822 dac;
 
 float shortToVoltage(short _voltage)
 {
