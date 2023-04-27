@@ -24,10 +24,10 @@ void setup() {
 	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
 	pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
 
-	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(STATUS_LED, OUTPUT);
 
 	startupDelay();
-	digitalWrite(LED_BUILTIN, HIGH);
+	digitalWrite(STATUS_LED, LOW);
 
 	initializeADC();
 }
