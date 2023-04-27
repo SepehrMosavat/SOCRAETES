@@ -36,7 +36,7 @@ int getVoltageFromAdcValue(int _adcValue)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
+		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
 #ifdef ADC_VOLTAGE_DIVIDER_USED
@@ -57,7 +57,7 @@ int getCurrentFromAdcValue(int _adcValue)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 65535; // 16-bit ADC resolution
+		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
 		returnValue *= 1000000; // Value in uA
 
