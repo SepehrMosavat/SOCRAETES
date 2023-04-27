@@ -2,6 +2,7 @@
 #include <Encoder.h>
 #include <ADC.h>
 #include <SPI.h>
+#include "MCP48xx/src/MCP48xx.h"
 
 #include "Definitions.h"
 #include "Functions.h"
@@ -10,14 +11,18 @@ extern byte uartByteArray[11];
 extern ADC *adc;
 extern int ivCurveSequenceNumber;
 
+MCP4822 dac(34);
+
 void setup() {
 	Serial.begin(0);
 	SPI.begin();
 
+	dac.init();
+	dac.turnOnChannelA();
+	dac.setGainA(MCP4822::High);
+
 	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
 	pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
-
-	analogWriteResolution(12);
 
 	pinMode(LED_BUILTIN, OUTPUT);
 
