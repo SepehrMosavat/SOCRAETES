@@ -16,7 +16,7 @@
 #include <TimeLib.h>
 #include <Definitions.h>
 
-#define NUM_OF_CONFIGLINES 6
+#define NUM_OF_CONFIGLINES 7
 
 ADC *adc = new ADC();
 
@@ -211,6 +211,7 @@ int readConfigFile(void)
 	//	harvesting_info[3] = weather
 	//	harvesting_info[4] = Country
 	//	harvesting_info[5] = City
+	// 	harvesting_info[6] = harvesting source
 
 	config_file.close();
 	return 0;
@@ -239,9 +240,11 @@ time_t createNewFile(void)
 	int end_seconds = duration;
 
 	// Store harvesting information in recording file
-	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%s;%s;%s;%s", day(), 
+	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%s;%s;%s;%s;%s", day(), 
 			month(), year(), hour(), minute(), second(), end_hour, end_minutes, end_seconds, 
-			harvesting_info[1].c_str() ,harvesting_info[2].c_str(), harvesting_info[3].c_str(), harvesting_info[4].c_str(), harvesting_info[5].c_str());
+			harvesting_info[1].c_str(), harvesting_info[2].c_str(),
+			harvesting_info[3].c_str(), harvesting_info[4].c_str(),
+			harvesting_info[5].c_str(), harvesting_info[6].c_str() );
 	rec_file.println(header_info);
 	rec_file.close();
 

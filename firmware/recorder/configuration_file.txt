@@ -4,3 +4,4 @@ Lux=50
 weather=sunny
 Country=N/A
 City=N/A
+Harvesting Source=solar cell

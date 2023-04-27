@@ -75,7 +75,8 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
                                               np.string_('Light Intensity (Lux)'),
                                               np.string_('Weather Condition'),
                                               np.string_('Country'),
-                                              np.string_('City')),
+                                              np.string_('City'),
+                                              np.string_('Harvesting Source')),
                                              (np.string_(start_date_string),
                                               np.string_(start_time_string),
                                               np.string_(end_time_string),
@@ -83,7 +84,8 @@ def write_iv_curves_to_disk(_iv_curves_queue: queue.Queue, _file_name, _harvesti
                                               np.string_(_harvesting_condition.light_intensity),
                                               np.string_(_harvesting_condition.weather_condition),
                                               np.string_(_harvesting_condition.country),
-                                              np.string_(_harvesting_condition.city))]
+                                              np.string_(_harvesting_condition.city),
+                                              np.string_(_harvesting_condition.source))]
                 dataset = f.create_dataset('harvesting conditions', data=harvesting_condition_list)
             for arr in data_array_buffer:
                 with h5py.File(new_filename, 'a') as f:
@@ -111,7 +113,7 @@ def convert_csv_to_hdf5( captured_curves_queue: queue.Queue, _stop_thread_event:
     curve_number_counter = 0
     for files in os.walk('recording_data'):
         list_of_file_names = files[2]
-        if document in files[2]:
+        if document in list_of_file_names:
             document = os.path.join('recording_data', document)
             with open(document, 'r') as csv_datei:
                 reader = list(csv.reader(csv_datei, delimiter=';'))
@@ -163,7 +165,7 @@ def read_harvesting_info_sd(document):
                 start_date_string = reader[0][0]
                 start_time_string = reader[0][1]
                 end_time_string =reader [0][2]
-                temp = HarvestingCondition( reader[0][3], reader[0][4], reader[0][5], reader[0][6], reader[0][7])
+                temp = HarvestingCondition( reader[0][3], reader[0][4], reader[0][5], reader[0][6], reader[0][7], reader[0][8])
                 return temp
 
 def get_file():

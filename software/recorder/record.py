@@ -43,7 +43,7 @@ def interrupt_signal_handler(_signal, _frame):
 
 
 def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment='indoor', lux=50, weather='sunny',
-        country='N/A', city='N/A', read_from_sd = False, doc_name= 'N/A'):
+        country='N/A', city='N/A', source='solar cell', read_from_sd = False, doc_name= 'N/A'):
     """
     :param port: The serial port used for communication with the hardware.
     :param mode: The data handling mode will determine the behavior of the application:\n
@@ -66,6 +66,8 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
     Default value: N\A
     :param city: The city in which energy harvesting is carried out. Only used in commit-to-file mode.\n
     Default value: N\A
+    :param source: The source from which energy was converted into electrical energy. Only used in commit-to-file mode.\n
+    Default value: solar cell
     :param read_from_sd: Reads the data from csv-files located in the subfolder recording_data.
     Set to "one-file" and set flag doc_no, if you want to convert one specific document.
     Set flag to "all" if you want to convert all csv-files to hdf-files.\n
@@ -93,7 +95,7 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
     sd_mode = read_from_sd
     csv_doc = doc_name
     if not sd_mode:
-        harvesting_conditions = HarvestingCondition(environment, str(lux), weather, country, city)
+        harvesting_conditions = HarvestingCondition(environment, str(lux), weather, country, city, source)
         capture_duration = duration
     elif sd_mode =="one-file":
         harvesting_conditions = read_harvesting_info_sd(csv_doc)
@@ -101,20 +103,7 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, interrupt_signal_handler)
     fire.Fire(cli)
-    timer_thread = threading.Thread(target=timer_function, args=(capture_duration,))
-    read_byte_thread = threading.Thread(target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,
-                                                                                       serial_port, stop_thread_event,))                                                              
-    process_serial_data_thread = threading.Thread(target=process_received_serial_data, args=(raw_serial_data_queue,
-                                                                                             captured_curves_queue,
-                                                                                             stop_thread_event,))
-    
-    timer_thread.daemon = True
-    read_byte_thread.daemon = True
-    process_serial_data_thread.daemon = True
-    
 
-
-        
     if (sd_mode == 'one-file'):
         harvesting_conditions = read_harvesting_info_sd(csv_doc)
         read_sd_thread = threading.Thread(target=convert_csv_to_hdf5, args=(captured_curves_queue,stop_thread_event,csv_doc,))
@@ -137,9 +126,21 @@ if __name__ == '__main__':
             sys.exit()
             
     else:
-        process_serial_data_thread.start()
-        read_byte_thread.start()
+        timer_thread = threading.Thread(target=timer_function, args=(capture_duration,))
+        read_byte_thread = threading.Thread(target=read_byte_array_from_serial_port, args=(raw_serial_data_queue,
+                                                                                       serial_port, stop_thread_event,))                                                              
+        process_serial_data_thread = threading.Thread(target=process_received_serial_data, args=(raw_serial_data_queue,
+                                                                                             captured_curves_queue,
+                                                                                             stop_thread_event,))
+    
+        timer_thread.daemon = True
+        read_byte_thread.daemon = True
+        process_serial_data_thread.daemon = True
+    
         timer_thread.start()
+        read_byte_thread.start()   
+        process_serial_data_thread.start()
+      
     
     if data_handling_mode == PlotOrDiskCommit.COMMIT_TRACE_TO_DISK:
                 if sd_mode == 'one-file':
@@ -155,6 +156,7 @@ if __name__ == '__main__':
         plot_iv_surface(captured_curves_queue, stop_thread_event)
     while True:
         if stop_thread_event.isSet():
+                
             logger.info('Recording finished. Exiting...')
             time.sleep(1)
             sys.exit()
