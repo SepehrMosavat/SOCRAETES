@@ -40,7 +40,7 @@
 
 #define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 2 // For modifying the measurement range
 
-#define CURRENT_SENSE_AMPLIFIER_GAIN (1 + (50000 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
+#define CURRENT_SENSE_AMPLIFIER_GAIN (1 + ((double)50000 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
 
 /* These values are meant for accounting for component tolerances of the current sensing circuit.
  * Care must be taken that the current readings do not get negative as a result of these values.
