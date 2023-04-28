@@ -15,7 +15,7 @@
 
 // In debug mode every measured point of curve is printed via serial
 // Cycle times are not taken into account
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 // Data is stored on SD-Card
 //#define STAND_ALONE 1

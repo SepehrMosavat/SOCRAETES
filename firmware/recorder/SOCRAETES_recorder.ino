@@ -7,8 +7,6 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-extern ADC *adc;
-
 extern uint8_t ivCurveSequenceNumber;
 
 #if ! defined(DEBUG_MODE) && ! defined(STAND_ALONE)
@@ -63,8 +61,8 @@ void setup() {
 		delay(500);
 	}
 	endFileRecord_s = createNewFile();
-	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
 #endif
+	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
 	// Set DACs for first measurement
 	updateHarvesterLoad();	
 }
@@ -82,23 +80,20 @@ void loop() {
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 		innerTimeStamp_ms = millis();
-		// Read harvester voltage and current from ADC lines
-		int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
-		int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
 
-		// Calculate harvester voltage and current from raw ADC values
-		int voltage = getVoltageFromAdcValue(voltageAdcValue);
-		int current = getCurrentFromAdcValue(currentSenseAdcValue);
-
+		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
-		voltageArray[ivCurveSequenceNumber] = voltage;
-		currentArray[ivCurveSequenceNumber] = current;
+		voltageArray[ivCurveSequenceNumber] = getVoltageFromAdcValue();
+		currentArray[ivCurveSequenceNumber] = getCurrentFromAdcValue();
+
 #ifdef DEBUG_MODE
 		Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+		updateHarvesterLoad();  
 		delay(200);
+#else
+		updateHarvesterLoad();  
 #endif
 
-		updateHarvesterLoad();  
 		// Uncomment to measure maximum inner cycle time
 //		time_t innerCurrCycleTime_ms = millis() - innerTimeStamp_ms;
 //		if ( innerMaxCycleTime_ms < innerCurrCycleTime_ms ) 
@@ -112,7 +107,6 @@ void loop() {
 		{
 			;
 		}
-
 	}
 	// Transmit the measured curve or store it on SD card
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)

@@ -19,9 +19,10 @@
 #define NUM_OF_CONFIGLINES 7
 // See: https://forum.pjrc.com/threads/60696-Teensy-4-software-reset
 
-ADC *adc = new ADC();
 
 uint8_t ivCurveSequenceNumber = 0;
+
+static ADC *adc = new ADC();
 
 #ifdef STAND_ALONE
 static char filename[80];
@@ -46,9 +47,12 @@ float shortToVoltage(short _voltage)
 	return returnValue*VCC_VOLTAGE;
 }
 
-int getVoltageFromAdcValue(int _adcValue)
+int getVoltageFromAdcValue(void)
 {
 	double returnValue;
+
+	int _adcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
+
 	if (_adcValue < 0)
 	{
 		returnValue = 0;
@@ -67,9 +71,12 @@ int getVoltageFromAdcValue(int _adcValue)
 	return (int)returnValue;
 }
 
-int getCurrentFromAdcValue(int _adcValue)
+int getCurrentFromAdcValue(void)
 {
 	double returnValue;
+
+	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
+
 	if(_adcValue < 0)
 	{
 		returnValue = 0;
