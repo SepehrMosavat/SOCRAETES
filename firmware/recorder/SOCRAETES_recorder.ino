@@ -7,11 +7,6 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-static uint8_t ivCurveSequenceNumber;
-
-#if defined(STAND_ALONE)
-static time_t endFileRecord_s;
-#endif
 
 // Cycle time for measuring points of curve
 static const uint32_t innerCycleTime_ms = 10;
@@ -19,12 +14,16 @@ static const uint32_t innerCycleTime_ms = 10;
 static uint32_t innerTimeStamp_ms;
 
 #if defined(STAND_ALONE)
+static time_t endFileRecord_s;
+
 static const uint32_t outerCycleTime_ms = 2000;
 #else
 static const uint32_t outerCycleTime_ms = 500;
 #endif
 
 static uint32_t outerTimeStamp_ms;
+
+static uint8_t ivCurveSequenceNumber;
 
 static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
@@ -47,8 +46,8 @@ void setup() {
 	initializeADC();
 
 #if STAND_ALONE
-	setup_time();
-	while( setup_SD() != 0 )
+	setupTime();
+	while( setupSD() != 0 )
 	{
 		delay(500);
 	}
@@ -119,7 +118,7 @@ void loop() {
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 #if defined(STAND_ALONE)
-		write_data_to_SD(Counter, voltageArray[Counter], currentArray[Counter]);
+		writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
 #elif ! defined(DEBUG_MODE)
 		transmitValuesAsByteArray(Counter, voltageArray[Counter], currentArray[Counter]);
 #endif

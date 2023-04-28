@@ -151,7 +151,7 @@ void startupDelay()
 }
 #if STAND_ALONE
 
-int setup_SD()
+int setupSD()
 {
 	const int chipSelect = BUILTIN_SDCARD;
 	//Check if a SD card is available
@@ -264,7 +264,7 @@ time_t createNewFile(void)
 
 }
 
-void write_data_to_SD(uint8_t _sequence_number, int _voltage, int _current)
+void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
 {
 	if ( !SD.mediaPresent() )
 	{
@@ -291,7 +291,7 @@ time_t getTeensy3Time()
   return Teensy3Clock.get();
 }
 
-void setup_time()
+void setupTime()
 {
 
 	setSyncProvider(getTeensy3Time);

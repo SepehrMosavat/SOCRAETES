@@ -31,15 +31,15 @@ void updateHarvesterLoad(uint8_t SeqNo);
 
 void startupDelay();
 
-int setup_SD();
+int setupSD();
 
 int readConfigFile(void);
 
 /* Returns the timestamp when to stop recording to the created file */
 time_t createNewFile(void);
 
-void write_data_to_SD(uint8_t, int, int);
+void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
 
-void setup_time();
+void setupTime();
 
 #endif /* FUNCTIONS_H_ */
