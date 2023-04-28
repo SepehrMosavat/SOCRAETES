@@ -18,15 +18,12 @@
 
 #define NUM_OF_CONFIGLINES 7
 // See: https://forum.pjrc.com/threads/60696-Teensy-4-software-reset
-static void resetFunc(void)
-{
-	SCB_AIRCR = 0x05FA0004;
-}
 
 ADC *adc = new ADC();
 
 uint8_t ivCurveSequenceNumber = 0;
 
+#ifdef STAND_ALONE
 static char filename[80];
 
 static String harvesting_info[NUM_OF_CONFIGLINES];
@@ -35,6 +32,12 @@ static unsigned int lastindex;
 
 // Initialize this value unequal to zero. It is set in readConfigFile()
 static time_t fileRecDuration_s = 60;
+
+static void resetFunc(void)
+{
+	SCB_AIRCR = 0x05FA0004;
+}
+#endif
 
 float shortToVoltage(short _voltage)
 {
