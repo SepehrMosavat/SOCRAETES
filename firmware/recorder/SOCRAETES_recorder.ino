@@ -7,7 +7,7 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-extern uint8_t ivCurveSequenceNumber;
+static uint8_t ivCurveSequenceNumber;
 
 #if defined(STAND_ALONE)
 static time_t endFileRecord_s;
@@ -58,9 +58,9 @@ void setup() {
 	}
 	endFileRecord_s = createNewFile();
 #endif
-	ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE; 
+	ivCurveSequenceNumber = 0; 
 	// Set DACs for first measurement
-	updateHarvesterLoad();	
+	updateHarvesterLoad(ivCurveSequenceNumber);	
 }
 
 void loop() {
@@ -84,10 +84,21 @@ void loop() {
 
 #ifdef DEBUG_MODE
 		Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
-		updateHarvesterLoad();  
+#endif
+
+		ivCurveSequenceNumber++;
+
+		if( ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE )
+		{
+			ivCurveSequenceNumber = 0;
+		}
+
+		// Set new harvester load
+		updateHarvesterLoad(ivCurveSequenceNumber);  
+
+#ifdef DEBUG_MODE
+		// Add some extra delay when in debug mode
 		delay(200);
-#else
-		updateHarvesterLoad();  
 #endif
 
 		// Uncomment to measure maximum inner cycle time
@@ -120,7 +131,6 @@ void loop() {
 	if (now() > endFileRecord_s)
 	{
 		Serial.printf("new recording\n");
-		ivCurveSequenceNumber = NUMBER_OF_CAPTURED_POINTS_IN_CURVE;
 		endFileRecord_s = createNewFile();
 		Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
 	}

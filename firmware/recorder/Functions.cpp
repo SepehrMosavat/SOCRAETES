@@ -19,9 +19,6 @@
 #define NUM_OF_CONFIGLINES 7
 // See: https://forum.pjrc.com/threads/60696-Teensy-4-software-reset
 
-
-uint8_t ivCurveSequenceNumber = 0;
-
 static ADC *adc = new ADC();
 
 #ifdef STAND_ALONE
@@ -135,17 +132,12 @@ void initializeADC()
 	adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
 }
 
-void updateHarvesterLoad()
+void updateHarvesterLoad(uint8_t SeqNo)
 {
 #ifdef CALIBRATION_MODE
 	analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
 #else
-	ivCurveSequenceNumber++;
-	if( ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE )
-	{
-		ivCurveSequenceNumber = 0;
-	}
-	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[ivCurveSequenceNumber] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
+	analogWrite(LOAD_MOSFET_DAC_PIN, LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[SeqNo] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
 #endif
 }
 

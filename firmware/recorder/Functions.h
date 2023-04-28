@@ -27,7 +27,7 @@ void transmitValuesAsByteArray(uint8_t SeqNo, int voltage, int current);
 
 void initializeADC();
 
-void updateHarvesterLoad();
+void updateHarvesterLoad(uint8_t SeqNo);
 
 void startupDelay();
 
