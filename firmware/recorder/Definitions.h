@@ -10,11 +10,19 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+// If neither DEBUG_MODE nor STAND_ALONE is defined,
+// normal operation mode with record.py is assumed
+
+// In debug mode every measured point of curve is printed via serial
+// Cycle times are not taken into account
 //#define DEBUG_MODE
-#define STAND_ALONE 1
+
+// Data is stored on SD-Card
+//#define STAND_ALONE 1
 
 #ifdef DEBUG_MODE
-#define CALIBRATION_MODE
+// define CALIBRATION_MODE if required
+// #define CALIBRATION_MODE
 #define CALIBRATION_MODE_LOAD_MOSFET_VALUE 4095
 #endif
 
