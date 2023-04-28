@@ -20,7 +20,10 @@ int getVoltageFromAdcValue(void);
 
 int getCurrentFromAdcValue(void);
 
-void convertIntValuesToByteArrays(uint8_t, int, int, byte*);
+/* Transmits sequence number, voltage and current as a byte array 
+ * via serial
+ */
+void transmitValuesAsByteArray(uint8_t SeqNo, int voltage, int current);
 
 void initializeADC();
 

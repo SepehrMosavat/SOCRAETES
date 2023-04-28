@@ -95,21 +95,27 @@ int getCurrentFromAdcValue(void)
 	return (returnValue < 0) ? 0 : returnValue;
 }
 
-void convertIntValuesToByteArrays(uint8_t _sequence_number, int _voltage, int _current, byte* _buffer)
+void transmitValuesAsByteArray(uint8_t SeqNo, int voltage, int current)
 {
-	_buffer[0] = 0xaa; // Start byte
-	_buffer[1] = _sequence_number; // TODO: IV curve point sequence number
-	_buffer[10] = 0x55; // Finish byte
+	byte buffer[11];
+	buffer[0] = 0xaa; // Start byte
+	buffer[1] = SeqNo; 
+	buffer[10] = 0x55; // Finish byte
 
-	_buffer[2] = (_voltage >> 0) & 0xff;
-	_buffer[3] = (_voltage >> 8) & 0xff;
-	_buffer[4] = (_voltage >> 16) & 0xff;
-	_buffer[5] = (_voltage >> 24) & 0xff;
+	buffer[2] = (voltage >> 0) & 0xff;
+	buffer[3] = (voltage >> 8) & 0xff;
+	buffer[4] = (voltage >> 16) & 0xff;
+	buffer[5] = (voltage >> 24) & 0xff;
 
-	_buffer[6] = (_current >> 0) & 0xff;
-	_buffer[7] = (_current >> 8) & 0xff;
-	_buffer[8] = (_current >> 16) & 0xff;
-	_buffer[9] = (_current >> 24) & 0xff;
+	buffer[6] = (current >> 0) & 0xff;
+	buffer[7] = (current >> 8) & 0xff;
+	buffer[8] = (current >> 16) & 0xff;
+	buffer[9] = (current >> 24) & 0xff;
+
+	for(int i = 0; i < 11; i++)
+	{
+		Serial.write(buffer[i]);
+	}
 }
 
 void initializeADC()

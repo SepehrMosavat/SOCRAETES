@@ -9,16 +9,12 @@
 
 extern uint8_t ivCurveSequenceNumber;
 
-#if ! defined(DEBUG_MODE) && ! defined(STAND_ALONE)
-static byte uartByteArray[11];
-#endif
-
 #if defined(STAND_ALONE)
 static time_t endFileRecord_s;
 #endif
 
 // Cycle time for measuring points of curve
-static const uint32_t innerCycleTime_ms = 5;
+static const uint32_t innerCycleTime_ms = 10;
 
 static uint32_t innerTimeStamp_ms;
 
@@ -114,11 +110,7 @@ void loop() {
 #if defined(STAND_ALONE)
 		write_data_to_SD(Counter, voltageArray[Counter], currentArray[Counter]);
 #elif ! defined(DEBUG_MODE)
-		convertIntValuesToByteArrays(Counter, voltageArray[Counter], currentArray[Counter], uartByteArray);
-		for(int i = 0; i < 11; i++)
-		{
-			Serial.write(uartByteArray[i]);
-		}
+		transmitValuesAsByteArray(Counter, voltageArray[Counter], currentArray[Counter]);
 #endif
 		delay(5);
 	}
