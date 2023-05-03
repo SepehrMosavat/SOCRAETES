@@ -3,6 +3,7 @@
 #include <ADC.h>
 #include <SPI.h>
 #include <TimeLib.h>
+#include <elapsedMillis.h>
 
 #include "Definitions.h"
 #include "Functions.h"
