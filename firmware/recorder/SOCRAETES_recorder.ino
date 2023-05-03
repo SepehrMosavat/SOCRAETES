@@ -104,7 +104,7 @@ void loop() {
 //		if ( innerMaxTaskTime_ms < innerElapsedMillis ) 
 //		{ 
 //			innerMaxTaskTime_ms = innerElapsedMillis;
-//			Serial.printf("innerMaxTaskTime_ms: %ld\n", innerMaxTaskTime_ms);
+//			Serial.printf("innerMaxTaskTime_ms: %lu\n", innerMaxTaskTime_ms);
 //		}
 
 		//Wait a bit that new harvester load can settle
@@ -138,7 +138,7 @@ void loop() {
 //	if ( outerMaxTaskTime_ms < outerElapsedMillis ) 
 //	{
 //		outerMaxTaskTime_ms = outerElapsedMillis; 
-//		Serial.printf("outerMaxTaskTime_ms: %ld\n", outerMaxTaskTime_ms);
+//		Serial.printf("outerMaxTaskTime_ms: %lu\n", outerMaxTaskTime_ms);
 //	}
 	while ( outerElapsedMillis < outerCycleTime_ms )
 	{
