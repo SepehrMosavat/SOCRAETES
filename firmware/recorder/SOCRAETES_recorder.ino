@@ -63,9 +63,9 @@ void setup() {
 
 void loop() {
 	// Uncomment to measure maximum inner cycle time
-//	static elapsedMillis innerMaxTaskTime_ms = -1;
+// 	static unsigned long innerMaxTaskTime_ms = 0;
 	// Uncomment to measure maximum outer cycle time
-//	static elapsedMillis outerMaxTaskTime_ms = -1;
+//	static unsigned long outerMaxTaskTime_ms = 0;
 
 	outerElapsedMillis = 0;
 
@@ -103,7 +103,7 @@ void loop() {
 //		if ( innerMaxTaskTime_ms < innerElapsedMillis ) 
 //		{ 
 //			innerMaxTaskTime_ms = innerElapsedMillis;
-//			Serial.printf("innerMaxTaskTime_ms: %d\n", innerMaxTaskTime_ms);
+//			Serial.printf("innerMaxTaskTime_ms: %ld\n", innerMaxTaskTime_ms);
 //		}
 
 		//Wait a bit that new harvester load can settle
@@ -137,7 +137,7 @@ void loop() {
 //	if ( outerMaxTaskTime_ms < outerElapsedMillis ) 
 //	{
 //		outerMaxTaskTime_ms = outerElapsedMillis; 
-//		Serial.printf("outerMaxTaskTime_ms: %d\n", outerMaxTaskTime_ms);
+//		Serial.printf("outerMaxTaskTime_ms: %ld\n", outerMaxTaskTime_ms);
 //	}
 	while ( outerElapsedMillis < outerCycleTime_ms )
 	{
