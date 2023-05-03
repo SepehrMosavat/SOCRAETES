@@ -7,11 +7,10 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-
 // Cycle time for measuring points of curve
 static const uint32_t innerCycleTime_ms = 10;
 
-static uint32_t innerTimeStamp_ms;
+static elapsedMillis innerElapsedMillis;
 
 #if defined(STAND_ALONE)
 static time_t endFileRecord_s;
@@ -21,7 +20,7 @@ static const uint32_t outerCycleTime_ms = 2000;
 static const uint32_t outerCycleTime_ms = 500;
 #endif
 
-static uint32_t outerTimeStamp_ms;
+static elapsedMillis outerElapsedMillis;
 
 static uint8_t ivCurveSequenceNumber;
 
@@ -64,17 +63,17 @@ void setup() {
 
 void loop() {
 	// Uncomment to measure maximum inner cycle time
-//	static time_t innerMaxCycleTime_ms = -1;
+//	static elapsedMillis innerMaxTaskTime_ms = -1;
 	// Uncomment to measure maximum outer cycle time
-//	static time_t outerMaxCycleTime_ms = -1;
+//	static elapsedMillis outerMaxTaskTime_ms = -1;
 
-	outerTimeStamp_ms = millis();
+	outerElapsedMillis = 0;
 
 	digitalToggle(LED_BUILTIN);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
-		innerTimeStamp_ms = millis();
+		innerElapsedMillis = 0;
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
@@ -101,15 +100,14 @@ void loop() {
 #endif
 
 		// Uncomment to measure maximum inner cycle time
-//		time_t innerCurrCycleTime_ms = millis() - innerTimeStamp_ms;
-//		if ( innerMaxCycleTime_ms < innerCurrCycleTime_ms ) 
+//		if ( innerMaxTaskTime_ms < innerElapsedMillis ) 
 //		{ 
-//			innerMaxCycleTime_ms = innerCurrCycleTime_ms;
-//			Serial.printf("innerMaxCycleTime_ms: %d\n", innerMaxCycleTime_ms);
+//			innerMaxTaskTime_ms = innerElapsedMillis;
+//			Serial.printf("innerMaxTaskTime_ms: %d\n", innerMaxTaskTime_ms);
 //		}
 
 		//Wait a bit that new harvester load can settle
-		while ( (millis() - innerTimeStamp_ms) < innerCycleTime_ms )
+		while ( innerElapsedMillis < innerCycleTime_ms )
 		{
 			;
 		}
@@ -131,18 +129,17 @@ void loop() {
 	{
 		Serial.printf("new recording\n");
 		endFileRecord_s = createNewFile();
-		Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
+		// Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
 	}
 #endif
 
 	// Uncomment to measure maximum outer cycle time
-//	time_t outerCurrCycleTime_ms = millis() - outerTimeStamp_ms;
-//	if ( outerMaxCycleTime_ms < outerCurrCycleTime_ms ) 
+//	if ( outerMaxTaskTime_ms < outerElapsedMillis ) 
 //	{
-//		outerMaxCycleTime_ms = outerCurrCycleTime_ms; 
-//		Serial.printf("outerMaxCycleTime_ms: %d\n", outerMaxCycleTime_ms);
+//		outerMaxTaskTime_ms = outerElapsedMillis; 
+//		Serial.printf("outerMaxTaskTime_ms: %d\n", outerMaxTaskTime_ms);
 //	}
-	while ( (millis() - outerTimeStamp_ms) < outerCycleTime_ms )
+	while ( outerElapsedMillis < outerCycleTime_ms )
 	{
 		;
 	}
