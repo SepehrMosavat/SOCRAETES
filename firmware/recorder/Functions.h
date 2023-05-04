@@ -16,17 +16,30 @@
 
 float shortToVoltage(short);
 
-int getVoltageFromAdcValue(int);
+int getVoltageFromAdcValue(void);
 
-int getCurrentFromAdcValue(int);
+int getCurrentFromAdcValue(void);
 
-void convertIntValuesToByteArrays(unsigned short, int, int, byte*);
+/* Transmits sequence number, voltage and current as a byte array 
+ * via serial
+ */
+void transmitValuesAsByteArray(uint8_t SeqNo, int voltage, int current);
 
 void initializeADC();
 
-void updateHarvesterLoad();
+void updateHarvesterLoad(uint8_t SeqNo);
 
 void startupDelay();
 
+int setupSD();
+
+int readConfigFile(void);
+
+/* Returns the timestamp when to stop recording to the created file */
+time_t createNewFile(void);
+
+void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
+
+void setupTime();
 
 #endif /* FUNCTIONS_H_ */

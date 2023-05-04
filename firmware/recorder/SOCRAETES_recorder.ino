@@ -2,13 +2,32 @@
 #include <Encoder.h>
 #include <ADC.h>
 #include <SPI.h>
+#include <TimeLib.h>
+#include <elapsedMillis.h>
 
 #include "Definitions.h"
 #include "Functions.h"
 
-extern byte uartByteArray[11];
-extern ADC *adc;
-extern int ivCurveSequenceNumber;
+// Cycle time for measuring points of curve
+static const uint32_t innerCycleTime_ms = 10;
+
+static elapsedMillis innerElapsedMillis;
+
+#if defined(STAND_ALONE)
+static time_t endFileRecord_s;
+
+static const uint32_t outerCycleTime_ms = 2000;
+#else
+static const uint32_t outerCycleTime_ms = 500;
+#endif
+
+static elapsedMillis outerElapsedMillis;
+
+static uint8_t ivCurveSequenceNumber;
+
+static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+
+static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 void setup() {
 	Serial.begin(0);
@@ -25,31 +44,104 @@ void setup() {
 	digitalWrite(LED_BUILTIN, HIGH);
 
 	initializeADC();
+
+#if STAND_ALONE
+	setupTime();
+	while( setupSD() != 0 )
+	{
+		delay(500);
+	}
+	while( readConfigFile() != 0 )
+	{
+		delay(500);
+	}
+	endFileRecord_s = createNewFile();
+#endif
+	ivCurveSequenceNumber = 0; 
+	// Set DACs for first measurement
+	updateHarvesterLoad(ivCurveSequenceNumber);	
 }
 
 void loop() {
-	// Read harvester voltage and current from ADC lines
-	int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_0);
-	int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
+	// Uncomment to measure maximum inner cycle time
+// 	static unsigned long innerMaxTaskTime_ms = 0;
+	// Uncomment to measure maximum outer cycle time
+//	static unsigned long outerMaxTaskTime_ms = 0;
 
+	outerElapsedMillis = 0;
 
-	// Calculate harvester voltage and current from raw ADC values
-	int voltage = getVoltageFromAdcValue(voltageAdcValue);
-	int current = getCurrentFromAdcValue(currentSenseAdcValue);
+	digitalToggle(LED_BUILTIN);
 
-	convertIntValuesToByteArrays(ivCurveSequenceNumber, voltage, current, uartByteArray);
+	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
+	{
+		innerElapsedMillis = 0;
 
-	updateHarvesterLoad();
+		// Read ADCs and convert to voltage and current values
+		// Store measured point in an array
+		voltageArray[ivCurveSequenceNumber] = getVoltageFromAdcValue();
+		currentArray[ivCurveSequenceNumber] = getCurrentFromAdcValue();
 
 #ifdef DEBUG_MODE
-	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", uartByteArray[1], voltage, current);
-	delay(200);
-#else
-	for(int i = 0; i < 11; i++)
+		Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+#endif
+
+		ivCurveSequenceNumber++;
+
+		if( ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE )
+		{
+			ivCurveSequenceNumber = 0;
+		}
+
+		// Set new harvester load
+		updateHarvesterLoad(ivCurveSequenceNumber);  
+
+#ifdef DEBUG_MODE
+		// Add some extra delay when in debug mode
+		delay(200);
+#endif
+
+		// Uncomment to measure maximum inner cycle time
+//		if ( innerMaxTaskTime_ms < innerElapsedMillis ) 
+//		{ 
+//			innerMaxTaskTime_ms = innerElapsedMillis;
+//			Serial.printf("innerMaxTaskTime_ms: %lu\n", innerMaxTaskTime_ms);
+//		}
+
+		//Wait a bit that new harvester load can settle
+		while ( innerElapsedMillis < innerCycleTime_ms )
+		{
+			;
+		}
+	}
+	// Transmit the measured curve or store it on SD card
+	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
-		Serial.write(uartByteArray[i]);
+#if defined(STAND_ALONE)
+		writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
+#elif ! defined(DEBUG_MODE)
+		transmitValuesAsByteArray(Counter, voltageArray[Counter], currentArray[Counter]);
+#endif
+		delay(5);
+	}
+
+#ifdef STAND_ALONE
+	// Create new file if required
+	if (now() > endFileRecord_s)
+	{
+		Serial.printf("new recording\n");
+		endFileRecord_s = createNewFile();
+		// Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
 	}
 #endif
 
-	delay(3);
+	// Uncomment to measure maximum outer cycle time
+//	if ( outerMaxTaskTime_ms < outerElapsedMillis ) 
+//	{
+//		outerMaxTaskTime_ms = outerElapsedMillis; 
+//		Serial.printf("outerMaxTaskTime_ms: %lu\n", outerMaxTaskTime_ms);
+//	}
+	while ( outerElapsedMillis < outerCycleTime_ms )
+	{
+		;
+	}
 }
