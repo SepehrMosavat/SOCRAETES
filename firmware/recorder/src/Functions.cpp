@@ -36,7 +36,7 @@ int getVoltageFromAdcValue(int _adcValue)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
+		returnValue = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
 #ifdef ADC_VOLTAGE_DIVIDER_USED
@@ -57,7 +57,7 @@ int getCurrentFromAdcValue(int _adcValue)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / 4095; // 12-bit ADC resolution
+		returnValue = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
 		returnValue *= 1000000; // Value in uA
 
@@ -90,7 +90,7 @@ void initializeADC()
 {
 	// Initialize the current-sense and voltage-sense ADC
 	adc->adc1->setAveraging(0); // set number of averages
-	adc->adc1->setResolution(12); // set bits of resolution
+	adc->adc1->setResolution(ADC_RESOLUTION_BITS); // set bits of resolution
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
 }

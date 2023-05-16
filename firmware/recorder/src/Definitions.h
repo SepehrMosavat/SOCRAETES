@@ -30,6 +30,8 @@
 #define VCC_VOLTAGE 3.326
 #define ADC_REFERENCE_VOLTAGE 3.326
 
+#define ADC_RESOLUTION_BITS 10
+
 // For choosing the suitable gain for the current sense amplifier
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 49.9 // Gain = 1003
 //#define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 100 // Gain = 501
