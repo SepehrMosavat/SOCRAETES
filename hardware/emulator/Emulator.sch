@@ -13125,7 +13125,7 @@ W = angled&lt;p&gt;
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k"/>
 <part name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="10k"/>
 <part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="10k"/>
-<part name="R_RANGE" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="51R"/>
+<part name="R_RANGE" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="49R9"/>
 <part name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="100R"/>
 <part name="SUPPLY8" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
 <part name="SUPPLY18" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="+8V" device=""/>
@@ -13310,7 +13310,7 @@ https://www.nes.uni-due.de/</text>
 <wire x1="144.78" y1="132.08" x2="96.52" y2="132.08" width="0.508" layer="97" style="longdash"/>
 <text x="109.22" y="134.62" size="1.778" layer="97">Solar Cell Model</text>
 <text x="73.66" y="157.48" size="1.778" layer="97">Maximum Emulation Current: 3.3 / R_Range
-Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
+Example: 3.3 / 49.9 = 0.0661322 A = 66.13 mA</text>
 <text x="50.8" y="121.92" size="1.778" layer="97">I_OUT = DAC_SC / R_RANGE</text>
 </plain>
 <instances>
@@ -13361,7 +13361,7 @@ Example: 3.3 / 51 = 0.064705 A = 64.7 mA</text>
 </instance>
 <instance part="R_RANGE" gate="G$1" x="50.8" y="160.02" smashed="yes" rot="R180">
 <attribute name="NAME" x="54.61" y="158.5214" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="52.07" y="163.322" size="1.778" layer="96" rot="R180"/>
+<attribute name="VALUE" x="54.61" y="163.322" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="R7" gate="G$1" x="45.72" y="121.92" smashed="yes" rot="R270">
 <attribute name="NAME" x="47.2186" y="125.73" size="1.778" layer="95" rot="R270"/>

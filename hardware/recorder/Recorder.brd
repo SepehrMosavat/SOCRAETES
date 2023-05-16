@@ -2382,9 +2382,9 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="66.802" y1="46.6344" x2="66.802" y2="42.672" width="1.27" layer="1"/>
 <via x="51.816" y="50.8" extent="1-16" drill="1"/>
 <wire x1="51.816" y1="50.8" x2="44.704" y2="50.8" width="1.27" layer="16"/>
-<wire x1="44.704" y1="50.8" x2="41.148" y2="47.244" width="1.27" layer="16"/>
-<via x="41.148" y="47.244" extent="1-16" drill="1"/>
-<wire x1="41.148" y1="47.244" x2="38.862" y2="44.958" width="1.27" layer="1"/>
+<wire x1="44.704" y1="50.8" x2="40.894" y2="46.99" width="1.27" layer="16"/>
+<via x="40.894" y="46.99" extent="1-16" drill="1"/>
+<wire x1="40.894" y1="46.99" x2="38.862" y2="44.958" width="1.27" layer="1"/>
 <wire x1="38.862" y1="44.958" x2="36.99" y2="44.958" width="1.27" layer="1"/>
 <wire x1="49.276" y1="27.94" x2="50.8" y2="27.94" width="1.27" layer="1"/>
 <via x="57.404" y="37.084" extent="1-16" drill="1"/>
@@ -2558,10 +2558,10 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="34.798" y1="65.024" x2="34.798" y2="61.715" width="1.27" layer="1"/>
 <wire x1="34.798" y1="61.715" x2="34.847" y2="61.666" width="1.27" layer="1"/>
 <wire x1="34.847" y1="61.666" x2="34.847" y2="58.625" width="1.27" layer="1"/>
-<wire x1="43.18" y1="43.18" x2="44.196" y2="42.164" width="1.27" layer="1"/>
+<wire x1="42.926" y1="43.434" x2="44.196" y2="42.164" width="1.27" layer="1"/>
 <wire x1="44.196" y1="42.164" x2="45.72" y2="42.164" width="1.27" layer="1"/>
-<wire x1="34.847" y1="58.625" x2="43.18" y2="50.292" width="1.27" layer="1"/>
-<wire x1="43.18" y1="50.292" x2="43.18" y2="43.18" width="1.27" layer="1"/>
+<wire x1="34.847" y1="58.625" x2="42.926" y2="50.546" width="1.27" layer="1"/>
+<wire x1="42.926" y1="50.546" x2="42.926" y2="43.434" width="1.27" layer="1"/>
 <contactref element="C13" pad="2"/>
 <wire x1="41.275" y1="42.164" x2="45.72" y2="42.164" width="1.27" layer="1"/>
 </signal>

@@ -11691,7 +11691,7 @@ GAIN_ia = 200: I_max_record = 8.25 mA</text>
 <instance part="FRAME2" gate="G$1" x="0" y="0" smashed="yes"/>
 <instance part="U2" gate="A" x="66.04" y="45.72" smashed="yes">
 <attribute name="NAME" x="63.5" y="59.42" size="2.0828" layer="95" ratio="10" rot="SR0"/>
-<attribute name="VALUE" x="53.34" y="29.02" size="2.0828" layer="96" ratio="10" rot="SR0"/>
+<attribute name="VALUE" x="60.96" y="29.02" size="2.0828" layer="96" ratio="10" rot="SR0"/>
 </instance>
 <instance part="SUPPLY13" gate="+8V" x="101.6" y="66.04" smashed="yes">
 <attribute name="VALUE" x="104.775" y="66.675" size="1.778" layer="96"/>
@@ -11754,7 +11754,7 @@ GAIN_ia = 200: I_max_record = 8.25 mA</text>
 </instance>
 <instance part="U1" gate="A" x="73.66" y="129.54" smashed="yes">
 <attribute name="NAME" x="60.96" y="143.24" size="2.0828" layer="95" ratio="10" rot="SR0"/>
-<attribute name="VALUE" x="63.5" y="112.84" size="2.0828" layer="96" ratio="10" rot="SR0"/>
+<attribute name="VALUE" x="66.04" y="112.84" size="2.0828" layer="96" ratio="10" rot="SR0"/>
 </instance>
 <instance part="SUPPLY24" gate="GND" x="93.98" y="111.76" smashed="yes">
 <attribute name="VALUE" x="92.075" y="108.585" size="1.778" layer="96"/>
