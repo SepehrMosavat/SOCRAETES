@@ -11,6 +11,7 @@
 #define FUNCTIONS_H_
 
 #include "Definitions.h"
+#include "MCP48xx/src/MCP48xx.h"
 
 int calculateDACvalueForOCVoltageEmulation(int);
 

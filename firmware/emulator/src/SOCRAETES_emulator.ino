@@ -2,14 +2,18 @@
 #include "Definitions.h"
 #include "Functions.h"
 
-
+MCP4822 dac(34);
 
 void setup()
 {
 	Serial.begin(115200);
-	analogWriteResolution(12);
+	SPI.begin();
 
-	pinMode(LED_BUILTIN, OUTPUT);
+	dac.init();
+	dac.turnOnChannelA();
+	dac.turnOnChannelB();
+	dac.setGainA(MCP4822::High);
+	dac.setGainB(MCP4822::High);
 
 	initializeOutputToZero();
 }

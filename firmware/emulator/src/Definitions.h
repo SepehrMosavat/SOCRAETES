@@ -10,10 +10,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-
-#define OC_VOLTAGE_EMULATION_DAC_PIN A22
-#define SC_CURRENT_EMULATION_DAC_PIN A21
-
 #define MAXIMUM_DAC_VOLTAGE 3.3
 
 #define CURRENT_EMULATION_RANGE_RESISTOR 51 // For setting the maximum emulation current
