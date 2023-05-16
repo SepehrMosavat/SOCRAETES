@@ -6,7 +6,7 @@ MCP4822 dac(34);
 
 void setup()
 {
-	Serial.begin(115200);
+	Serial.begin(0);
 	SPI.begin();
 
 	dac.init();
