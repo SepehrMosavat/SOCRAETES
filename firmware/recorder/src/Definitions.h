@@ -18,6 +18,7 @@
 #endif
 
 #define STATUS_LED 1
+#define ERROR_LED 2
 
 // Teensy 4.1 Board Pin Definitions
 #define HARVESTER_VOLTAGE_ADC_PIN A15
