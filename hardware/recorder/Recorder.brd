@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="20" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
@@ -2028,12 +2028,12 @@ Everything else you will find on https://aisler.net/help</description>
 </pass>
 </autorouter>
 <elements>
-<element name="U2" library="LM6132BIN" package="DIP794W45P254L959H508Q8" value="LM6132BIN" x="33.02" y="43.688" smashed="yes" rot="R180">
+<element name="U3" library="LM6132BIN" package="DIP794W45P254L959H508Q8" value="LM6132BIN" x="33.02" y="43.688" smashed="yes" rot="R180">
 <attribute name="DESCRIPTION" value=" Dual Low Power 10 MHz Rail-to-Rail I/O Operational Amplifier 8-PDIP -40 to 85 " x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="DIGI-KEY_PART_NUMBER" value="LM6132BIN/NOPB-ND" x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MF" value="Texas Instruments" x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="MP" value="LM6132BIN/NOPB" x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
-<attribute name="NAME" x="33.712" y="42.272" size="1.016" layer="25" rot="R180"/>
+<attribute name="NAME" x="33.712" y="40.24" size="1.016" layer="25" rot="R180"/>
 <attribute name="PACKAGE" value="PDIP-8 Texas" x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/LM6132BIN/NOPB/?ref=eda" x="43.688" y="29.972" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="36.76" y="49.168" size="1.016" layer="25" rot="R180" align="top-left"/>
@@ -2050,14 +2050,14 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="R" x="43.18" y="42.672" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="28.829" y="33.2486" size="1.27" layer="25" ratio="10" rot="R270"/>
 </element>
-<element name="U3" library="INA121PA" package="P0008A" value="Value" x="54.356" y="20.32" smashed="yes" rot="R270">
+<element name="U4" library="INA121PA" package="P0008A" value="Value" x="54.356" y="20.32" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER" value="Texas Instruments" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="56.769" y="21.0566" size="1.016" layer="25" ratio="6" rot="SR270"/>
 <attribute name="PARTNUMBER" value="INA121P" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="REFDES" value="RefDes" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="TYPE" value="TYPE" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U6" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="34.036" y="32.004" smashed="yes" rot="R270">
+<element name="T2" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="34.036" y="32.004" smashed="yes" rot="R270">
 <attribute name="NAME" x="33.274" y="27.94" size="1.016" layer="25" ratio="10" rot="R270"/>
 </element>
 <element name="R_SHUNT" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1R" x="54.356" y="27.94" smashed="yes">
@@ -2072,7 +2072,7 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="R" x="49.784" y="2.54" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="71.247" y="19.9644" size="1.27" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k" x="37.592" y="23.876" smashed="yes" rot="R270">
+<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k" x="37.592" y="23.876" smashed="yes" rot="R270">
 <attribute name="NAME" x="39.116" y="24.892" size="1.016" layer="25" ratio="10" rot="R270"/>
 <attribute name="POPULARITY" value="81" x="38.1" y="42.672" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="38.1" y="42.672" size="1.778" layer="27" rot="R270" display="off"/>
@@ -2086,7 +2086,7 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="POPULARITY" value="16" x="47.498" y="37.465" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="74.93" y="44.577" size="1.778" layer="27" ratio="10" rot="R90"/>
 </element>
-<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R" x="51.816" y="59.436" smashed="yes" rot="R180">
+<element name="R4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R" x="51.816" y="59.436" smashed="yes" rot="R180">
 <attribute name="NAME" x="52.324" y="57.912" size="1.016" layer="25" ratio="10" rot="R180"/>
 <attribute name="POPULARITY" value="81" x="63.5" y="49.784" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="63.5" y="49.784" size="1.778" layer="27" rot="R180" display="off"/>
@@ -2105,7 +2105,7 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="VALUE" x="53.0098" y="47.3202" size="1.016" layer="21" ratio="6" rot="SR270"/>
 <attribute name="VENDOR" value="STMicroelectronics" x="62.484" y="44.704" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U4" library="L7908CV" package="TO-220_STM" value="L7908CV" x="45.72" y="44.704" smashed="yes" rot="R270">
+<element name="U6" library="L7908CV" package="TO-220_STM" value="L7908CV" x="45.72" y="44.704" smashed="yes" rot="R270">
 <attribute name="BUILT_BY" value="EMA_UL_Team" x="56.896" y="44.704" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MANUFACTURER_PART_NUMBER" value="L7908CV" x="56.896" y="44.704" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="46.5074" y="48.0568" size="1.016" layer="25" ratio="6" rot="SR0"/>
@@ -2113,8 +2113,8 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="VALUE" x="47.4218" y="47.3202" size="1.016" layer="21" ratio="6" rot="SR270"/>
 <attribute name="VENDOR" value="STMicroelectronics" x="56.896" y="44.704" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U8" library="DEV-16771 (Teensy 41)" package="MODULE_DEV-16771_REDUCED_PINS" value="DEV-16771_REDUCED_PINS" x="11.684" y="40.132" smashed="yes" rot="R270"/>
-<element name="U1" library="MCP4822-E_P" package="DIP787W46P254L927H533Q8" value="MCP4822-E/P" x="29.972" y="12.7" smashed="yes">
+<element name="U1" library="DEV-16771 (Teensy 41)" package="MODULE_DEV-16771_REDUCED_PINS" value="DEV-16771_REDUCED_PINS" x="11.684" y="40.132" smashed="yes" rot="R270"/>
+<element name="U2" library="MCP4822-E_P" package="DIP787W46P254L927H533Q8" value="MCP4822-E/P" x="29.972" y="12.7" smashed="yes">
 <attribute name="AVAILABILITY" value="In Stock" x="29.972" y="12.7" size="1.778" layer="27" display="off"/>
 <attribute name="DESCRIPTION" value=" 12 Bit Digital to Analog Converter 2 8-PDIP " x="29.972" y="12.7" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="Microchip" x="29.972" y="12.7" size="1.778" layer="27" display="off"/>
@@ -2135,13 +2135,13 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="PURCHASE-URL" value="https://pricing.snapeda.com/search/part/RD-0512D/?ref=eda" x="35.052" y="59.436" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="30.032" y="54.136" size="1.016" layer="25"/>
 </element>
-<element name="C7" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="26.162" y="20.32" smashed="yes" rot="R90">
+<element name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="26.162" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="24.765" y="18.288" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="26.162" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="26.162" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="23.749" y="23.368" size="1.016" layer="25" ratio="10" rot="R270"/>
 </element>
-<element name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="10u" x="28.702" y="20.32" smashed="yes" rot="R90">
+<element name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="10u" x="28.702" y="20.32" smashed="yes" rot="R90">
 <attribute name="NAME" x="31.115" y="19.558" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="28.702" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="28.702" y="20.32" size="1.778" layer="27" rot="R90" display="off"/>
@@ -2153,47 +2153,47 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="C" x="56.896" y="13.716" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="55.626" y="11.049" size="1.016" layer="25" ratio="10"/>
 </element>
-<element name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="46.482" y="24.13" smashed="yes" rot="R180">
+<element name="C6" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="46.482" y="24.13" smashed="yes" rot="R180">
 <attribute name="NAME" x="44.069" y="24.638" size="1.016" layer="25" ratio="10" rot="R180"/>
 <attribute name="POPULARITY" value="56" x="46.482" y="24.13" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="46.482" y="24.13" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="47.752" y="26.543" size="1.016" layer="25" ratio="10" rot="R180"/>
 </element>
-<element name="C6" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="68.072" y="42.672" smashed="yes">
+<element name="C7" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="68.072" y="42.672" smashed="yes">
 <attribute name="NAME" x="63.881" y="42.037" size="1.016" layer="25" ratio="10"/>
 <attribute name="POPULARITY" value="56" x="68.072" y="42.672" size="1.778" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="68.072" y="42.672" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="66.802" y="40.005" size="1.016" layer="25" ratio="10"/>
 </element>
-<element name="C1" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u" x="27.305" y="66.294" smashed="yes" rot="R90">
-<attribute name="NAME" x="25.908" y="66.04" size="1.016" layer="25" ratio="10" rot="R90"/>
+<element name="C12" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u" x="27.305" y="66.294" smashed="yes" rot="R90">
+<attribute name="NAME" x="25.908" y="65.024" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="27.305" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="27.305" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="29.083" y="69.977" size="1.016" layer="25" ratio="10" rot="R180"/>
+<attribute name="VALUE" x="28.829" y="69.977" size="1.016" layer="25" ratio="10" rot="R180"/>
 </element>
-<element name="C3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="34.798" y="66.294" smashed="yes" rot="R90">
-<attribute name="NAME" x="33.401" y="66.04" size="1.016" layer="25" ratio="10" rot="R90"/>
+<element name="C14" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="34.798" y="66.294" smashed="yes" rot="R90">
+<attribute name="NAME" x="33.401" y="65.024" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="34.798" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="34.798" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="35.56" y="69.977" size="1.016" layer="25" ratio="10" rot="R180"/>
 </element>
-<element name="C2" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="39.878" y="66.294" smashed="yes" rot="R90">
-<attribute name="NAME" x="38.481" y="66.04" size="1.016" layer="25" ratio="10" rot="R90"/>
+<element name="C13" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="39.878" y="66.294" smashed="yes" rot="R90">
+<attribute name="NAME" x="38.481" y="65.024" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="39.878" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="39.878" y="66.294" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="40.64" y="69.977" size="1.016" layer="25" ratio="10" rot="R180"/>
 </element>
-<element name="C9" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="26.416" y="41.148" smashed="yes" rot="R90">
+<element name="C4" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="26.416" y="41.148" smashed="yes" rot="R90">
 <attribute name="NAME" x="25.019" y="40.767" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="26.416" y="41.148" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="26.416" y="41.148" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="26.797" y="43.688" size="1.016" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="U7" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="41.656" y="32.004" smashed="yes" rot="R270">
+<element name="T1" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="41.656" y="32.004" smashed="yes" rot="R270">
 <attribute name="NAME" x="41.402" y="27.432" size="1.016" layer="25" ratio="10" rot="R270"/>
 <attribute name="VALUE" x="38.354" y="35.687" size="1.016" layer="27" ratio="10" rot="R270"/>
 </element>
-<element name="D3" library="diode" library_urn="urn:adsk.eagle:library:210" package="DO41-7.6" package3d_urn="urn:adsk.eagle:package:43421/1" value="1N5817-B" x="11.684" y="7.112" smashed="yes">
+<element name="D1" library="diode" library_urn="urn:adsk.eagle:library:210" package="DO41-7.6" package3d_urn="urn:adsk.eagle:package:43421/1" value="1N5817-B" x="11.684" y="7.112" smashed="yes">
 <attribute name="NAME" x="10.668" y="4.699" size="1.016" layer="25" ratio="10"/>
 <attribute name="POPULARITY" value="0" x="11.684" y="7.112" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="8.128" y="8.255" size="1.016" layer="25" ratio="10"/>
@@ -2218,7 +2218,7 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="POPULARITY" value="48" x="57.404" y="5.588" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="53.594" y="2.667" size="1.27" layer="27" ratio="10"/>
 </element>
-<element name="C10" library="SamacSys_Parts" package="EDS224Z3R6H" value="EDS224Z3R6H" x="40.132" y="7.112" smashed="yes" rot="R180">
+<element name="C1" library="SamacSys_Parts" package="EDS224Z3R6H" value="EDS224Z3R6H" x="40.132" y="7.112" smashed="yes" rot="R180">
 <attribute name="DESCRIPTION" value="Supercapacitors / Ultracapacitors 0.22F 3.6V 85C" x="40.132" y="7.112" size="1.016" layer="27" rot="R180" display="off"/>
 <attribute name="HEIGHT" value="6mm" x="40.132" y="7.112" size="1.016" layer="27" rot="R180" display="off"/>
 <attribute name="MANUFACTURER_NAME" value="Cornell Dubilier" x="40.132" y="7.112" size="1.016" layer="27" rot="R180" display="off"/>
@@ -2254,32 +2254,32 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="R" x="68.072" y="21.336" size="1.016" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="68.707" y="19.0754" size="1.27" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="C11" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.33u" x="55.88" y="45.974" smashed="yes" rot="R90">
+<element name="C10" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.33u" x="55.88" y="45.974" smashed="yes" rot="R90">
 <attribute name="NAME" x="56.896" y="49.53" size="1.016" layer="25" ratio="10" rot="R180"/>
 <attribute name="POPULARITY" value="56" x="55.88" y="45.974" size="0.8128" layer="27" rot="R90" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="55.88" y="45.974" size="0.8128" layer="27" rot="R90" display="off"/>
-<attribute name="VALUE" x="58.42" y="43.561" size="1.016" layer="25" ratio="10" rot="R90"/>
+<attribute name="VALUE" x="58.42" y="44.196" size="1.016" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="C14" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="41.148" y="39.624" smashed="yes">
+<element name="C11" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="1u" x="41.148" y="39.624" smashed="yes">
 <attribute name="NAME" x="38.354" y="37.211" size="1.016" layer="25" ratio="10"/>
 <attribute name="POPULARITY" value="56" x="41.148" y="39.624" size="0.8128" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="41.148" y="39.624" size="0.8128" layer="27" display="off"/>
 <attribute name="VALUE" x="41.148" y="37.211" size="1.016" layer="25" ratio="10"/>
 </element>
-<element name="C13" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u" x="41.275" y="43.434" smashed="yes" rot="R270">
+<element name="C9" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="2.2u" x="41.275" y="43.434" smashed="yes" rot="R270">
 <attribute name="NAME" x="42.672" y="44.704" size="1.016" layer="25" ratio="10" rot="R270"/>
 <attribute name="POPULARITY" value="56" x="41.275" y="43.434" size="0.8128" layer="27" rot="R270" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="41.275" y="43.434" size="0.8128" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="38.862" y="44.958" size="1.016" layer="25" ratio="10" rot="R270"/>
 </element>
-<element name="C12" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="50.038" y="35.052" smashed="yes">
-<attribute name="NAME" x="47.117" y="33.274" size="1.016" layer="25" ratio="10" rot="R90"/>
+<element name="C8" library="rcl" library_urn="urn:adsk.eagle:library:334" package="C025-024X044" package3d_urn="urn:adsk.eagle:package:23630/1" value="0.1u" x="50.038" y="35.052" smashed="yes">
+<attribute name="NAME" x="47.625" y="34.163" size="1.016" layer="25" ratio="10" rot="R90"/>
 <attribute name="POPULARITY" value="56" x="50.038" y="35.052" size="0.8128" layer="27" display="off"/>
 <attribute name="SPICEPREFIX" value="C" x="50.038" y="35.052" size="0.8128" layer="27" display="off"/>
 <attribute name="VALUE" x="48.768" y="32.385" size="1.016" layer="25" ratio="10"/>
 </element>
 <element name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="330R" x="51.816" y="66.04" smashed="yes" rot="R180">
-<attribute name="NAME" x="52.832" y="64.516" size="1.016" layer="25" ratio="10" rot="R180"/>
+<attribute name="NAME" x="52.324" y="64.516" size="1.016" layer="25" ratio="10" rot="R180"/>
 <attribute name="POPULARITY" value="81" x="51.816" y="58.928" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="SPICEPREFIX" value="R" x="51.816" y="58.928" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="VALUE" x="54.0766" y="66.675" size="1.27" layer="25" ratio="10" rot="R180"/>
@@ -2292,33 +2292,33 @@ Everything else you will find on https://aisler.net/help</description>
 </elements>
 <signals>
 <signal name="GND">
-<contactref element="U2" pad="5"/>
-<contactref element="R2" pad="1"/>
 <contactref element="U3" pad="5"/>
+<contactref element="R2" pad="1"/>
+<contactref element="U4" pad="5"/>
 <contactref element="HARVESTER_TERMINAL" pad="2"/>
 <contactref element="POWER" pad="K"/>
-<contactref element="U4" pad="1"/>
+<contactref element="U6" pad="1"/>
 <contactref element="U5" pad="2"/>
-<contactref element="U8" pad="GND2"/>
-<contactref element="U8" pad="GND1"/>
-<contactref element="U8" pad="GND4"/>
-<contactref element="U8" pad="GND3"/>
-<contactref element="U1" pad="7"/>
-<contactref element="U1" pad="5"/>
+<contactref element="U1" pad="GND2"/>
+<contactref element="U1" pad="GND1"/>
+<contactref element="U1" pad="GND4"/>
+<contactref element="U1" pad="GND3"/>
+<contactref element="U2" pad="7"/>
+<contactref element="U2" pad="5"/>
 <contactref element="PS1" pad="2"/>
 <contactref element="PS1" pad="5"/>
-<contactref element="C8" pad="2"/>
-<contactref element="C7" pad="2"/>
-<contactref element="C5" pad="2"/>
-<contactref element="C4" pad="2"/>
-<contactref element="C6" pad="2"/>
-<contactref element="C1" pad="2"/>
-<contactref element="C3" pad="2"/>
 <contactref element="C2" pad="2"/>
-<contactref element="U2" pad="4"/>
-<contactref element="C9" pad="2"/>
-<contactref element="U7" pad="SOURCE"/>
-<contactref element="U6" pad="SOURCE"/>
+<contactref element="C3" pad="2"/>
+<contactref element="C5" pad="2"/>
+<contactref element="C6" pad="2"/>
+<contactref element="C7" pad="2"/>
+<contactref element="C12" pad="2"/>
+<contactref element="C14" pad="2"/>
+<contactref element="C13" pad="2"/>
+<contactref element="U3" pad="4"/>
+<contactref element="C4" pad="2"/>
+<contactref element="T1" pad="SOURCE"/>
+<contactref element="T2" pad="SOURCE"/>
 <contactref element="STATUS" pad="K"/>
 <contactref element="MODE" pad="1"/>
 <polygon width="0.2" layer="16">
@@ -2331,19 +2331,19 @@ Everything else you will find on https://aisler.net/help</description>
 <vertex x="0.508" y="1.524"/>
 <vertex x="0.508" y="76.2"/>
 </polygon>
+<contactref element="C1" pad="2"/>
 <contactref element="C10" pad="2"/>
-<contactref element="C11" pad="2"/>
-<contactref element="C14" pad="1"/>
-<contactref element="C13" pad="1"/>
-<contactref element="C12" pad="1"/>
+<contactref element="C11" pad="1"/>
+<contactref element="C9" pad="1"/>
+<contactref element="C8" pad="1"/>
 <contactref element="ERROR" pad="K"/>
 </signal>
 <signal name="+8V">
-<contactref element="U3" pad="7"/>
+<contactref element="U4" pad="7"/>
 <contactref element="U5" pad="3"/>
 <contactref element="C5" pad="1"/>
-<contactref element="U2" pad="8"/>
-<contactref element="C9" pad="1"/>
+<contactref element="U3" pad="8"/>
+<contactref element="C4" pad="1"/>
 <wire x1="51.308" y1="39.624" x2="49.149" y2="37.465" width="1.27" layer="1"/>
 <wire x1="49.149" y1="37.465" x2="47.915" y2="37.465" width="1.27" layer="1"/>
 <via x="47.915" y="37.465" extent="1-16" drill="1"/>
@@ -2358,26 +2358,26 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="55.626" y1="17.653" x2="55.626" y2="16.51" width="1.27" layer="1"/>
 <wire x1="26.416" y1="39.878" x2="29.05" y2="39.878" width="1.27" layer="1"/>
 <wire x1="55.626" y1="13.716" x2="55.626" y2="16.51" width="1.27" layer="1"/>
-<contactref element="C12" pad="2"/>
+<contactref element="C8" pad="2"/>
 <wire x1="51.308" y1="35.052" x2="51.308" y2="39.624" width="1.27" layer="1"/>
 </signal>
 <signal name="-8V">
-<contactref element="U3" pad="4"/>
-<contactref element="U4" pad="3"/>
-<contactref element="C4" pad="1"/>
+<contactref element="U4" pad="4"/>
+<contactref element="U6" pad="3"/>
+<contactref element="C6" pad="1"/>
 <wire x1="45.72" y1="39.624" x2="45.72" y2="28.448" width="1.27" layer="1"/>
 <wire x1="50.546" y1="24.13" x2="50.038" y2="24.13" width="0.508" layer="1"/>
 <wire x1="50.038" y1="24.13" x2="45.72" y2="28.448" width="1.27" layer="1"/>
 <wire x1="47.752" y1="24.13" x2="50.546" y2="24.13" width="1.27" layer="1"/>
-<contactref element="C14" pad="2"/>
+<contactref element="C11" pad="2"/>
 <wire x1="42.418" y1="39.624" x2="45.72" y2="39.624" width="1.27" layer="1"/>
 </signal>
 <signal name="HARVESTER+">
-<contactref element="U2" pad="3"/>
-<contactref element="R_SHUNT" pad="1"/>
 <contactref element="U3" pad="3"/>
+<contactref element="R_SHUNT" pad="1"/>
+<contactref element="U4" pad="3"/>
 <contactref element="HARVESTER_TERMINAL" pad="1"/>
-<contactref element="C6" pad="1"/>
+<contactref element="C7" pad="1"/>
 <wire x1="66.294" y1="47.1424" x2="66.802" y2="46.6344" width="1.27" layer="1"/>
 <wire x1="66.802" y1="46.6344" x2="66.802" y2="42.672" width="1.27" layer="1"/>
 <via x="51.816" y="50.8" extent="1-16" drill="1"/>
@@ -2401,22 +2401,22 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="57.404" y1="37.084" x2="66.294" y2="45.974" width="1.27" layer="1"/>
 </signal>
 <signal name="MOSFET_DAC_OUTPUT">
-<contactref element="R4" pad="2"/>
-<contactref element="U1" pad="8"/>
+<contactref element="R3" pad="2"/>
+<contactref element="U2" pad="8"/>
 <wire x1="33.907" y1="16.51" x2="35.306" y2="16.51" width="1.27" layer="1"/>
 <wire x1="35.306" y1="16.51" x2="37.592" y2="18.796" width="1.27" layer="1"/>
 </signal>
 <signal name="HARVESTER_VOLTAGE_DIVIDER_OUTPUT">
 <contactref element="R1" pad="1"/>
 <contactref element="R2" pad="2"/>
-<contactref element="U8" pad="39"/>
+<contactref element="U1" pad="39"/>
 <wire x1="26.416" y1="26.924" x2="29.464" y2="26.924" width="1.27" layer="1"/>
 <wire x1="19.304" y1="26.162" x2="25.654" y2="26.162" width="1.27" layer="16"/>
 <wire x1="25.654" y1="26.162" x2="26.416" y2="26.924" width="1.27" layer="16"/>
 </signal>
 <signal name="CURRENT_SENSE_AMP_OUTPUT">
-<contactref element="U3" pad="6"/>
-<contactref element="U8" pad="38"/>
+<contactref element="U4" pad="6"/>
+<contactref element="U1" pad="38"/>
 <wire x1="53.086" y1="16.51" x2="53.086" y2="14.732" width="1.27" layer="1"/>
 <wire x1="53.086" y1="14.732" x2="51.435" y2="13.081" width="1.27" layer="1"/>
 <wire x1="51.435" y1="13.081" x2="48.387" y2="13.081" width="1.27" layer="1"/>
@@ -2426,11 +2426,11 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="25.908" y1="23.622" x2="19.304" y2="23.622" width="1.27" layer="16"/>
 </signal>
 <signal name="+3V3">
-<contactref element="R3" pad="2"/>
-<contactref element="U8" pad="3.3V_3"/>
-<contactref element="U8" pad="3.3V_2"/>
-<contactref element="U8" pad="3.3V_1"/>
-<contactref element="D3" pad="A"/>
+<contactref element="R4" pad="2"/>
+<contactref element="U1" pad="3.3V_3"/>
+<contactref element="U1" pad="3.3V_2"/>
+<contactref element="U1" pad="3.3V_1"/>
+<contactref element="D1" pad="A"/>
 <contactref element="MODE" pad="3"/>
 <wire x1="19.304" y1="64.262" x2="18.542" y2="64.262" width="0.508" layer="1"/>
 <wire x1="9.144" y1="23.622" x2="9.144" y2="21.844" width="1.27" layer="1"/>
@@ -2463,12 +2463,12 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="43.688" y1="67.056" x2="43.688" y2="65.913" width="0.508" layer="1"/>
 </signal>
 <signal name="+5V">
-<contactref element="U8" pad="VIN"/>
-<contactref element="U1" pad="1"/>
+<contactref element="U1" pad="VIN"/>
+<contactref element="U2" pad="1"/>
 <contactref element="PS1" pad="1"/>
-<contactref element="C8" pad="1"/>
-<contactref element="C7" pad="1"/>
-<contactref element="C1" pad="1"/>
+<contactref element="C2" pad="1"/>
+<contactref element="C3" pad="1"/>
+<contactref element="C12" pad="1"/>
 <wire x1="19.304" y1="69.342" x2="22.098" y2="69.342" width="1.27" layer="1"/>
 <wire x1="26.416" y1="65.024" x2="27.305" y2="65.024" width="1.27" layer="1"/>
 <wire x1="22.098" y1="69.342" x2="26.416" y2="65.024" width="1.27" layer="1"/>
@@ -2486,13 +2486,13 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="23.622" y1="35.941" x2="23.622" y2="21.844" width="1.27" layer="1"/>
 </signal>
 <signal name="N$5">
-<contactref element="U2" pad="6"/>
-<contactref element="U2" pad="7"/>
+<contactref element="U3" pad="6"/>
+<contactref element="U3" pad="7"/>
 <wire x1="29.05" y1="44.958" x2="29.05" y2="42.418" width="1.27" layer="1"/>
 </signal>
 <signal name="N$8">
-<contactref element="U2" pad="2"/>
-<contactref element="U2" pad="1"/>
+<contactref element="U3" pad="2"/>
+<contactref element="U3" pad="1"/>
 <contactref element="R1" pad="2"/>
 <wire x1="36.99" y1="42.418" x2="36.99" y2="39.878" width="1.27" layer="1"/>
 <wire x1="26.416" y1="37.084" x2="25.4" y2="37.084" width="1.27" layer="1"/>
@@ -2506,9 +2506,9 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="35.306" y1="42.418" x2="36.99" y2="42.418" width="1.27" layer="1"/>
 </signal>
 <signal name="N$6">
-<contactref element="U6" pad="DRAIN"/>
-<contactref element="U3" pad="2"/>
-<contactref element="U7" pad="DRAIN"/>
+<contactref element="T2" pad="DRAIN"/>
+<contactref element="U4" pad="2"/>
+<contactref element="T1" pad="DRAIN"/>
 <wire x1="34.036" y1="29.464" x2="34.036" y2="27.94" width="1.27" layer="1"/>
 <wire x1="35.56" y1="26.416" x2="34.036" y2="27.94" width="1.27" layer="1"/>
 <wire x1="41.656" y1="27.94" x2="40.132" y2="26.416" width="1.27" layer="1"/>
@@ -2525,9 +2525,9 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="53.34" y1="29.972" x2="57.404" y2="29.972" width="1.27" layer="1"/>
 </signal>
 <signal name="N$11">
-<contactref element="U6" pad="GATE"/>
-<contactref element="R4" pad="1"/>
-<contactref element="U7" pad="GATE"/>
+<contactref element="T2" pad="GATE"/>
+<contactref element="R3" pad="1"/>
+<contactref element="T1" pad="GATE"/>
 <wire x1="37.592" y1="28.956" x2="37.592" y2="30.48" width="1.27" layer="1"/>
 <wire x1="39.116" y1="32.004" x2="41.656" y2="32.004" width="1.27" layer="1"/>
 <wire x1="37.592" y1="30.48" x2="39.116" y2="32.004" width="1.27" layer="1"/>
@@ -2535,26 +2535,26 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="36.068" y1="32.004" x2="34.036" y2="32.004" width="1.27" layer="1"/>
 </signal>
 <signal name="N$9">
-<contactref element="R3" pad="1"/>
+<contactref element="R4" pad="1"/>
 <contactref element="POWER" pad="A"/>
 <wire x1="56.896" y1="59.436" x2="60.198" y2="59.436" width="0.508" layer="1"/>
 </signal>
 <signal name="+12V">
 <contactref element="U5" pad="1"/>
 <contactref element="PS1" pad="6"/>
-<contactref element="C2" pad="1"/>
+<contactref element="C13" pad="1"/>
 <wire x1="39.878" y1="65.024" x2="39.878" y2="61.715" width="1.27" layer="1"/>
 <wire x1="39.927" y1="61.666" x2="39.878" y2="61.715" width="1.27" layer="1"/>
 <wire x1="39.927" y1="61.666" x2="39.927" y2="58.117" width="1.27" layer="1"/>
 <wire x1="51.308" y1="46.736" x2="51.308" y2="44.704" width="1.27" layer="1"/>
 <wire x1="39.927" y1="58.117" x2="51.308" y2="46.736" width="1.27" layer="1"/>
-<contactref element="C11" pad="1"/>
+<contactref element="C10" pad="1"/>
 <wire x1="51.308" y1="44.704" x2="55.88" y2="44.704" width="1.27" layer="1"/>
 </signal>
 <signal name="-12V">
-<contactref element="U4" pad="2"/>
+<contactref element="U6" pad="2"/>
 <contactref element="PS1" pad="4"/>
-<contactref element="C3" pad="1"/>
+<contactref element="C14" pad="1"/>
 <wire x1="34.798" y1="65.024" x2="34.798" y2="61.715" width="1.27" layer="1"/>
 <wire x1="34.798" y1="61.715" x2="34.847" y2="61.666" width="1.27" layer="1"/>
 <wire x1="34.847" y1="61.666" x2="34.847" y2="58.625" width="1.27" layer="1"/>
@@ -2562,18 +2562,18 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="44.196" y1="42.164" x2="45.72" y2="42.164" width="1.27" layer="1"/>
 <wire x1="34.847" y1="58.625" x2="42.926" y2="50.546" width="1.27" layer="1"/>
 <wire x1="42.926" y1="50.546" x2="42.926" y2="43.434" width="1.27" layer="1"/>
-<contactref element="C13" pad="2"/>
+<contactref element="C9" pad="2"/>
 <wire x1="41.275" y1="42.164" x2="45.72" y2="42.164" width="1.27" layer="1"/>
 </signal>
 <signal name="DAC_CS">
-<contactref element="U1" pad="2"/>
-<contactref element="U8" pad="34"/>
+<contactref element="U2" pad="2"/>
+<contactref element="U1" pad="34"/>
 <wire x1="19.304" y1="13.462" x2="25.529" y2="13.462" width="1.016" layer="16"/>
 <wire x1="25.529" y1="13.462" x2="26.037" y2="13.97" width="1.016" layer="16"/>
 </signal>
 <signal name="DAC_SCK">
-<contactref element="U1" pad="3"/>
-<contactref element="U8" pad="13"/>
+<contactref element="U2" pad="3"/>
+<contactref element="U1" pad="13"/>
 <wire x1="26.037" y1="11.43" x2="24.511" y2="11.43" width="1.016" layer="1"/>
 <wire x1="21.844" y1="14.097" x2="21.844" y2="35.179" width="1.016" layer="1"/>
 <wire x1="21.844" y1="35.179" x2="20.701" y2="36.322" width="1.016" layer="1"/>
@@ -2581,8 +2581,8 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="24.511" y1="11.43" x2="21.844" y2="14.097" width="1.016" layer="1"/>
 </signal>
 <signal name="DAC_MOSI">
-<contactref element="U1" pad="4"/>
-<contactref element="U8" pad="11"/>
+<contactref element="U2" pad="4"/>
+<contactref element="U1" pad="11"/>
 <wire x1="4.064" y1="38.862" x2="3.048" y2="38.862" width="0.508" layer="1"/>
 <wire x1="3.048" y1="38.862" x2="1.651" y2="37.465" width="0.508" layer="1"/>
 <wire x1="1.651" y1="37.465" x2="1.651" y2="9.779" width="0.508" layer="1"/>
@@ -2591,11 +2591,11 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="6.35" y1="5.08" x2="22.227" y2="5.08" width="0.508" layer="1"/>
 </signal>
 <signal name="N$2">
-<contactref element="D3" pad="C"/>
-<contactref element="U8" pad="VBAT"/>
+<contactref element="D1" pad="C"/>
+<contactref element="U1" pad="VBAT"/>
 <wire x1="7.874" y1="7.112" x2="6.604" y2="8.382" width="1.27" layer="1"/>
 <wire x1="6.604" y1="23.622" x2="6.604" y2="8.382" width="1.27" layer="1"/>
-<contactref element="C10" pad="1"/>
+<contactref element="C1" pad="1"/>
 <wire x1="7.874" y1="7.112" x2="11.43" y2="3.556" width="1.27" layer="16"/>
 <wire x1="36.736" y1="3.556" x2="40.292" y2="7.112" width="1.27" layer="16"/>
 <wire x1="11.43" y1="3.556" x2="36.736" y2="3.556" width="1.27" layer="16"/>
@@ -2607,7 +2607,7 @@ Everything else you will find on https://aisler.net/help</description>
 </signal>
 <signal name="STATUS_LED">
 <contactref element="R5" pad="2"/>
-<contactref element="U8" pad="1"/>
+<contactref element="U1" pad="1"/>
 <wire x1="4.064" y1="64.262" x2="7.366" y2="64.262" width="0.508" layer="1"/>
 <wire x1="11.176" y1="68.072" x2="11.176" y2="71.628" width="0.508" layer="1"/>
 <wire x1="11.176" y1="71.628" x2="14.732" y2="75.184" width="0.508" layer="1"/>
@@ -2617,7 +2617,7 @@ Everything else you will find on https://aisler.net/help</description>
 </signal>
 <signal name="JUMPER_SELECT_MODE">
 <contactref element="MODE" pad="2"/>
-<contactref element="U8" pad="32"/>
+<contactref element="U1" pad="32"/>
 <via x="9.144" y="1.905" extent="1-16" drill="0.45"/>
 <wire x1="9.144" y1="1.905" x2="8.763" y2="1.905" width="0.508" layer="16"/>
 <wire x1="8.763" y1="1.905" x2="4.064" y2="6.604" width="0.508" layer="16"/>
@@ -2635,7 +2635,7 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="R_GAIN_200" pad="2"/>
 <contactref element="R_GAIN_100" pad="2"/>
 <contactref element="R_GAIN_25" pad="2"/>
-<contactref element="U3" pad="1"/>
+<contactref element="U4" pad="1"/>
 <contactref element="R_GAIN_50" pad="2"/>
 <wire x1="70.612" y1="26.416" x2="68.072" y2="26.416" width="1.27" layer="1"/>
 <wire x1="68.072" y1="26.416" x2="65.532" y2="26.416" width="1.27" layer="1"/>
@@ -2644,7 +2644,7 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="60.706" y1="24.13" x2="62.992" y2="26.416" width="1.27" layer="16"/>
 </signal>
 <signal name="N$13">
-<contactref element="U3" pad="8"/>
+<contactref element="U4" pad="8"/>
 <contactref element="GAIN_SELECT" pad="3"/>
 <contactref element="GAIN_SELECT" pad="5"/>
 <contactref element="GAIN_SELECT" pad="7"/>
@@ -2681,7 +2681,7 @@ Everything else you will find on https://aisler.net/help</description>
 </signal>
 <signal name="ERROR_LED">
 <contactref element="R6" pad="2"/>
-<contactref element="U8" pad="2"/>
+<contactref element="U1" pad="2"/>
 <wire x1="4.064" y1="61.722" x2="9.398" y2="61.722" width="0.508" layer="1"/>
 <wire x1="46.736" y1="66.675" x2="46.736" y2="66.04" width="0.508" layer="1"/>
 <wire x1="9.398" y1="61.722" x2="13.716" y2="66.04" width="0.508" layer="1"/>
