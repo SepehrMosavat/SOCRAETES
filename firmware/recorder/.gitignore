@@ -2,7 +2,11 @@
 .vscode
 .clang_complete
 .gcc-flags.json
-.ccls
+.ccls*
+.cache
+cscope*
+.vimrc
+tags
 compile_commands.json
 Makefile
 *.cproject
