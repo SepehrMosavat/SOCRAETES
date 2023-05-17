@@ -83,6 +83,7 @@ void loop() {
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 		innerElapsedMillis = 0;
+		digitalToggle(STATUS_LED);
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
