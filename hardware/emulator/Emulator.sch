@@ -13309,9 +13309,10 @@ https://www.nes.uni-due.de/</text>
 <wire x1="144.78" y1="17.78" x2="144.78" y2="132.08" width="0.508" layer="97" style="longdash"/>
 <wire x1="144.78" y1="132.08" x2="96.52" y2="132.08" width="0.508" layer="97" style="longdash"/>
 <text x="109.22" y="134.62" size="1.778" layer="97">Solar Cell Model</text>
-<text x="73.66" y="157.48" size="1.778" layer="97">Maximum Emulation Current: 3.3 / R_Range
-Example: 3.3 / 49.9 = 0.0661322 A = 66.13 mA</text>
+<text x="73.66" y="157.48" size="1.778" layer="97">Maximum Emulation Current: 4.095 / R_Range
+Example: 4.095 / 49.9 = 0.082064 A = 82.06 mA</text>
 <text x="50.8" y="121.92" size="1.778" layer="97">I_OUT = DAC_SC / R_RANGE</text>
+<text x="149.86" y="73.66" size="1.778" layer="97" rot="R90">V_OC = 2 * DAC_OC_VOLTAGE_EMULATION</text>
 </plain>
 <instances>
 <instance part="FRAME2" gate="G$1" x="0" y="0" smashed="yes">
