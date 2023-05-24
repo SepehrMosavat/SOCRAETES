@@ -8383,7 +8383,7 @@ In this library the device names are the same as the pin names of the symbols, t
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="ZVP2106ASTZ">
+<deviceset name="VP0109N3" prefix="T">
 <gates>
 <gate name="A" symbol="MOSFET_P" x="0" y="0"/>
 </gates>
@@ -13129,7 +13129,7 @@ W = angled&lt;p&gt;
 <part name="R5" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="100R"/>
 <part name="SUPPLY8" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
 <part name="SUPPLY18" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="+8V" device=""/>
-<part name="T1" library="ZVP2106A" deviceset="ZVP2106ASTZ" device=""/>
+<part name="T1" library="ZVP2106A" deviceset="VP0109N3" device=""/>
 <part name="T2" library="transistor-neu-to92" deviceset="*-PNP-" device="TO92-EBC" package3d_urn="urn:adsk.eagle:package:28763/2" technology="2N5401" value="2N5401"/>
 <part name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="120k"/>
 <part name="R6" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="240k"/>
