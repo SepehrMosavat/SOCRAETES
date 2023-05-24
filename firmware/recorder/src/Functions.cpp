@@ -21,7 +21,9 @@
 
 static ADC *adc = new ADC();
 
-#ifdef STAND_ALONE
+//start of data used for sd mode only
+
+
 static char filename[80];
 
 static String harvesting_info[NUM_OF_CONFIGLINES];
@@ -35,8 +37,8 @@ static void resetFunc(void)
 {
 	SCB_AIRCR = 0x05FA0004;
 }
-#endif
 
+//end data used for sd mode only
 
 extern MCP4822 dac;
 
@@ -219,7 +221,7 @@ void startupDelay()
 #endif
 }
 
-#if STAND_ALONE
+//functions used for sd mode only
 
 int setupSD()
 {
@@ -373,4 +375,3 @@ void setupTime()
 	  }
 }
 
-#endif
