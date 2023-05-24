@@ -79,7 +79,7 @@
 <board>
 <plain>
 <text x="72.39" y="36.068" size="1.778" layer="25" rot="R90">HRVST   +     -</text>
-<text x="45.212" y="76.6572" size="1.15" layer="25" rot="R180">SOCRAETES Recorder v0.2.8
+<text x="45.212" y="76.6572" size="1.15" layer="25" rot="R180">SOCRAETES Recorder v0.3.11
 Universität Duisburg-Essen - NES
 Hochschule Niederrhein - FB 03</text>
 <hole x="2.7432" y="74.4982" drill="3"/>
@@ -90,7 +90,7 @@ Hochschule Niederrhein - FB 03</text>
 <wire x1="72.644" y1="77.216" x2="72.644" y2="0" width="0.1524" layer="20"/>
 <wire x1="72.644" y1="0" x2="0" y2="0" width="0.1524" layer="20"/>
 <wire x1="0" y1="0" x2="0" y2="77.216" width="0.1524" layer="20"/>
-<text x="48.514" y="16.764" size="1.016" layer="25" rot="R90">INA121P</text>
+<text x="48.641" y="17.018" size="1.016" layer="25" rot="R90">INA121P</text>
 <text x="59.436" y="7.62" size="1.016" layer="25">PC</text>
 <text x="53.848" y="7.62" size="1.016" layer="25">S/A</text>
 <text x="7.62" y="27.94" size="1.27" layer="26" rot="MR90">Maximum solar cell current with R_shunt = 2R:
@@ -1837,6 +1837,33 @@ W = angled&lt;p&gt;
 </package>
 </packages>
 </library>
+<library name="IRF1404PBF">
+<packages>
+<package name="PG-TO220-3-904_INF">
+<pad name="G" x="0" y="0" drill="1.143" diameter="1.651" shape="long" rot="R90"/>
+<pad name="D" x="2.54" y="0" drill="1.143" diameter="1.651" shape="long" rot="R90"/>
+<pad name="S" x="5.08" y="0" drill="1.143" diameter="1.651" shape="long" rot="R90"/>
+<wire x1="5.08" y1="2.921" x2="7.7216" y2="2.921" width="0.1524" layer="47"/>
+<wire x1="2.54" y1="0" x2="5.08" y2="0" width="0.1524" layer="47"/>
+<wire x1="-2.6416" y1="1.6764" x2="7.7216" y2="1.6764" width="0.1524" layer="21"/>
+<wire x1="-2.794" y1="-1.7526" x2="7.874" y2="-1.7526" width="0.1524" layer="21"/>
+<wire x1="7.874" y1="-1.7526" x2="7.874" y2="3.048" width="0.1524" layer="21"/>
+<wire x1="7.874" y1="3.048" x2="-2.794" y2="3.048" width="0.1524" layer="21"/>
+<wire x1="-2.794" y1="3.048" x2="-2.794" y2="-1.7526" width="0.1524" layer="21"/>
+<wire x1="-1.9558" y1="0" x2="-2.3622" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-2.3622" y1="0" x2="-1.9558" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-2.6416" y1="1.5494" x2="7.7216" y2="1.5494" width="0.1524" layer="51"/>
+<wire x1="-2.6416" y1="-1.6256" x2="7.7216" y2="-1.6256" width="0.1524" layer="51"/>
+<wire x1="7.7216" y1="-1.6256" x2="7.7216" y2="2.921" width="0.1524" layer="51"/>
+<wire x1="7.7216" y1="2.921" x2="-2.6416" y2="2.921" width="0.1524" layer="51"/>
+<wire x1="-2.6416" y1="2.921" x2="-2.6416" y2="-1.6256" width="0.1524" layer="51"/>
+<wire x1="-2.1844" y1="-1.3716" x2="-2.5908" y2="-1.3716" width="0" layer="51" curve="-180"/>
+<wire x1="-2.5908" y1="-1.3716" x2="-2.1844" y2="-1.3716" width="0" layer="51" curve="-180"/>
+<text x="-0.7366" y="3.8354" size="1.27" layer="27" ratio="6" rot="SR0">&gt;Name</text>
+<text x="-0.7366" y="-3.7846" size="1.27" layer="27" ratio="6" rot="SR0">&gt;Value</text>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -2057,9 +2084,6 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="REFDES" value="RefDes" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="TYPE" value="TYPE" x="65.024" y="29.972" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="T2" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="34.036" y="32.004" smashed="yes" rot="R270">
-<attribute name="NAME" x="33.274" y="27.94" size="1.016" layer="25" ratio="10" rot="R270"/>
-</element>
 <element name="R_SHUNT" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1R" x="54.356" y="27.94" smashed="yes">
 <attribute name="NAME" x="54.61" y="29.464" size="1.016" layer="25" ratio="10"/>
 <attribute name="POPULARITY" value="81" x="35.56" y="44.196" size="1.778" layer="27" display="off"/>
@@ -2072,11 +2096,11 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="R" x="49.784" y="2.54" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="71.247" y="19.9644" size="1.27" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k" x="37.592" y="23.876" smashed="yes" rot="R270">
-<attribute name="NAME" x="39.116" y="24.892" size="1.016" layer="25" ratio="10" rot="R270"/>
-<attribute name="POPULARITY" value="81" x="38.1" y="42.672" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="SPICEPREFIX" value="R" x="38.1" y="42.672" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="VALUE" x="36.957" y="24.6126" size="1.27" layer="25" ratio="10" rot="R270"/>
+<element name="R3" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k" x="38.608" y="24.892" smashed="yes" rot="R270">
+<attribute name="NAME" x="40.132" y="25.908" size="1.016" layer="25" ratio="10" rot="R270"/>
+<attribute name="POPULARITY" value="81" x="39.116" y="43.688" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="39.116" y="43.688" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="VALUE" x="37.973" y="25.6286" size="1.27" layer="25" ratio="10" rot="R270"/>
 </element>
 <element name="HARVESTER_TERMINAL" library="con-ptr500" library_urn="urn:adsk.eagle:library:181" package="AK300/2" package3d_urn="urn:adsk.eagle:package:9881/1" value="" x="66.294" y="49.657" smashed="yes" rot="R90">
 <attribute name="MF" value="" x="47.498" y="37.465" size="1.778" layer="27" rot="R90" display="off"/>
@@ -2189,9 +2213,9 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="SPICEPREFIX" value="C" x="26.416" y="41.148" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="26.797" y="43.688" size="1.016" layer="25" ratio="10" rot="R90"/>
 </element>
-<element name="T1" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="ZVN4424A" x="41.656" y="32.004" smashed="yes" rot="R270">
-<attribute name="NAME" x="41.402" y="27.432" size="1.016" layer="25" ratio="10" rot="R270"/>
-<attribute name="VALUE" x="38.354" y="35.687" size="1.016" layer="27" ratio="10" rot="R270"/>
+<element name="T1" library="NES_Solar_Cell_Recorder_And_Emulator" package="TO92-CBE" value="VN0109N3-G-ND" x="42.672" y="32.004" smashed="yes" rot="R270">
+<attribute name="NAME" x="42.164" y="26.67" size="1.016" layer="25" ratio="10"/>
+<attribute name="VALUE" x="39.878" y="35.687" size="1.016" layer="27" ratio="10" rot="R270"/>
 </element>
 <element name="D1" library="diode" library_urn="urn:adsk.eagle:library:210" package="DO41-7.6" package3d_urn="urn:adsk.eagle:package:43421/1" value="1N5817-B" x="11.684" y="7.112" smashed="yes">
 <attribute name="NAME" x="10.668" y="4.699" size="1.016" layer="25" ratio="10"/>
@@ -2289,6 +2313,20 @@ Everything else you will find on https://aisler.net/help</description>
 <attribute name="POPULARITY" value="93" x="61.468" y="61.468" size="1.778" layer="27" display="off"/>
 <attribute name="VALUE" x="64.6684" y="64.2366" size="1.27" layer="27" ratio="10"/>
 </element>
+<element name="T2" library="IRF1404PBF" package="PG-TO220-3-904_INF" value="IRF1404PBF" x="34.036" y="32.004" smashed="yes" rot="R270">
+<attribute name="COPYRIGHT" value="Copyright (C) 2023 Ultra Librarian. All rights reserved." x="34.036" y="32.004" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="DIGIKEY_PART_NUMBER_1" value="IRF1404PBF-ND" x="34.036" y="32.004" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="IRF1404PBF" x="34.036" y="32.004" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="MFR_NAME" value="Infineon" x="34.036" y="32.004" size="1.778" layer="27" rot="R270" display="off"/>
+<attribute name="NAME" x="33.8074" y="22.6314" size="1.016" layer="25" ratio="6" rot="SR0"/>
+<attribute name="VALUE" x="36.8046" y="25.2984" size="1.016" layer="25" ratio="6" rot="SR90"/>
+</element>
+<element name="R7" library="rcl" library_urn="urn:adsk.eagle:library:334" package="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="10k" x="41.783" y="16.51" smashed="yes" rot="R180">
+<attribute name="NAME" x="42.799" y="19.05" size="1.016" layer="25" ratio="10" rot="R180"/>
+<attribute name="POPULARITY" value="81" x="41.783" y="16.51" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="SPICEPREFIX" value="R" x="41.783" y="16.51" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="43.0276" y="17.145" size="1.27" layer="25" ratio="10" rot="R180"/>
+</element>
 </elements>
 <signals>
 <signal name="GND">
@@ -2318,7 +2356,6 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="U3" pad="4"/>
 <contactref element="C4" pad="2"/>
 <contactref element="T1" pad="SOURCE"/>
-<contactref element="T2" pad="SOURCE"/>
 <contactref element="STATUS" pad="K"/>
 <contactref element="MODE" pad="1"/>
 <polygon width="0.2" layer="16">
@@ -2337,6 +2374,8 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="C9" pad="1"/>
 <contactref element="C8" pad="1"/>
 <contactref element="ERROR" pad="K"/>
+<contactref element="T2" pad="S"/>
+<contactref element="R7" pad="1"/>
 </signal>
 <signal name="+8V">
 <contactref element="U4" pad="7"/>
@@ -2403,8 +2442,10 @@ Everything else you will find on https://aisler.net/help</description>
 <signal name="MOSFET_DAC_OUTPUT">
 <contactref element="R3" pad="2"/>
 <contactref element="U2" pad="8"/>
-<wire x1="33.907" y1="16.51" x2="35.306" y2="16.51" width="1.27" layer="1"/>
-<wire x1="35.306" y1="16.51" x2="37.592" y2="18.796" width="1.27" layer="1"/>
+<contactref element="R7" pad="2"/>
+<wire x1="33.907" y1="16.51" x2="36.703" y2="16.51" width="1.27" layer="1"/>
+<wire x1="36.703" y1="16.51" x2="38.608" y2="18.415" width="1.27" layer="1"/>
+<wire x1="38.608" y1="18.415" x2="38.608" y2="19.812" width="1.27" layer="1"/>
 </signal>
 <signal name="HARVESTER_VOLTAGE_DIVIDER_OUTPUT">
 <contactref element="R1" pad="1"/>
@@ -2419,11 +2460,13 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="U1" pad="38"/>
 <wire x1="53.086" y1="16.51" x2="53.086" y2="14.732" width="1.27" layer="1"/>
 <wire x1="53.086" y1="14.732" x2="51.435" y2="13.081" width="1.27" layer="1"/>
-<wire x1="51.435" y1="13.081" x2="48.387" y2="13.081" width="1.27" layer="1"/>
-<wire x1="48.387" y1="13.081" x2="37.846" y2="23.622" width="1.27" layer="1"/>
-<wire x1="37.846" y1="23.622" x2="25.908" y2="23.622" width="1.27" layer="1"/>
+<wire x1="38.862" y1="23.622" x2="25.908" y2="23.622" width="1.27" layer="1"/>
 <via x="25.908" y="23.622" extent="1-16" drill="1"/>
 <wire x1="25.908" y1="23.622" x2="19.304" y2="23.622" width="1.27" layer="16"/>
+<wire x1="42.672" y1="19.812" x2="38.862" y2="23.622" width="1.27" layer="1"/>
+<wire x1="51.435" y1="13.081" x2="45.847" y2="13.081" width="1.27" layer="1"/>
+<wire x1="45.847" y1="13.081" x2="42.672" y2="16.256" width="1.27" layer="1"/>
+<wire x1="42.672" y1="16.256" x2="42.672" y2="19.812" width="1.27" layer="1"/>
 </signal>
 <signal name="+3V3">
 <contactref element="R4" pad="2"/>
@@ -2506,33 +2549,32 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="35.306" y1="42.418" x2="36.99" y2="42.418" width="1.27" layer="1"/>
 </signal>
 <signal name="N$6">
-<contactref element="T2" pad="DRAIN"/>
 <contactref element="U4" pad="2"/>
 <contactref element="T1" pad="DRAIN"/>
-<wire x1="34.036" y1="29.464" x2="34.036" y2="27.94" width="1.27" layer="1"/>
-<wire x1="35.56" y1="26.416" x2="34.036" y2="27.94" width="1.27" layer="1"/>
-<wire x1="41.656" y1="27.94" x2="40.132" y2="26.416" width="1.27" layer="1"/>
-<wire x1="41.656" y1="27.94" x2="41.656" y2="29.464" width="1.27" layer="1"/>
-<wire x1="35.56" y1="26.416" x2="40.132" y2="26.416" width="1.27" layer="1"/>
 <via x="53.34" y="29.972" extent="1-16" drill="1"/>
-<wire x1="53.34" y1="29.972" x2="42.164" y2="29.972" width="1.27" layer="16"/>
-<wire x1="42.164" y1="29.972" x2="41.656" y2="29.464" width="1.27" layer="16"/>
+<wire x1="53.34" y1="29.972" x2="43.18" y2="29.972" width="1.27" layer="16"/>
+<wire x1="43.18" y1="29.972" x2="42.672" y2="29.464" width="1.27" layer="16"/>
 <contactref element="R_SHUNT" pad="2"/>
 <wire x1="55.626" y1="24.13" x2="55.626" y2="25.654" width="1.27" layer="1"/>
 <wire x1="57.912" y1="27.94" x2="59.436" y2="27.94" width="1.27" layer="1"/>
 <wire x1="55.626" y1="25.654" x2="57.912" y2="27.94" width="1.27" layer="1"/>
 <wire x1="57.404" y1="29.972" x2="59.436" y2="27.94" width="1.27" layer="1"/>
 <wire x1="53.34" y1="29.972" x2="57.404" y2="29.972" width="1.27" layer="1"/>
+<contactref element="T2" pad="D"/>
+<wire x1="34.036" y1="29.464" x2="35.56" y2="29.464" width="1.27" layer="1"/>
+<wire x1="35.56" y1="29.464" x2="37.592" y2="27.432" width="1.27" layer="1"/>
+<wire x1="39.624" y1="27.432" x2="41.656" y2="29.464" width="1.27" layer="1"/>
+<wire x1="41.656" y1="29.464" x2="42.672" y2="29.464" width="1.27" layer="1"/>
+<wire x1="37.592" y1="27.432" x2="39.624" y2="27.432" width="1.27" layer="1"/>
 </signal>
 <signal name="N$11">
-<contactref element="T2" pad="GATE"/>
 <contactref element="R3" pad="1"/>
 <contactref element="T1" pad="GATE"/>
-<wire x1="37.592" y1="28.956" x2="37.592" y2="30.48" width="1.27" layer="1"/>
-<wire x1="39.116" y1="32.004" x2="41.656" y2="32.004" width="1.27" layer="1"/>
-<wire x1="37.592" y1="30.48" x2="39.116" y2="32.004" width="1.27" layer="1"/>
-<wire x1="37.592" y1="30.48" x2="36.068" y2="32.004" width="1.27" layer="1"/>
-<wire x1="36.068" y1="32.004" x2="34.036" y2="32.004" width="1.27" layer="1"/>
+<contactref element="T2" pad="G"/>
+<wire x1="34.036" y1="32.004" x2="36.576" y2="32.004" width="1.27" layer="1"/>
+<wire x1="36.576" y1="32.004" x2="38.608" y2="29.972" width="1.27" layer="1"/>
+<wire x1="38.608" y1="29.972" x2="40.64" y2="32.004" width="1.27" layer="1"/>
+<wire x1="40.64" y1="32.004" x2="42.672" y2="32.004" width="1.27" layer="1"/>
 </signal>
 <signal name="N$9">
 <contactref element="R4" pad="1"/>
