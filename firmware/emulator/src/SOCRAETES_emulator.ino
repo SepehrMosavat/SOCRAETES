@@ -92,7 +92,8 @@ void loop()
 	else
 	{
 		if(Serial.available() > 0)
-		{
+		{	
+			digitalWrite(ERROR_LED, LOW);
 			byte lastReceivedByte = Serial.read();
 			if(lastReceivedByte == START_OF_CURVE_DATA)
 			{
@@ -126,6 +127,10 @@ void loop()
 					byteCounter++;
 				}
 			}
+		}
+		else
+		{
+			digitalWrite(ERROR_LED, HIGH);
 		}
 	}
 	delay(1);
