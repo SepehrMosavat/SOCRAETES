@@ -18,15 +18,16 @@ logger.addHandler(console_log_handler)
 
 
 def get_number_of_curves_in_trace(_trace_emulation_file) -> int:
-    return len(_trace_emulation_file.keys()) - 1
+    # len -2 because of the last curve which could not be full in sd_mode recording and because of harvesting infos 
+    return len(_trace_emulation_file.keys()) - 2
 
 
 def get_sleep_time_between_curves(_trace_emulation_file) -> float:
     number_of_curves_in_trace = get_number_of_curves_in_trace(_trace_emulation_file)
     harvesting_conditions_dataset = _trace_emulation_file.get('harvesting conditions')
     harvesting_conditions_dataset_as_array = np.array(harvesting_conditions_dataset)
-    capture_start_time = datetime.strptime(harvesting_conditions_dataset_as_array[1, 1].decode('UTF-8'), '%H:%M:%S.%f')
-    capture_stop_time = datetime.strptime(harvesting_conditions_dataset_as_array[1, 2].decode('UTF-8'), '%H:%M:%S.%f')
+    capture_start_time = datetime.strptime(harvesting_conditions_dataset_as_array[1, 1].decode('UTF-8'), '%H:%M:%S:%f')
+    capture_stop_time = datetime.strptime(harvesting_conditions_dataset_as_array[1, 2].decode('UTF-8'), '%H:%M:%S:%f')
     capture_duration = capture_stop_time - capture_start_time
     capture_duration_in_seconds = capture_duration.total_seconds()
     sleep_time_between_curves = (capture_duration_in_seconds / number_of_curves_in_trace)
@@ -128,3 +129,38 @@ def emulate_intermittence(_timing_array: int, _trace_emulation_queue: queue.Queu
                 is_load_powered = True
                 continue
 
+
+def write_curve_info_to_sd(_trace_emulation_source, _stop_thread_event: Event):
+    trace_emulation_file_name = _trace_emulation_source
+    trace_emulation_file = file_handling(trace_emulation_file_name)
+    if trace_emulation_file is None:
+        _stop_thread_event.set()
+        return
+    sleep_time_between_curves = get_sleep_time_between_curves(trace_emulation_file)
+    number_of_curves_in_trace = get_number_of_curves_in_trace(trace_emulation_file)
+    try:
+        emulating_file = open( trace_emulation_file_name + ".txt", "x")
+    except:
+        emulating_file = open(trace_emulation_file_name + ".txt", "w")
+
+    emulating_file.write("number of curves =" + str(number_of_curves_in_trace) + "\n")
+    emulating_file.write("duration per curve =" + str(sleep_time_between_curves) + "\n")
+
+    _voltage_values = []
+    _current_values = []
+    curve_parameters_for_emulation = EmulationParameters
+
+    for _curve_number in range(1,number_of_curves_in_trace +1):
+        curve_parameter_for_emulation = get_curve_parameters_for_emulation(trace_emulation_file, _curve_number)
+        _voltage_values.append( (curve_parameter_for_emulation.open_circuit_voltage ) )
+        _current_values.append( (curve_parameter_for_emulation.short_circuit_current))
+    emulating_file.write("open circuit voltage curve points /V =")
+    for line in _voltage_values:
+        emulating_file.write(str(line) +";")
+    emulating_file.write("\n")
+    emulating_file.write("short circuit current curve points /uA =")
+    for line in _current_values:
+        emulating_file.write(str(line) +";")
+    emulating_file.write("\n")
+    emulating_file.close()
+    trace_emulation_file.close()

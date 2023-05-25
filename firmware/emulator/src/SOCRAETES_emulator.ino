@@ -16,6 +16,14 @@ void setup()
 	dac.setGainB(MCP4822::High);
 
 	initializeOutputToZero();
+
+	pinMode(STATUS_LED, OUTPUT);
+	pinMode(ERROR_LED, OUTPUT);
+	// 1 means PC, 0 means S/A;
+	pinMode(MODE_JUMPER, INPUT_PULLUP);
+
+	digitalWrite(STATUS_LED, LOW);
+	digitalWrite(ERROR_LED, LOW);	
 }
 
 int voltage, current = 0;
@@ -23,44 +31,102 @@ int voltage, current = 0;
 byte byteCounter = 0;
 int incommingVoltageAndCurrentBuffer = 0;
 bool isReceivingData = false;
+bool isEmulating = true;
+unsigned long emuDuration_s;
+static int modeNow = 1;
+static int lastMode = 1;
 
 
 void loop()
 {
-	if(Serial.available() > 0)
+	static int counter;
+
+	lastMode = modeNow;
+	modeNow=digitalRead(MODE_JUMPER);
+	//Serial.println(modeNow);
+
+	if (modeNow == 0)
 	{
-		byte lastReceivedByte = Serial.read();
-		if(lastReceivedByte == START_OF_CURVE_DATA)
+		if (isEmulating)
 		{
-			byteCounter = 0;
-			voltage = 0;
-			current = 0;
-			isReceivingData = true;
-		}
-		else if(lastReceivedByte == END_OF_CURVE_DATA)
-		{
-			isReceivingData = false;
-//			Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
-			emulateVoltageAndCurrent(voltage, current);
-			digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle LED on each curve change
+			while( setupSD() != 0 )
+			{	
+				digitalWrite(ERROR_LED, HIGH);
+				delay(500);
+			}
+			digitalWrite(ERROR_LED, LOW);
+
+		emulateVoltageAndCurrent(emu_parameters.emu_voltage[0], emu_parameters.emu_current[0]);
+		isEmulating = false;
+		emuDuration_s = emu_parameters.emu_duration + millis();
+		counter = 1;
 		}
 		else
 		{
-			if(isReceivingData)
+			if (millis() > emuDuration_s)
 			{
-				incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer | lastReceivedByte;
-				if(byteCounter == 3)
+				if (counter < emu_parameters.number_curves)
 				{
-					voltage = incommingVoltageAndCurrentBuffer;
+				emulateVoltageAndCurrent(emu_parameters.emu_voltage[counter], emu_parameters.emu_current[counter]);
+				emuDuration_s = emu_parameters.emu_duration + millis();
+				Serial.println(emu_parameters.emu_voltage[counter]);
+				Serial.println(emu_parameters.emu_current[counter]);
+				counter++;
+				digitalToggle(STATUS_LED);
 				}
-				else if(byteCounter == 7)
+				else
 				{
-					current = incommingVoltageAndCurrentBuffer;
-				}
-				incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer << 8;
+				digitalWrite(STATUS_LED, HIGH);
+				initializeOutputToZero();
+				Serial.println("finished");
+				delay(1000);
+				Serial.println("again");
+				digitalWrite(STATUS_LED, LOW);
+				isEmulating = true;
 
-				byteCounter++;
+
+				}
+			}	
+		}
+	}
+	else
+	{
+		if(Serial.available() > 0)
+		{
+			byte lastReceivedByte = Serial.read();
+			if(lastReceivedByte == START_OF_CURVE_DATA)
+			{
+				byteCounter = 0;
+				voltage = 0;
+				current = 0;
+				isReceivingData = true;
+			}
+			else if(lastReceivedByte == END_OF_CURVE_DATA)
+			{
+				isReceivingData = false;
+				Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
+				emulateVoltageAndCurrent(voltage, current);
+				digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle LED on each curve change
+			}
+			else
+			{
+				if(isReceivingData)
+				{
+					incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer | lastReceivedByte;
+					if(byteCounter == 3)
+					{
+						voltage = incommingVoltageAndCurrentBuffer;
+					}
+					else if(byteCounter == 7)
+					{
+						current = incommingVoltageAndCurrentBuffer;
+					}
+					incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer << 8;
+
+					byteCounter++;
+				}
 			}
 		}
 	}
+	delay(1);
 }

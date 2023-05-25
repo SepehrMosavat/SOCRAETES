@@ -10,6 +10,10 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#define STATUS_LED 1
+#define ERROR_LED 2
+#define MODE_JUMPER 32
+
 #define MAXIMUM_DAC_VOLTAGE 3.3
 
 #define CURRENT_EMULATION_RANGE_RESISTOR 49.9 // For setting the maximum emulation current
