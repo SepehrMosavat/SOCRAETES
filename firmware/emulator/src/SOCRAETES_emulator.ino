@@ -19,7 +19,6 @@ void setup()
 
 	pinMode(STATUS_LED, OUTPUT);
 	pinMode(ERROR_LED, OUTPUT);
-	// 1 means PC, 0 means S/A;
 	pinMode(MODE_JUMPER, INPUT_PULLUP);
 
 	digitalWrite(STATUS_LED, LOW);
@@ -33,19 +32,14 @@ int incommingVoltageAndCurrentBuffer = 0;
 bool isReceivingData = false;
 bool isEmulating = true;
 unsigned long emuDuration_s;
-static int modeNow = 1;
-static int lastMode = 1;
-
+// 1 means PC, 0 means S/A;
+static int mode = digitalRead(MODE_JUMPER);
 
 void loop()
 {
 	static int counter;
 
-	lastMode = modeNow;
-	modeNow=digitalRead(MODE_JUMPER);
-	//Serial.println(modeNow);
-
-	if (modeNow == 0)
+	if (mode == 0)
 	{
 		if (isEmulating)
 		{

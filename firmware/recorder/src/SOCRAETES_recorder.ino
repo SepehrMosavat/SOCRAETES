@@ -16,9 +16,9 @@ static const uint32_t innerCycleTime_ms = 10;
 
 static elapsedMillis innerElapsedMillis;
 
-static time_t endFileRecord_s;
+time_t endFileRecord_s;
 
-static uint32_t outerCycleTime_ms = 500;
+uint32_t outerCycleTime_ms = 500;
 
 static elapsedMillis outerElapsedMillis;
 
@@ -28,9 +28,7 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-
-int modeNow =1;
-int lastMode = 1;
+static int mode =1;
 
 MCP4822 dac(34);
 
@@ -47,9 +45,8 @@ void setup() {
 
 	pinMode(STATUS_LED, OUTPUT);
 	pinMode(ERROR_LED, OUTPUT);
-	// 1 means PC, 0 means S/A;
+	
 	pinMode(MODE_JUMPER, INPUT_PULLUP);
-
 	startupDelay();
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);
@@ -58,33 +55,14 @@ void setup() {
 	ivCurveSequenceNumber = 0; 
 	// Set DACs for first measurement
 	updateHarvesterLoad(ivCurveSequenceNumber);
-	setupTime();
+	// 1 means PC, 0 means S/A;
+	mode=digitalRead(MODE_JUMPER);
+	outerCycleTime_ms = modeSelection(mode);
+
+	
 }
 
 void loop() {
-
-	lastMode = modeNow;
-	modeNow=digitalRead(MODE_JUMPER);
-		if (modeNow != lastMode)
-		{
-			if (modeNow == 0)
-			{
-				while( setupSD() != 0 )
-				{
-					delay(500);
-				}
-				while( readConfigFile() != 0 )
-				{
-					delay(500);
-				}
-				endFileRecord_s = createNewFile();
-				outerCycleTime_ms = 2000;
-			}
-			else
-				outerCycleTime_ms = 500;
-
-		}
-
 	// Uncomment to measure maximum inner cycle time
 // 	static unsigned long innerMaxTaskTime_ms = 0;
 	// Uncomment to measure maximum outer cycle time
@@ -144,7 +122,7 @@ void loop() {
 	// Transmit the measured curve or store it on SD card
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
-		if (modeNow == 0) 
+		if (mode == 0) 
 			writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
 		else
 			#if defined(DEBUG_MODE)
@@ -155,7 +133,7 @@ void loop() {
 		delay(5);
 	}
 
-if (modeNow ==0)
+if (mode == 0)
 {
 	// Create new file if required
 	if (now() > endFileRecord_s)

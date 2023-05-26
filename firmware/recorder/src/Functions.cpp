@@ -41,6 +41,7 @@ static void resetFunc(void)
 //end data used for sd mode only
 
 extern MCP4822 dac;
+extern time_t endFileRecord_s;
 
 float shortToVoltage(short _voltage)
 {
@@ -221,6 +222,32 @@ void startupDelay()
 #endif
 }
 
+uint32_t modeSelection(int _mode)
+{
+	if (_mode== 0)
+	{
+		while( setupSD() != 0 )
+		{
+			delay(500);
+		}
+		while( readConfigFile() != 0 )
+		{
+			delay(500);
+		}
+		digitalWrite(ERROR_LED, LOW);
+		setupTime();
+		endFileRecord_s = createNewFile();
+		int _outerCycleTime_ms = 2000;
+		return _outerCycleTime_ms;
+	}
+	else
+	{
+		int _outerCycleTime_ms = 500;
+		return _outerCycleTime_ms;
+	}
+
+}
+
 //functions used for sd mode only
 
 int setupSD()
@@ -230,6 +257,7 @@ int setupSD()
 	if (!SD.begin(chipSelect))
 	{
 	    Serial.println("Card failed, or not present");
+		digitalWrite(ERROR_LED, HIGH);
 	    return -1;
 	}
 
@@ -259,7 +287,8 @@ int readConfigFile(void)
 	File config_file = SD.open("configuration_file.txt", FILE_READ);
 	if (!config_file)
 	{
-	    Serial.print("The configuration file couldn't be found");
+	    Serial.println("The configuration file couldn't be found");
+		digitalToggle(ERROR_LED); 
 	    return -1;
 	}
 
