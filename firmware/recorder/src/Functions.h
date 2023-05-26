@@ -33,6 +33,8 @@ void startupDelay();
 
 int setupSD();
 
+void setupTime();
+
 int readConfigFile(void);
 
 /* Returns the timestamp when to stop recording to the created file */
