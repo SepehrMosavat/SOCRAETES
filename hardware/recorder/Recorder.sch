@@ -10673,8 +10673,8 @@ Source: www.kingbright.com</description>
 <wire x1="7.874" y1="-1.9812" x2="7.874" y2="2.8448" width="0.1524" layer="21"/>
 <wire x1="7.874" y1="2.8448" x2="-2.794" y2="2.8448" width="0.1524" layer="21"/>
 <wire x1="-2.794" y1="2.8448" x2="-2.794" y2="-1.9812" width="0.1524" layer="21"/>
-<wire x1="-4.3688" y1="0" x2="-4.7752" y2="0" width="0.1524" layer="21" curve="-180"/>
-<wire x1="-4.7752" y1="0" x2="-4.3688" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-1.8288" y1="0" x2="-2.2352" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-2.2352" y1="0" x2="-1.8288" y2="0" width="0.1524" layer="21" curve="-180"/>
 <text x="0.8128" y="-0.2032" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
 <wire x1="-0.254" y1="0" x2="0.254" y2="0" width="0.1524" layer="51"/>
 <wire x1="0" y1="-0.254" x2="0" y2="0.254" width="0.1524" layer="51"/>
@@ -10682,9 +10682,8 @@ Source: www.kingbright.com</description>
 <wire x1="7.747" y1="-1.8796" x2="7.747" y2="2.7432" width="0.1524" layer="51"/>
 <wire x1="7.747" y1="2.7432" x2="-2.667" y2="2.7432" width="0.1524" layer="51"/>
 <wire x1="-2.667" y1="2.7432" x2="-2.667" y2="-1.8796" width="0.1524" layer="51"/>
-<wire x1="-1.9558" y1="0" x2="-2.3622" y2="0" width="0" layer="51" curve="-180"/>
-<wire x1="-2.3622" y1="0" x2="-1.9558" y2="0" width="0" layer="51" curve="-180"/>
 <text x="-0.7366" y="-0.2032" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
+<wire x1="-2.54" y1="1.651" x2="7.62" y2="1.651" width="0.1524" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -10735,8 +10734,8 @@ Source: www.kingbright.com</description>
 <wire x1="7.874" y1="-1.9812" x2="7.874" y2="2.8448" width="0.1524" layer="21"/>
 <wire x1="7.874" y1="2.8448" x2="-2.794" y2="2.8448" width="0.1524" layer="21"/>
 <wire x1="-2.794" y1="2.8448" x2="-2.794" y2="-1.9812" width="0.1524" layer="21"/>
-<wire x1="-4.3688" y1="0" x2="-4.7752" y2="0" width="0.1524" layer="21" curve="-180"/>
-<wire x1="-4.7752" y1="0" x2="-4.3688" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-1.8288" y1="0" x2="-2.2352" y2="0" width="0.1524" layer="21" curve="-180"/>
+<wire x1="-2.2352" y1="0" x2="-1.8288" y2="0" width="0.1524" layer="21" curve="-180"/>
 <text x="0.8128" y="-0.2032" size="1.27" layer="21" ratio="6" rot="SR0">&gt;Value</text>
 <wire x1="-0.254" y1="0" x2="0.254" y2="0" width="0.1524" layer="51"/>
 <wire x1="0" y1="-0.254" x2="0" y2="0.254" width="0.1524" layer="51"/>
@@ -10744,9 +10743,8 @@ Source: www.kingbright.com</description>
 <wire x1="7.747" y1="-1.8796" x2="7.747" y2="2.7432" width="0.1524" layer="51"/>
 <wire x1="7.747" y1="2.7432" x2="-2.667" y2="2.7432" width="0.1524" layer="51"/>
 <wire x1="-2.667" y1="2.7432" x2="-2.667" y2="-1.8796" width="0.1524" layer="51"/>
-<wire x1="-1.9558" y1="0" x2="-2.3622" y2="0" width="0" layer="51" curve="-180"/>
-<wire x1="-2.3622" y1="0" x2="-1.9558" y2="0" width="0" layer="51" curve="-180"/>
 <text x="-0.7366" y="-0.2032" size="1.27" layer="25" ratio="6" rot="SR0">&gt;Name</text>
+<wire x1="-2.54" y1="1.651" x2="7.62" y2="1.651" width="0.1524" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -11552,7 +11550,7 @@ Source: &lt;a href="https://ms.componentsearchengine.com/Datasheets/1/EDS224Z3R6
 <part name="R2" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1k8"/>
 <part name="SUPPLY20" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
 <part name="U4" library="INA121PA" deviceset="INA121PA" device="" value="Value"/>
-<part name="R_SHUNT" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="1R"/>
+<part name="R_SHUNT" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="2R"/>
 <part name="R_GAIN_25" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="0207/10" package3d_urn="urn:adsk.eagle:package:23491/2" value="2k1"/>
 <part name="SUPPLY8" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
 <part name="SUPPLY11" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
