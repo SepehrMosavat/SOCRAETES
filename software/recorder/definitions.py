@@ -1,5 +1,8 @@
 from enum import Enum
 
+class DurationTime(Enum):
+    FOREVER = -1
+
 
 class PlotOrDiskCommit(Enum):
     PLOT_CURVE = 0

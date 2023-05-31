@@ -8,7 +8,7 @@ import time
 
 import fire
 
-from definitions import PlotOrDiskCommit
+from definitions import PlotOrDiskCommit, DurationTime
 from disk_io_functions import write_iv_curves_to_disk, convert_csv_to_hdf5, read_harvesting_info_sd,get_file
 from iv_curve_visualization_functions import plot_iv_curve, plot_iv_surface
 from iv_curves_definitions import HarvestingCondition
@@ -34,15 +34,18 @@ stop_thread_event = threading.Event()
 
 
 def timer_function(_time_duration):
-    time.sleep(_time_duration)
-    stop_thread_event.set()
+    if _time_duration == DurationTime.FOREVER:
+        return
+    else: 
+        time.sleep(_time_duration)
+        stop_thread_event.set()
 
 
 def interrupt_signal_handler(_signal, _frame):
     stop_thread_event.set()
 
 
-def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment='indoor', lux=50, weather='sunny',
+def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=DurationTime.FOREVER, environment='indoor', lux=50, weather='sunny',
         country='N/A', city='N/A', source='solar cell', read_from_sd = False, doc_name= 'N/A'):
     """
     :param port: The serial port used for communication with the hardware.
@@ -53,8 +56,8 @@ def cli(port, mode='plot-curve', file='AUTO-GENERATE', duration=30, environment=
     Default value: plot-curve
     :param file: The file name of the HDF5 file in commit-to-file mode. If not specified, the file name will be
     auto-generated.
-    :param duration: The duration of capturing the trace in commit-to-file mode.\n
-    Default value: 30 seconds
+    :param duration: The duration of capturing the trace in seconds.\n
+    Default value: Forever
     :param environment: The environment in which energy harvesting is carried out. Only used in commit-to-file mode.\n
     Default value: indoor
     :param lux: The light intensity (in Lux) of the environment in which energy harvesting is carried out.
