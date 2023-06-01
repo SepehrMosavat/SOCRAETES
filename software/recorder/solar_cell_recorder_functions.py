@@ -15,9 +15,12 @@ console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
 console_log_handler.setFormatter(console_log_formatter)
 logger.addHandler(console_log_handler)
 
+ser = None
+
 
 # Function for reading the COM port values
 def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, _stop_thread_event: threading.Event):
+    global ser
     try:
         ser = serial.Serial(
             port=_port,
@@ -41,6 +44,7 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
         return None
     if ser.isOpen():
         logger.info("Serial port open")
+        ser.write(b's')
     else:
         logger.error("Serial port could not be opened")
 
@@ -62,6 +66,8 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                                  _stop_thread_event: threading.Event):
     is_iv_curve_being_captured = False
     curve_number_counter = 0
+    global ser
+    time.sleep(1)
     while True:
         if _stop_thread_event.isSet():
             sys.exit()
@@ -91,5 +97,8 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     curve_number_counter += 1
                     logger.info("Curve captured: " + str(captured_curve.curve_number))
                     continue
+        else:
+            ser.write(b'y')
+
 
         time.sleep(0.001)

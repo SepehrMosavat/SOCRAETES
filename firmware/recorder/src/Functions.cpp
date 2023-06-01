@@ -222,7 +222,7 @@ void startupDelay()
 #endif
 }
 
-uint32_t modeSelection(int _mode)
+void modeSelection(int _mode)
 {
 	if (_mode== 0)
 	{
@@ -237,13 +237,11 @@ uint32_t modeSelection(int _mode)
 		digitalWrite(ERROR_LED, LOW);
 		setupTime();
 		endFileRecord_s = createNewFile();
-		int _outerCycleTime_ms = 2000;
-		return _outerCycleTime_ms;
+		return;
 	}
 	else
 	{
-		int _outerCycleTime_ms = 500;
-		return _outerCycleTime_ms;
+		return;
 	}
 
 }

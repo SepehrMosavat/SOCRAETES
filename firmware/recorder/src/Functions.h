@@ -42,6 +42,6 @@ time_t createNewFile(void);
 
 void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
 
-uint32_t modeSelection(int _mode);
+void modeSelection(int _mode);
 
 #endif /* FUNCTIONS_H_ */
