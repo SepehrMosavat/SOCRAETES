@@ -68,6 +68,7 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
     curve_number_counter = 0
     global ser
     time.sleep(1)
+    _flag=False
     while True:
         if _stop_thread_event.isSet():
             sys.exit()
