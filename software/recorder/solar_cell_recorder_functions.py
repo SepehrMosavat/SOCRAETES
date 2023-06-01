@@ -72,6 +72,7 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
         if _stop_thread_event.isSet():
             sys.exit()
         if not raw_serial_data_queue.empty():
+            _flag = True
             serial_bytes_received_as_bytearray = raw_serial_data_queue.get()
 
             voltage_bytes = serial_bytes_received_as_bytearray[2:6]
@@ -98,7 +99,8 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     logger.info("Curve captured: " + str(captured_curve.curve_number))
                     continue
         else:
-            ser.write(b'y')
-
+            if _flag == True:
+                ser.write(b'y')
+                _flag = False
 
         time.sleep(0.001)
