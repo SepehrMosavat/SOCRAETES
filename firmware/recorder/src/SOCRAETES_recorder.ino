@@ -62,12 +62,9 @@ void setup() {
 	{
 		while(1)
 		{
-			if (Serial.available() > 0)
-			{
 				char _input = (char) Serial.read();
 				if ( _input == 's')
 					break;
-			}
 		}
 	}	
 
@@ -132,27 +129,28 @@ void loop() {
 		}
 	}
 	// Transmit the measured curve or store it on SD card
-	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
+	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter+=6)
 	{
 		if (mode == 0)
 		{
-			writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
+			for (int i = 0; i<6; i++)
+			{
+			writeDataToSD(Counter + i, voltageArray[Counter + i], currentArray[Counter +i]);
 			delay(5);
+			}
 		}
 		else
 		{
 			#if defined(DEBUG_MODE)
 			;
 			#else
-			transmitValuesAsByteArray(Counter, voltageArray[Counter], currentArray[Counter]);
+			transmitValuesAsByteArray(Counter, voltageArray, currentArray);
 			while(1)
 				{
-					if (Serial.available() > 0)
-					{
-						char _input = (char) Serial.read();
+					char _input = (char) usb_serial_getchar();
 						if ( _input == 'y' || _input == 's')
 							break;
-					}
+					
 				}
 			#endif
 		}

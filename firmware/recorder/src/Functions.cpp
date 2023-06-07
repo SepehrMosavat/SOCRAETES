@@ -16,6 +16,8 @@
 #include "Definitions.h"
 #include <SD.h>
 #include <TimeLib.h>
+#include <usb_serial.h>
+
 
 #define NUM_OF_CONFIGLINES 7
 
@@ -112,27 +114,33 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
 	_buffer[9] = (_current >> 24) & 0xff;
 }
 
-void transmitValuesAsByteArray(uint8_t SeqNo, int voltage, int current)
+void transmitValuesAsByteArray(uint8_t SeqNo, int* voltage, int* current)
 {
-	byte buffer[11];
-	buffer[0] = 0xaa; // Start byte
-	buffer[1] = SeqNo; 
-	buffer[10] = 0x55; // Finish byte
+	byte buffer[66];
+	for (int i = 0; i<=5; i+=1)
+	{
+	buffer[0+ 11*i] = 0xaa; // Start byte
+	buffer[1 +11*i] = SeqNo; 
+	buffer[10 +11*i] = 0x55; // Finish byte
 
-	buffer[2] = (voltage >> 0) & 0xff;
-	buffer[3] = (voltage >> 8) & 0xff;
-	buffer[4] = (voltage >> 16) & 0xff;
-	buffer[5] = (voltage >> 24) & 0xff;
+	buffer[2 +11*i] = (voltage[SeqNo + i] >> 0) & 0xff;
+	buffer[3 +11*i] = (voltage[SeqNo + i] >> 8) & 0xff;
+	buffer[4 +11*i] = (voltage[SeqNo + i] >> 16) & 0xff;
+	buffer[5 +11*i] = (voltage[SeqNo + i] >> 24) & 0xff;
 
-	buffer[6] = (current >> 0) & 0xff;
-	buffer[7] = (current >> 8) & 0xff;
-	buffer[8] = (current >> 16) & 0xff;
-	buffer[9] = (current >> 24) & 0xff;
-
+	buffer[6 +11*i] = (current[SeqNo + i] >> 0) & 0xff;
+	buffer[7 +11*i] = (current[SeqNo + i] >> 8) & 0xff;
+	buffer[8 +11*i] = (current[SeqNo + i] >> 16) & 0xff;
+	buffer[9 +11*i] = (current[SeqNo + i] >> 24) & 0xff;
+	}
+	/*
 	for(int i = 0; i < 11; i++)
 	{
-		Serial.write(buffer[i]);
+		usb_serial_putchar(buffer[i]);
 	}
+	
+	*/
+	usb_serial_write((void*) buffer, 66*sizeof(byte));
 }
 
 void initializeADC()
