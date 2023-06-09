@@ -24,7 +24,7 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
     try:
         ser = serial.Serial(
             port=_port,
-            baudrate=115200,
+            baudrate=0,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS
