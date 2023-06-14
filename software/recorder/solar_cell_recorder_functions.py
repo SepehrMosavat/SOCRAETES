@@ -58,12 +58,16 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
         serial_bytes_received = ser.read(66)
         serial_bytes_received_as_bytearray = bytearray(serial_bytes_received)
 
-        for i in range(1,7):
+        for i in range(0,5):
 
-            if serial_bytes_received_as_bytearray[i*0] == 170 or serial_bytes_received_as_bytearray[i*10] == 85:  # 0xAA
-                raw_serial_data_queue.put(serial_bytes_received_as_bytearray)
-            else:
-                ser.flushInput()
+            if serial_bytes_received_as_bytearray[0] == 170 and serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
+                raw_serial_data_queue.put(serial_bytes_received_as_bytearray[:10])
+            serial_bytes_received_as_bytearray = serial_bytes_received_as_bytearray[11:]
+
+        if serial_bytes_received_as_bytearray[0] == 170 and serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
+            raw_serial_data_queue.put(serial_bytes_received_as_bytearray[:10])
+
+            
     
 
 
@@ -110,6 +114,5 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
             y= b'y'
             if _flag == True:
                 ser.write(y)
-               # ser.flush()
                 _flag = False   
         time.sleep(0.001)

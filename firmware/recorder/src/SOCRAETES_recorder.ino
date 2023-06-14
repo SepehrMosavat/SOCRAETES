@@ -57,6 +57,7 @@ void setup() {
 	// 1 means PC, 0 means S/A;
 	mode=digitalRead(MODE_JUMPER);
 	modeSelection(mode);
+	
 	if (mode == 1)
 	{
 		while(1)
@@ -65,8 +66,8 @@ void setup() {
 				if ( _input == 's')
 					break;
 		}
-	}	
-
+	}
+	
 	
 }
 
@@ -91,10 +92,10 @@ void loop() {
 
 #ifdef DEBUG_MODE
 	#ifdef CALIBRATION_MODE
-		Serial.printf("Calibration mode: V: %d, I: %d\n", voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
-		delay(20);
+			Serial.printf("Calibration mode: V: %d, I: %d\n", voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+			delay(20);
 	#else
-		Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
 	#endif
 #endif
 
@@ -127,35 +128,63 @@ void loop() {
 			;
 		}
 	}
+	
 	// Transmit the measured curve or store it on SD card
-	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter+=6)
+	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE ; Counter+=6)
 	{
-		if (mode == 0)
+		if ((Counter + 6) > NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
 		{
-			for (int i = 0; i<6; i++)
+			if (mode == 0)
 			{
-			writeDataToSD(Counter + i, voltageArray[Counter + i], currentArray[Counter +i]);
-			delay(5);
+				while (Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
+				{
+					writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
+					delay(5);
+					Counter++;
+					
+				}
 			}
+			else
+			{
+				#if defined(DEBUG_MODE)
+				;
+				#else
+				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 4 );
+				while(1)
+				{
+					char _input = (char) usb_serial_getchar();
+					if ( _input == 'y' || _input == 's')
+					{
+						digitalToggle(LED_BUILTIN);
+						break;
+					}
+				}
+				#endif
+			}
+
 		}
 		else
 		{
-			#if defined(DEBUG_MODE)
-			;
-			#else
-			transmitValuesAsByteArray(Counter, voltageArray, currentArray);
-			while(1)
+			if (mode == 0)
+			{
+				for (int i = 0; i<6; i++)
 				{
-					char _input = (char) usb_serial_getchar();
-						if ( _input == 'y' || _input == 's')
-							break;
-					
+				writeDataToSD(Counter + i, voltageArray[Counter + i], currentArray[Counter +i]);
+				delay(5);
 				}
-			#endif
+			}
+			else
+			{
+				#if defined(DEBUG_MODE)
+				;
+				#else
+				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 6);
+				#endif
+			}
 		}
-		
 	}
-
+	
+	
 	if (mode == 0)
 	{
 		// Create new file if required

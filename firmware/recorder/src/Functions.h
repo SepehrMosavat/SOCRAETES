@@ -23,7 +23,7 @@ int getCurrentFromAdcValue(void);
 /* Transmits sequence number, voltage and current as a byte array 
  * via serial
  */
-void transmitValuesAsByteArray(uint8_t SeqNo, int* voltage, int* current);
+void transmitValuesAsByteArray(uint8_t SeqNo, int* voltage, int* current, unsigned int  _transferredBytes);
 
 void initializeADC();
 
