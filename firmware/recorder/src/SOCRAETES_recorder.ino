@@ -28,6 +28,7 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int mode =1;
+static int * mosfet_oc;
 
 MCP4822 dac(34);
 
@@ -57,7 +58,10 @@ void setup() {
 	// 1 means PC, 0 means S/A;
 	mode=digitalRead(MODE_JUMPER);
 	modeSelection(mode);
-	
+	calculateMosfetValues();
+	#ifdef DEBUG_MODE
+	delay(10000);
+	#else
 	if (mode == 1)
 	{
 		while(1)
@@ -67,7 +71,7 @@ void setup() {
 					break;
 		}
 	}
-	
+	#endif
 	
 }
 

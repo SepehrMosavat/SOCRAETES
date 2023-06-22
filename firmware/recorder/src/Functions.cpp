@@ -35,6 +35,8 @@ static unsigned int lastindex;
 // Initialize this value unequal to zero. It is set in readConfigFile()
 static time_t fileRecDuration_s = 60;
 
+static int mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+
 static void resetFunc(void)
 {
 	SCB_AIRCR = 0x05FA0004;
@@ -205,7 +207,7 @@ void updateHarvesterLoad(uint8_t SeqNo)
 	}
 	 */
 #else
-	dac.setVoltageA(LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE[SeqNo] + LOAD_MOSFET_DAC_VALUES_LUT_OFFSET);
+	dac.setVoltageA(mosfetValues[SeqNo]);
 	dac.updateDAC();
 
 #endif
@@ -406,3 +408,137 @@ void setupTime()
 	  }
 }
 
+int  calculateMosfetValues()
+{
+	
+	//determine open circuit voltage
+	double tempCurrent;
+	uint step= 1000;
+	uint predCurrent; 
+	uint current;
+	uint predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
+	uint mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
+	dac.setVoltageA(predMosfetValue);
+	dac.updateDAC();
+	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
+	tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
+	tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
+	tempCurrent *= 1000000; // Value in uA
+	tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
+	tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
+	predCurrent = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
+	
+	
+
+
+	while (1) 
+	{
+		dac.setVoltageA(mosfetValue);
+		dac.updateDAC();
+		_adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
+		tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
+		tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
+		tempCurrent *= 1000000; // Value in uA
+		tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
+		tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
+		current = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
+
+		if ((predCurrent == 0) && (current == 0))
+		{
+			predMosfetValue = mosfetValue;
+			mosfetValue += step;
+		}
+		if ((predCurrent == 0) && (current > 0))
+		{
+			if (step < 3)
+			{
+				break;
+			}
+			else
+			{
+				step /=2;
+				predMosfetValue= mosfetValue;
+				mosfetValue -= step;
+				predCurrent = current;	
+			}
+		}
+		if ((predCurrent >0) && (current ==0))
+		{
+			predMosfetValue = mosfetValue;
+			mosfetValue += step;
+			step /= 2;
+			predCurrent= current;
+		}
+		if ((predCurrent >0) && (current >0))
+		{
+			predMosfetValue = mosfetValue;
+			mosfetValue -= step;
+			predCurrent = current;
+		}
+	}
+	Serial.println("ende oc" + String(predMosfetValue));
+
+	int oc_voltage = predMosfetValue;
+	mosfetValues[0] = oc_voltage;
+	
+
+	//determine short circuit voltage
+	step= 1000;
+	uint predVoltage; 
+	uint voltage;
+	predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
+	mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
+	dac.setVoltageA(predMosfetValue);
+	dac.updateDAC();
+	predVoltage= getVoltageFromAdcValue();
+	while (1) 
+	{
+		dac.setVoltageA(mosfetValue);
+		dac.updateDAC();
+		voltage=getVoltageFromAdcValue();
+		if ((predVoltage == 0) && (voltage == 0))
+		{
+			predMosfetValue = mosfetValue;
+			mosfetValue -= step;
+		}
+		if ((predVoltage == 0) && (voltage > 0))
+		{
+			predMosfetValue= mosfetValue;
+			mosfetValue += step;
+			predVoltage = voltage;	
+			step /=2;
+		}
+		if ((predVoltage >0) && (voltage ==0))
+		{
+			if (step < 3)
+			{
+				break;
+			}
+			predMosfetValue = mosfetValue;
+			step /= 2;
+			mosfetValue -= step;
+			predVoltage= voltage;
+		}
+		if ((predVoltage >0) && (voltage >0))
+		{
+			predMosfetValue = mosfetValue;
+			mosfetValue += step;
+			predVoltage = voltage;
+		}
+	}
+	Serial.println("ende sc " + String(predMosfetValue));
+	int sc_voltage = predMosfetValue;
+	mosfetValues[39] = sc_voltage;
+	//mit runden nicht hundertprozentig genau
+	
+	for (int i = 1; i< (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -1); i++)
+	{
+		int diffPerPoint = (sc_voltage - mosfetValues[i-1])/ (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -i);
+		mosfetValues[i] = mosfetValues[i-1] + diffPerPoint;
+		Serial.println(mosfetValues[i]);
+	}
+
+	
+	return 0;
+	
+}
