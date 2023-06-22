@@ -24,12 +24,13 @@ def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Ev
             plt.xlabel("Solar Cell Voltage (V)")
             plt.ylabel("Solar Cell Current (uA)")
             plt.title("Solar Cell IV Characteristics")
-            #plt.ion()
-            #plt.show()
+            plt.ion()
+            
 
             plt.plot(v_value_list, i_value_list)
             plt.draw()
-            plt.pause(0.01)
+            #plt.show()
+            plt.pause(0.1)
             plt.clf()
 
         time.sleep(0.01)
@@ -43,7 +44,7 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
 
-    # plt.ion()
+    plt.ion()
 
     ax.set_xlabel('Solar Cell Voltage (V)')
     ax.set_ylabel('Solar Cell Current (uA)')
@@ -74,11 +75,10 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
             z_axis = time_difference.microseconds/1000000 + time_difference.seconds
 
             ax.plot3D(v_value_list, i_value_list, z_axis)
-
-            #plt.show()
-            # plt.draw()
-            plt.pause(0.0001)
-            #plt.clf()
+            plt.show()
+            #plt.draw()
+            plt.pause(0.1)
+            plt.clf()
             z_axis += 1
 
         time.sleep(0.001)
