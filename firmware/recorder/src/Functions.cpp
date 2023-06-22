@@ -420,7 +420,6 @@ int  calculateMosfetValues()
 	uint mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
-	delay(1);
 	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 	tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 	tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
@@ -437,7 +436,6 @@ int  calculateMosfetValues()
 		
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
-		delay(1);
 		_adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 		tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
@@ -446,12 +444,12 @@ int  calculateMosfetValues()
 		tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
 		current = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
 
-		if ((predCurrent == 0) && (current == 0))
+		if ((predCurrent <= 16) && (current <= 16))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 		}
-		if ((predCurrent == 0) && (current > 0))
+		if ((predCurrent <= 16) && (current > 16))
 		{
 			if (step < 3)
 			{
@@ -465,14 +463,14 @@ int  calculateMosfetValues()
 				predCurrent = current;	
 			}
 		}
-		if ((predCurrent >0) && (current ==0))
+		if ((predCurrent >16) && (current <=16))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 			step /= 2;
 			predCurrent= current;
 		}
-		if ((predCurrent >0) && (current >0))
+		if ((predCurrent >16) && (current >16))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
@@ -496,14 +494,12 @@ int  calculateMosfetValues()
 	mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
-	delay(1);
 	predVoltage= getVoltageFromAdcValue();
 	//voltage limit 6502 due to inaccurancy	
 	while (1) 
 	{
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
-		delay(1);
 		voltage=getVoltageFromAdcValue();
 		if ((predVoltage <= 6502) && (voltage <= 6502))
 		{

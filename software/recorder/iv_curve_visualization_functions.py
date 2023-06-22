@@ -12,13 +12,11 @@ def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Ev
     while True:
         if not iv_curves_queue.empty():
             curve = iv_curves_queue.get()
-
             v_value_list = []
             i_value_list = []
             for i in curve.curve_points_list:
                 v_value_list.append(i.x)
                 i_value_list.append(i.y)
-
             plot_x_max = max(v_value_list) + 0.5
             plot_y_max = max(i_value_list) + 500
 
@@ -31,7 +29,7 @@ def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Ev
 
             plt.plot(v_value_list, i_value_list)
             plt.draw()
-            plt.pause(0.001)
+            plt.pause(0.01)
             plt.clf()
 
         time.sleep(0.01)
