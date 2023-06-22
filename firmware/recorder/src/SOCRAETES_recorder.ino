@@ -28,7 +28,6 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int mode =1;
-static int * mosfet_oc;
 
 MCP4822 dac(34);
 
@@ -50,15 +49,14 @@ void setup() {
 	startupDelay();
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);
-
 	initializeADC();
 	ivCurveSequenceNumber = 0; 
 	// Set DACs for first measurement
-	updateHarvesterLoad(ivCurveSequenceNumber);
 	// 1 means PC, 0 means S/A;
 	mode=digitalRead(MODE_JUMPER);
 	modeSelection(mode);
 	calculateMosfetValues();
+	updateHarvesterLoad(ivCurveSequenceNumber);
 	#ifdef DEBUG_MODE
 	delay(10000);
 	#else
@@ -83,6 +81,7 @@ void loop() {
 	outerElapsedMillis = 0;
 
 	digitalToggle(LED_BUILTIN);
+	
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
@@ -99,7 +98,7 @@ void loop() {
 			Serial.printf("Calibration mode: V: %d, I: %d\n", voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
 			delay(20);
 	#else
-	Serial.printf("Seq. No.: %d, V: %d, I: %d\n", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+	Serial.printf("Seq. No.: %d, V: %d, I: %d\n ", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
 	#endif
 #endif
 
@@ -109,6 +108,7 @@ void loop() {
 		if( ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE )
 		{
 			ivCurveSequenceNumber = 0;
+			calculateMosfetValues();
 		}
 
 		// Set new harvester load
@@ -188,7 +188,6 @@ void loop() {
 		}
 	}
 	
-	
 	if (mode == 0)
 	{
 		// Create new file if required
@@ -211,4 +210,5 @@ void loop() {
 			;
 		}
 	}
+
 }

@@ -420,6 +420,7 @@ int  calculateMosfetValues()
 	uint mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
+	delay(1);
 	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 	tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 	tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
@@ -433,8 +434,10 @@ int  calculateMosfetValues()
 
 	while (1) 
 	{
+		
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
+		delay(1);
 		_adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 		tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
@@ -476,39 +479,45 @@ int  calculateMosfetValues()
 			predCurrent = current;
 		}
 	}
+	
+	#ifdef DEBUG_MODE
 	Serial.println("ende oc" + String(predMosfetValue));
-
+	#endif
+	
 	int oc_voltage = predMosfetValue;
 	mosfetValues[0] = oc_voltage;
 	
 
 	//determine short circuit voltage
-	step= 1000;
+	step= 500;
 	uint predVoltage; 
 	uint voltage;
 	predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
 	mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
+	delay(1);
 	predVoltage= getVoltageFromAdcValue();
+	//voltage limit 6502 due to inaccurancy	
 	while (1) 
 	{
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
+		delay(1);
 		voltage=getVoltageFromAdcValue();
-		if ((predVoltage == 0) && (voltage == 0))
+		if ((predVoltage <= 6502) && (voltage <= 6502))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
 		}
-		if ((predVoltage == 0) && (voltage > 0))
+		if ((predVoltage <= 6502) && (voltage > 6502))
 		{
 			predMosfetValue= mosfetValue;
 			mosfetValue += step;
 			predVoltage = voltage;	
 			step /=2;
 		}
-		if ((predVoltage >0) && (voltage ==0))
+		if ((predVoltage >6502) && (voltage <=6502))
 		{
 			if (step < 3)
 			{
@@ -519,26 +528,35 @@ int  calculateMosfetValues()
 			mosfetValue -= step;
 			predVoltage= voltage;
 		}
-		if ((predVoltage >0) && (voltage >0))
+		if ((predVoltage >6502) && (voltage >6502))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 			predVoltage = voltage;
 		}
 	}
+	
+	#ifdef DEBUG_MODE
 	Serial.println("ende sc " + String(predMosfetValue));
+	Serial.println(mosfetValues[0]);
+	#endif
+	
 	int sc_voltage = predMosfetValue;
 	mosfetValues[39] = sc_voltage;
-	//mit runden nicht hundertprozentig genau
 	
 	for (int i = 1; i< (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -1); i++)
 	{
 		int diffPerPoint = (sc_voltage - mosfetValues[i-1])/ (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -i);
 		mosfetValues[i] = mosfetValues[i-1] + diffPerPoint;
+		
+		#ifdef DEBUG_MODE
 		Serial.println(mosfetValues[i]);
+		#endif
+		
 	}
-
-	
+	#ifdef DEBUG_MODE
+	Serial.println(mosfetValues[39]);
+	#endif
 	return 0;
 	
 }

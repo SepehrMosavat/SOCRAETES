@@ -45,5 +45,4 @@ void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
 void modeSelection(int _mode);
 
 int  calculateMosfetValues();
-
 #endif /* FUNCTIONS_H_ */
