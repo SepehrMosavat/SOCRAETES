@@ -54,7 +54,7 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
     ax.set_ylim3d(0, 1000)
     ax.set_zlim3d(0, 100)
     ax.view_init(130, 270)
-    # plt.show()
+    plt.show()
 
     while True:
         if _stop_thread_event.isSet():
@@ -75,10 +75,8 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
             z_axis = time_difference.microseconds/1000000 + time_difference.seconds
 
             ax.plot3D(v_value_list, i_value_list, z_axis)
-            plt.show()
-            #plt.draw()
+            plt.draw()
             plt.pause(0.1)
-            plt.clf()
             z_axis += 1
 
         time.sleep(0.001)
