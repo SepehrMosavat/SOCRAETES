@@ -17,6 +17,6 @@ To use SOCRAETES, the following prerequisites exist:
     * SOCRAETES software, which will be running on a host PC and used for acquiring data and emulating traces. The current implementation of SOCRAETES is using Python code, but we are working on extensions of this functionality for further data visualization and analysis.
 
 Contact us
-----------
+-----------
 
 In case you experience any issues while using SOCRAETES, or have any questions or ideas for further improvements, please do not hesitate to contact us via e-mail! You can find our contact information on our web page.
