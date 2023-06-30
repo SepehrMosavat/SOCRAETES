@@ -1,5 +1,5 @@
  Software
-=============================================================
+==================
 
 This document provides the instructions for setting up and using the
 software of SOCRAETES. The software is meant for being run on a host system,
@@ -15,6 +15,7 @@ Requirements
 ------------
 The dependencies of the Python code can be found in *requirements.txt*. The
 dependencies can be installed using the following command:
+
 .. code-block:: console
 
     pip install -r requirements.txt
@@ -23,6 +24,7 @@ Recording
 ---------
 The following examples demonstrate how to record traces in different modes.
 To record a trace and visualize it using a 2D plot:
+
 .. code-block:: console
 
     record.py --port <Serial Port>
@@ -39,6 +41,7 @@ The above example could also be run explicitly using the following command:
 
 Alternatively, the trace can be visualized with a 3D surface by using the following
 command:
+
 .. code-block:: console
 
     record.py --port <Serial Port> --mode plot-surface
