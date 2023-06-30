@@ -4,7 +4,7 @@ SOCRAETES: SOlar Cells Recorded And EmulaTed EaSily
 **Sayedsepehr Mosavat, Matteo Zella, Pedro José Marrón**  
 **Networked Embedded Systems Group (NES) - Universität Duisburg-Essen**
 
-
+(A more detailed documentation is on `read the Docs <https://socraetes.readthedocs.io/en/latest/>`_ .)
 SOCRAETES is a tool for supporting the design and evaluation of energy harvesting
 systems. The core idea behind the development of SOCRAETES has been to
 enable easy replication of the required hardware components, therefore
