@@ -21,7 +21,7 @@ Contact us
 
 In case you experience any issues while using SOCRAETES, or have any questions or ideas for further improvements, please do not hesitate to contact us via e-mail! You can find our contact information on our web page.
 
-..toctree::
+.. toctree::
    
    firmware
    hardware
