@@ -1,5 +1,6 @@
- SOCRAETES: SOlar Cells Recorded And EmulaTed EaSily
+ Software
 =============================================================
+
 This document provides the instructions for setting up and using the
 software of SOCRAETES. The software is meant for being run on a host system,
 to which the SOCRAETES hardware is connected. The software, developed in Python,
@@ -15,6 +16,7 @@ Requirements
 The dependencies of the Python code can be found in *requirements.txt*. The
 dependencies can be installed using the following command:
 .. code-block:: console
+
     pip install -r requirements.txt
 
 Recording
@@ -22,6 +24,7 @@ Recording
 The following examples demonstrate how to record traces in different modes.
 To record a trace and visualize it using a 2D plot:
 .. code-block:: console
+
     record.py --port <Serial Port>
 
 The only necessary parameter is the serial port, on which the hardware is
@@ -31,22 +34,28 @@ record a trace in the default operation mode, which is 2D plotting of the trace.
 The above example could also be run explicitly using the following command:
 
 .. code-block:: console
+
     record.py --port <Serial Port> --mode plot-curve
 
 Alternatively, the trace can be visualized with a 3D surface by using the following
 command:
 .. code-block:: console
+
     record.py --port <Serial Port> --mode plot-surface
 
 Furthermore, a trace can be captured for 30 seconds and saved on the local
 machine in an HDF5 file using the following command:
+
 .. code-block:: console
+
     record.py --port <Serial Port> --mode commit-to-file --duration 30
 
 The command above will automatically generate a unique file name for the output
 file. However, the file name can be chosen explicitly by the user using the
 following command:
+
 .. code-block:: console
+
     record.py --port <Serial Port> --mode commit-to-file --file <File Name> --duration 30
 
 Last but not least, the energy harvesting environment can be described by
@@ -55,7 +64,9 @@ be used for data analysis in later stages. For example, the following command
 will capture 30 seconds of data in an outdoor situation on a sunny day, in
 Berlin, Germany. The ambient light intensity of the environment is estimated
 to be 150 Lux:
+
 .. code-block:: console
+
     record.py --port <Serial Port> --mode commit-to-file --duration 30 --environment indoor --lux 150 --weather sunny --country Germany --city Berlin
 
 Emulation
@@ -67,12 +78,16 @@ previously-recorded traces or by using a user-defined array with arbitrary
 data.
 
 The following command will emulate a trace from a file:
+
 .. code-block:: console
+
     emulate.py --port <Serial Port> --source file --file <File Name>
 
 On the other hand, the following command can be used for emulating a user-defined
 set of operation parameters:
+
 .. code-block:: console
+
     emulate.py --port <Serial Port> --source array --array [[0.5, 0], [1, 1000], [2, 2000]]
 
 The user-defined array has the following format: ``[[<DELAY BETWEEN CURVES (s)>,0],[OPEN CIRCUIT VOLTAGE (V)>,<SHORT CIRCUIT CURRENT (uA)>],...]``

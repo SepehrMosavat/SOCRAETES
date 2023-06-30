@@ -1,4 +1,4 @@
-SOCRAETES: SOlar Cells Recorded And EmulaTed EaSily
+Hardware
 =====================================================
 
 

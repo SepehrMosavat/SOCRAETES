@@ -1,4 +1,4 @@
-SOCRAETES: SOlar Cells Recorded And EmulaTed EaSily
+Firmware
 =====================================================
 
 This page provides instructions for compiling and flashing the firmware
