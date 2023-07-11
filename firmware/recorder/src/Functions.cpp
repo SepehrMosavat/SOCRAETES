@@ -12,7 +12,7 @@
 #include <ADC.h>
 #include <ADC_util.h>
 #include "Functions.h"
-#include "MCP48xx/src/MCP48xx.h"
+#include "MCP48xx.h"
 #include "Definitions.h"
 #include <SD.h>
 #include <TimeLib.h>
