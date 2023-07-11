@@ -3,7 +3,7 @@
 #include <ADC.h>
 #include <SPI.h>
 
-#include "MCP48xx/src/MCP48xx.h"
+#include "MCP48xx.h"
 
 #include <TimeLib.h>
 #include <elapsedMillis.h>
