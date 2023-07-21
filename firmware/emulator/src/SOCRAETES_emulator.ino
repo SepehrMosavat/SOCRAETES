@@ -4,9 +4,26 @@
 
 MCP4822 dac(34);
 
+#define	MODE_PC  0
+#define	MODE_SD  1
+
+static int voltage = 0;
+static int current = 0;
+//byte incomingByteArray[4];
+static byte byteCounter = 0;
+static int incommingVoltageAndCurrentBuffer = 0;
+static bool isReceivingData = false;
+static bool isEmulating = true;
+static unsigned long emuDuration_s;
+
+static int mode = MODE_PC;
+
 void setup()
 {
+	uint8_t counter;
+
 	Serial.begin(0);
+
 	SPI.begin();
 
 	dac.init();
@@ -19,27 +36,29 @@ void setup()
 
 	pinMode(STATUS_LED, OUTPUT);
 	pinMode(ERROR_LED, OUTPUT);
-	pinMode(MODE_JUMPER, INPUT_PULLUP);
+	pinMode(MODE_JUMPER, INPUT_PULLDOWN);
 
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);	
+
+	for (counter = 0; counter < 10; counter++)
+	{
+
+		digitalToggle(STATUS_LED);
+		delay(500);
+	}
+
+	mode =  digitalRead(MODE_JUMPER);
+
+	Serial.printf("Starting in mode %s", mode ? "SD" : "PC");
 }
 
-int voltage, current = 0;
-//byte incomingByteArray[4];
-byte byteCounter = 0;
-int incommingVoltageAndCurrentBuffer = 0;
-bool isReceivingData = false;
-bool isEmulating = true;
-unsigned long emuDuration_s;
-// 1 means PC, 0 means S/A;
-static int mode = digitalRead(MODE_JUMPER);
 
 void loop()
 {
 	static int counter;
 
-	if (mode == 0)
+	if (mode == MODE_SD)
 	{
 		if (isEmulating)
 		{
@@ -77,8 +96,6 @@ void loop()
 				Serial.println("again");
 				digitalWrite(STATUS_LED, LOW);
 				isEmulating = true;
-
-
 				}
 			}	
 		}

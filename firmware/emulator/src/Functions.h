@@ -13,6 +13,8 @@
 #include "Definitions.h"
 #include "MCP48xx.h"
 
+extern MCP4822 dac;
+
 int calculateDACvalueForOCVoltageEmulation(int);
 
 int calculateDACvalueForSCCurrentEmulation(int);

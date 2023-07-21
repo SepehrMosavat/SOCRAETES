@@ -15,9 +15,6 @@
 static String emulating_info[NUM_OF_CONFIGLINES];
 emulation_t emu_parameters;
 
-
-extern MCP4822 dac;
-
 int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 {
 	double dacVoltage = (double)_OCVoltageForEmulation / 3; // TODO magic number
@@ -112,16 +109,16 @@ void initializeOutputToZero()
 		{
 			Serial.println(emulating_info[i]);
 		}
-		//  emulating_info[0] = number of curves
-		//	emulating_info[1] = duration between each curve
-		//	emulating_info[2] = open-circuit voltages
-		//	emulating_info[3] = short-circuit currents
+		// emulating_info[0] = number of curves
+		// emulating_info[1] = duration between each curve
+		// emulating_info[2] = open-circuit voltages
+		// emulating_info[3] = short-circuit currents
 		emu_parameters.number_curves = (emulating_info[0].toInt()); 
-		emu_parameters.emu_duration = (emulating_info[1].toFloat()) * 1000;
+		emu_parameters.emu_duration = (emulating_info[1].toFloat()) * 1000.0;
 		Serial.println("duration " + String(emu_parameters.emu_duration));
-		emu_parameters.emu_voltage = (int*) malloc(emulating_info[0].toInt() *sizeof(int));
-		emu_parameters.emu_current = (int*) malloc(emulating_info[0].toInt() *sizeof(int));
-		int index_of_sc_vol,index_of_sc_cu;
+		emu_parameters.emu_voltage = (int*) malloc(emulating_info[0].toInt() * sizeof(int));
+		emu_parameters.emu_current = (int*) malloc(emulating_info[0].toInt() * sizeof(int));
+		int index_of_sc_vol, index_of_sc_cu;
 		int temp_voltage, temp_current;
 		for( int i =0; i< emu_parameters.number_curves; i++)
 		{
