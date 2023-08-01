@@ -50,7 +50,7 @@ void setup()
 
 	mode =  digitalRead(MODE_JUMPER);
 
-	Serial.printf("Starting in mode %s", mode ? "SD" : "PC");
+	Serial.printf("Starting in mode %s\n", mode ? "SD" : "PC");
 }
 
 
@@ -69,10 +69,13 @@ void loop()
 			}
 			digitalWrite(ERROR_LED, LOW);
 
-		emulateVoltageAndCurrent(emu_parameters.emu_voltage[0], emu_parameters.emu_current[0]);
-		isEmulating = false;
-		emuDuration_s = emu_parameters.emu_duration + millis();
-		counter = 1;
+			updateEmulationValues();
+			emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
+			Serial.println(emu_parameters.emu_voltage);
+			Serial.println(emu_parameters.emu_current);
+			isEmulating = false;
+			emuDuration_s = emu_parameters.emu_duration + millis();
+			counter = 1;
 		}
 		else
 		{
@@ -80,22 +83,23 @@ void loop()
 			{
 				if (counter < emu_parameters.number_curves)
 				{
-				emulateVoltageAndCurrent(emu_parameters.emu_voltage[counter], emu_parameters.emu_current[counter]);
-				emuDuration_s = emu_parameters.emu_duration + millis();
-				Serial.println(emu_parameters.emu_voltage[counter]);
-				Serial.println(emu_parameters.emu_current[counter]);
-				counter++;
-				digitalToggle(STATUS_LED);
+					updateEmulationValues();
+					emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
+					emuDuration_s = emu_parameters.emu_duration + millis();
+					Serial.println(emu_parameters.emu_voltage);
+					Serial.println(emu_parameters.emu_current);
+					counter++;
+					digitalToggle(STATUS_LED);
 				}
 				else
 				{
-				digitalWrite(STATUS_LED, HIGH);
-				initializeOutputToZero();
-				Serial.println("finished");
-				delay(1000);
-				Serial.println("again");
-				digitalWrite(STATUS_LED, LOW);
-				isEmulating = true;
+					digitalWrite(STATUS_LED, HIGH);
+					initializeOutputToZero();
+					Serial.println("finished");
+					delay(1000);
+					Serial.println("again");
+					digitalWrite(STATUS_LED, LOW);
+					isEmulating = true;
 				}
 			}	
 		}

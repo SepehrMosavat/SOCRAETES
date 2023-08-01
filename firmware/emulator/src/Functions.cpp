@@ -11,9 +11,13 @@
 #include "Functions.h"
 #include <SD.h>
 #include <TimeLib.h>
-#define NUM_OF_CONFIGLINES 4
-static String emulating_info[NUM_OF_CONFIGLINES];
+#define NUM_OF_CONFIGLINES 2
+
 emulation_t emu_parameters;
+
+static String emulating_info[NUM_OF_CONFIGLINES];
+
+static File config_file;
 
 int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 {
@@ -74,12 +78,18 @@ void initializeOutputToZero()
 			Serial.println("SD card not configured properly (no directory with correct name present)");
 			return -1;
 		}
-		char filename[] ="emulating_data/configuration_file.txt";
+		const char *filename ="emulating_data/emulator_file.txt";
 
-		File config_file = SD.open(filename, FILE_READ);
+		if (config_file)
+		{
+			config_file.close();
+		}
+
+		config_file = SD.open(filename, FILE_READ);
+
 		if (!config_file)
 		{
-		    Serial.println("The configuration file couldn't be found");
+		    Serial.println("The emulator file couldn't be found");
 		    return -1;
 		}
 		 
@@ -105,35 +115,46 @@ void initializeOutputToZero()
 			}
 
 		}
-		for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
-		{
-			Serial.println(emulating_info[i]);
-		}
 		// emulating_info[0] = number of curves
 		// emulating_info[1] = duration between each curve
-		// emulating_info[2] = open-circuit voltages
-		// emulating_info[3] = short-circuit currents
 		emu_parameters.number_curves = (emulating_info[0].toInt()); 
+		Serial.println("number_curves " + String(emu_parameters.number_curves));
 		emu_parameters.emu_duration = (emulating_info[1].toFloat()) * 1000.0;
 		Serial.println("duration " + String(emu_parameters.emu_duration));
-		emu_parameters.emu_voltage = (int*) malloc(emulating_info[0].toInt() * sizeof(int));
-		emu_parameters.emu_current = (int*) malloc(emulating_info[0].toInt() * sizeof(int));
-		int index_of_sc_vol, index_of_sc_cu;
-		int temp_voltage, temp_current;
-		for( int i =0; i< emu_parameters.number_curves; i++)
-		{
-			index_of_sc_vol = emulating_info[2].indexOf(';');
-			temp_voltage= (emulating_info[2].substring(0, index_of_sc_vol)).toInt();
-			emulating_info[2] = emulating_info[2].substring(index_of_sc_vol + 1);
-			index_of_sc_cu = emulating_info[3].indexOf(';');
-			temp_current= (emulating_info[3].substring(0, index_of_sc_vol)).toInt();
-			emulating_info[3] = emulating_info[3].substring(index_of_sc_cu + 1);
-			emu_parameters.emu_voltage[i] =temp_voltage;
-			emu_parameters.emu_current[i] = temp_current;
 
-		}
-		config_file.close();
-		
 		return 0;
 	}
 
+extern void updateEmulationValues(void)
+{
+	int index_of_sc;
+
+	if ( !config_file )
+	{
+		return;
+	}
+	// Read one line of the file and update voltage and current
+	String emulating_info_temp = config_file.readStringUntil('\n');
+
+
+	// Check for DOS or unix line endings
+
+	int strLen = emulating_info_temp.length();
+
+	// harvesting_info_temp.charAt(strLen) is the null terminator '\0'
+	if ( emulating_info_temp.charAt(strLen - 1) == '\r' )
+	{
+		emulating_info_temp = emulating_info_temp.substring(0, strLen - 1);
+	}
+	else
+	{
+		emulating_info_temp = emulating_info_temp.substring(0, strLen);
+	}
+
+	index_of_sc = emulating_info_temp.indexOf(';');
+
+	emu_parameters.emu_voltage = (emulating_info_temp.substring(0, index_of_sc)).toInt();
+
+	emu_parameters.emu_current = (emulating_info_temp.substring(index_of_sc + 1, emulating_info_temp.length())).toInt();
+
+}

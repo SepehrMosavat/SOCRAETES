@@ -13,26 +13,29 @@
 #include "Definitions.h"
 #include "MCP48xx.h"
 
+typedef struct emulation_s {
+    int number_curves;
+    int emu_voltage;
+    int emu_current;
+    float emu_duration;
+} emulation_t;
+
 extern MCP4822 dac;
 
-int calculateDACvalueForOCVoltageEmulation(int);
-
-int calculateDACvalueForSCCurrentEmulation(int);
-
-void emulateVoltageAndCurrent(int, int);
-
-void initializeOutputToZero();
-
-int setupSD();
-
-typedef struct emulation_s {
-    int* emu_voltage;
-    int* emu_current;
-    float emu_duration;
-    int number_curves; 
-}emulation_t;
-
 extern emulation_t emu_parameters;
+
+extern int calculateDACvalueForOCVoltageEmulation(int);
+
+extern int calculateDACvalueForSCCurrentEmulation(int);
+
+extern void emulateVoltageAndCurrent(int, int);
+
+extern void initializeOutputToZero();
+
+extern int setupSD();
+
+extern void updateEmulationValues(void);
+
 
 
 #endif /* FUNCTIONS_H_ */
