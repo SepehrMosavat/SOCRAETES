@@ -1,15 +1,15 @@
  Software
 ==================
 
-This document provides the instructions for setting up and using the
+This site provides the instructions for setting up and using the
 software of SOCRAETES. The software is meant for being run on a host system,
 to which the SOCRAETES hardware is connected. The software, developed in Python,
-will communicate with the hardware and provide a user interface for functionalities
-such as data visualization and retention.
+will communicate with the hardware and provide a user interface for 
+functionalities such as data visualization and retention.
 
-The current software provides the user a command line interface to either record or emulate
-energy harvesting traces of a solar cell. Either functionality can be used
-as follows.
+The current software provides the user a command line interface to either record
+or emulate energy harvesting traces of a solar cell. Either functionality can be
+used as follows.
 
 Requirements
 ------------
