@@ -1,5 +1,5 @@
  Software
-==================
+======================================================================
 
 This site provides the instructions for setting up and using the
 software of SOCRAETES. The software is meant for being run on a host system,
