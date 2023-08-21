@@ -25,3 +25,10 @@ Regardless of the method chosen for implementing the SOCRAETES hardware, since
 all of the components are available in through-hole packages, the soldering of
 the hardware should not be a great challenge, even for the users with little
 prior experience in electronics and soldering.
+
+Emulator
+----------
+
+Recorder
+----------
+
