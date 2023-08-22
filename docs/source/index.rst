@@ -25,11 +25,11 @@ regarding the design and implementation of SOCRAETES.
 To use SOCRAETES, the following prerequisites exist:
 
     * SOCRAETES hardware, either assembled on a prototyping board, or \
-    optionally, using the PCB found in the hardware directory. Please note, \
-    that the full functionality of SOCRAETES can be realized using prototyping \
-    boards, but the highest reliability and accuracy will be achieved only if \
-    the PCB is used. Please refer to the hardware directory for instructions \
-    regarding preparing the hardware
+        optionally, using the PCB found in the hardware directory. Please note, \
+        that the full functionality of SOCRAETES can be realized using prototyping \
+        boards, but the highest reliability and accuracy will be achieved only if \
+        the PCB is used. Please refer to the hardware directory for instructions \
+        regarding preparing the hardware
     * SOCRAETES firmware, which will be running on a Teensy 3.6. Please refer to
     the firmware directory for instructions on flashing the Teensy board.
     * SOCRAETES software, which will be running on a host PC and used for 
