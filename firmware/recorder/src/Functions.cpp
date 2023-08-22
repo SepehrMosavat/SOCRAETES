@@ -24,7 +24,7 @@ static ADC *adc = new ADC();
 //start of data used for sd mode only
 
 
-static char filename[80];
+static char filename[128];
 
 static String harvesting_info[NUM_OF_CONFIGLINES];
 
@@ -224,7 +224,7 @@ void startupDelay()
 
 uint32_t modeSelection(int _mode)
 {
-	if (_mode== 0)
+	if (_mode == MODE_SD)
 	{
 		while( setupSD() != 0 )
 		{
@@ -237,13 +237,11 @@ uint32_t modeSelection(int _mode)
 		digitalWrite(ERROR_LED, LOW);
 		setupTime();
 		endFileRecord_s = createNewFile();
-		int _outerCycleTime_ms = 2000;
-		return _outerCycleTime_ms;
+		return 5000u;
 	}
 	else
 	{
-		int _outerCycleTime_ms = 500;
-		return _outerCycleTime_ms;
+		return 500u;
 	}
 
 }
@@ -337,7 +335,7 @@ time_t createNewFile(void)
 
 	File rec_file = SD.open(filename, FILE_WRITE);
 
-	char header_info[800];
+	char header_info[255];
 
 	// convert duration to end date
 	time_t duration = fileRecDuration_s + now();

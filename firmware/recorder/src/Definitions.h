@@ -14,6 +14,8 @@
 // In debug mode every measured point of curve is printed via serial
 // Cycle times are not taken into account
 //#define DEBUG_MODE
+//
+#define MODE_SD 0
 
 #ifdef DEBUG_MODE
 // define CALIBRATION_MODE if required
@@ -76,7 +78,6 @@ const int loadMosfetDACValuesLUT_40_points_irf1404[NUMBER_OF_CAPTURED_POINTS_IN_
 		3268, 3300, 3332, 3364, 3396, 3428, 3460, 3492,
 		3524, 3556, 3588, 3620, 3652, 3684, 3716, 3748
 };
-
 
 #define LOAD_MOSFET_DAC_VALUES_LUT_OFFSET 50 // This offset is used for fine-tuning the gate voltage of the MOSFETs
 

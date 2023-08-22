@@ -18,7 +18,7 @@ static elapsedMillis innerElapsedMillis;
 
 time_t endFileRecord_s;
 
-uint32_t outerCycleTime_ms = 500;
+uint32_t outerCycleTime_ms;
 
 static elapsedMillis outerElapsedMillis;
 
@@ -28,7 +28,7 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-static int mode =1;
+static int mode = 1;
 
 MCP4822 dac(34);
 
@@ -46,7 +46,7 @@ void setup() {
 	pinMode(STATUS_LED, OUTPUT);
 	pinMode(ERROR_LED, OUTPUT);
 	
-	pinMode(MODE_JUMPER, INPUT_PULLUP);
+	pinMode(MODE_JUMPER, INPUT);
 	startupDelay();
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);
@@ -56,9 +56,8 @@ void setup() {
 	// Set DACs for first measurement
 	updateHarvesterLoad(ivCurveSequenceNumber);
 	// 1 means PC, 0 means S/A;
-	mode=digitalRead(MODE_JUMPER);
+	mode = digitalRead(MODE_JUMPER);
 	outerCycleTime_ms = modeSelection(mode);
-
 	
 }
 
@@ -69,12 +68,11 @@ void loop() {
 //	static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
 
-	digitalToggle(LED_BUILTIN);
+	digitalToggle(STATUS_LED);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 		innerElapsedMillis = 0;
-		digitalToggle(STATUS_LED);
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
@@ -122,23 +120,27 @@ void loop() {
 	// Transmit the measured curve or store it on SD card
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
-		if (mode == 0) 
+		if (mode == MODE_SD) 
+		{
 			writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
+		}
 		else
+		{
 			#if defined(DEBUG_MODE)
 			;
 			#else
 			transmitValuesAsByteArray(Counter, voltageArray[Counter], currentArray[Counter]);
 			#endif
+		}
 		delay(5);
 	}
 
-if (mode == 0)
+if (mode == MODE_SD)
 {
 	// Create new file if required
 	if (now() > endFileRecord_s)
 	{
-		Serial.printf("new recording\n");
+		//Serial.printf("new recording\n");
 		endFileRecord_s = createNewFile();
 		// Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
 	}
