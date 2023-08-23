@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="20" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
@@ -77,9 +77,10 @@
 <layer number="203" name="203bmp" color="4" fill="10" visible="yes" active="yes"/>
 </layers>
 <board>
+<fusionsync huburn="a.YnVzaW5lc3M6c3R1ZDIwOTY0" projecturn="a.YnVzaW5lc3M6c3R1ZDIwOTY0I0QyMDIzMDgyMzY2NTY3NjUyNg" f3durn="urn:adsk.wipprod:dm.lineage:ib8k3OZ7TAOlBsr4urytlA" pcbguid="" lastpulledtime="" lastsyncedchangeguid="" latestrevisionid="4c722c16-6a0d-4b5e-848a-81a87ad141f4" lastsyncedrevisionid="4c722c16-6a0d-4b5e-848a-81a87ad141f4" lastboardhashguid="bb048980-c883-f71e-5c05-a9cf1e83084a" lastpushedtime="2023-08-23T09:28:15Z" linktopcb3d="true"/>
 <plain>
 <text x="72.39" y="36.068" size="1.778" layer="25" rot="R90">HRVST   +     -</text>
-<text x="45.212" y="76.6572" size="1.15" layer="25" rot="R180">SOCRAETES Recorder v0.3.11
+<text x="45.212" y="76.6572" size="1.15" layer="25" rot="R180">SOCRAETES Recorder v0.3.12
 Universität Duisburg-Essen - NES
 Hochschule Niederrhein - FB 03</text>
 <hole x="2.7432" y="74.4982" drill="3"/>
@@ -2374,6 +2375,12 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="ERROR" pad="K"/>
 <contactref element="T2" pad="S"/>
 <contactref element="R7" pad="1"/>
+<wire x1="50.292" y1="7.112" x2="53.34" y2="7.112" width="1.27" layer="1"/>
+<wire x1="53.34" y1="7.112" x2="54.864" y2="5.588" width="1.27" layer="1"/>
+<wire x1="55.832" y1="7.00114375" x2="55.832" y2="6.556" width="1.27" layer="1"/>
+<wire x1="55.832" y1="6.556" x2="54.864" y2="5.588" width="1.27" layer="1"/>
+<wire x1="58.166" y1="13.208" x2="58.166" y2="9.33514375" width="1.27" layer="1"/>
+<wire x1="58.166" y1="9.33514375" x2="55.832" y2="7.00114375" width="1.27" layer="1"/>
 </signal>
 <signal name="+8V">
 <contactref element="U4" pad="7"/>
@@ -2381,22 +2388,18 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="C5" pad="1"/>
 <contactref element="U3" pad="8"/>
 <contactref element="C4" pad="1"/>
-<wire x1="51.308" y1="39.624" x2="49.149" y2="37.465" width="1.27" layer="1"/>
-<wire x1="49.149" y1="37.465" x2="47.915" y2="37.465" width="1.27" layer="1"/>
-<via x="47.915" y="37.465" extent="1-16" drill="1"/>
-<wire x1="47.915" y1="37.465" x2="43.525" y2="37.465" width="1.27" layer="16"/>
-<via x="43.525" y="37.465" extent="1-16" drill="1"/>
-<wire x1="43.525" y1="37.465" x2="32.479" y2="37.465" width="1.27" layer="1"/>
-<wire x1="32.479" y1="37.465" x2="30.066" y2="39.878" width="1.27" layer="1"/>
-<wire x1="30.066" y1="39.878" x2="29.05" y2="39.878" width="1.27" layer="1"/>
 <wire x1="61.341" y1="29.591" x2="51.308" y2="39.624" width="1.27" layer="1"/>
 <wire x1="61.341" y1="29.591" x2="61.341" y2="23.368" width="1.27" layer="1"/>
 <wire x1="61.341" y1="23.368" x2="55.626" y2="17.653" width="1.27" layer="1"/>
 <wire x1="55.626" y1="17.653" x2="55.626" y2="16.51" width="1.27" layer="1"/>
 <wire x1="26.416" y1="39.878" x2="29.05" y2="39.878" width="1.27" layer="1"/>
-<wire x1="55.626" y1="13.208" x2="55.626" y2="16.51" width="1.27" layer="1"/>
 <contactref element="C8" pad="2"/>
 <wire x1="51.308" y1="35.052" x2="51.308" y2="39.624" width="1.27" layer="1"/>
+<wire x1="48.9351" y1="39.624" x2="51.308" y2="39.624" width="1.27" layer="16"/>
+<wire x1="47.26785" y1="37.95675" x2="48.9351" y2="39.624" width="1.27" layer="16"/>
+<wire x1="29.05" y1="39.878" x2="30.97125" y2="37.95675" width="1.27" layer="16"/>
+<wire x1="30.97125" y1="37.95675" x2="47.26785" y2="37.95675" width="1.27" layer="16"/>
+<wire x1="55.626" y1="16.51" x2="55.626" y2="13.208" width="1.27" layer="1"/>
 </signal>
 <signal name="-8V">
 <contactref element="U4" pad="4"/>
@@ -2415,27 +2418,20 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="U4" pad="3"/>
 <contactref element="HARVESTER_TERMINAL" pad="1"/>
 <contactref element="C7" pad="1"/>
-<wire x1="66.294" y1="47.1424" x2="66.802" y2="46.6344" width="1.27" layer="1"/>
-<wire x1="66.802" y1="46.6344" x2="66.802" y2="42.672" width="1.27" layer="1"/>
-<via x="51.816" y="50.8" extent="1-16" drill="1"/>
-<wire x1="51.816" y1="50.8" x2="44.704" y2="50.8" width="1.27" layer="16"/>
-<wire x1="44.704" y1="50.8" x2="40.894" y2="46.99" width="1.27" layer="16"/>
-<via x="40.894" y="46.99" extent="1-16" drill="1"/>
-<wire x1="40.894" y1="46.99" x2="38.862" y2="44.958" width="1.27" layer="1"/>
-<wire x1="38.862" y1="44.958" x2="36.99" y2="44.958" width="1.27" layer="1"/>
 <wire x1="49.276" y1="27.94" x2="50.8" y2="27.94" width="1.27" layer="1"/>
-<via x="57.404" y="37.084" extent="1-16" drill="1"/>
-<wire x1="57.404" y1="37.084" x2="53.848" y2="33.528" width="1.27" layer="16"/>
-<via x="53.848" y="33.528" extent="1-16" drill="1"/>
-<wire x1="53.848" y1="33.528" x2="49.276" y2="28.956" width="1.27" layer="1"/>
-<wire x1="49.276" y1="28.956" x2="49.276" y2="27.94" width="1.27" layer="1"/>
 <wire x1="50.8" y1="27.94" x2="53.086" y2="25.654" width="1.27" layer="1"/>
 <wire x1="53.086" y1="25.654" x2="53.086" y2="24.13" width="1.27" layer="1"/>
-<wire x1="64.1096" y1="47.1424" x2="66.294" y2="47.1424" width="1.27" layer="1"/>
-<wire x1="51.816" y1="50.8" x2="60.452" y2="50.8" width="1.27" layer="1"/>
-<wire x1="60.452" y1="50.8" x2="64.1096" y2="47.1424" width="1.27" layer="1"/>
-<wire x1="66.294" y1="45.974" x2="66.294" y2="47.1424" width="1.27" layer="1"/>
-<wire x1="57.404" y1="37.084" x2="66.294" y2="45.974" width="1.27" layer="1"/>
+<wire x1="49.276" y1="27.94" x2="51.78" y2="30.444" width="1.27" layer="16"/>
+<wire x1="51.78" y1="30.444" x2="51.78" y2="30.618175" width="1.27" layer="16"/>
+<wire x1="51.78" y1="30.618175" x2="63.833825" y2="42.672" width="1.27" layer="16"/>
+<wire x1="63.833825" y1="42.672" x2="66.802" y2="42.672" width="1.27" layer="16"/>
+<wire x1="36.99" y1="44.958" x2="38.13" y2="46.098" width="1.27" layer="16"/>
+<wire x1="38.13" y1="46.098" x2="38.1599" y2="46.098" width="1.27" layer="16"/>
+<wire x1="38.1599" y1="46.098" x2="42.3539" y2="50.292" width="1.27" layer="16"/>
+<wire x1="42.3539" y1="50.292" x2="63.1444" y2="50.292" width="1.27" layer="16"/>
+<wire x1="66.802" y1="42.672" x2="66.802" y2="46.6344" width="1.27" layer="16"/>
+<wire x1="66.802" y1="46.6344" x2="66.294" y2="47.1424" width="1.27" layer="16"/>
+<wire x1="63.1444" y1="50.292" x2="66.294" y2="47.1424" width="1.27" layer="16"/>
 </signal>
 <signal name="MOSFET_DAC_OUTPUT">
 <contactref element="R3" pad="2"/>
@@ -2456,15 +2452,12 @@ Everything else you will find on https://aisler.net/help</description>
 <signal name="CURRENT_SENSE_AMP_OUTPUT">
 <contactref element="U4" pad="6"/>
 <contactref element="U1" pad="38"/>
-<wire x1="53.086" y1="16.51" x2="53.086" y2="14.732" width="1.27" layer="1"/>
-<wire x1="53.086" y1="14.732" x2="51.435" y2="13.081" width="1.27" layer="1"/>
-<wire x1="38.862" y1="23.622" x2="25.908" y2="23.622" width="1.27" layer="1"/>
-<via x="25.908" y="23.622" extent="1-16" drill="1"/>
-<wire x1="25.908" y1="23.622" x2="19.304" y2="23.622" width="1.27" layer="16"/>
-<wire x1="42.672" y1="19.812" x2="38.862" y2="23.622" width="1.27" layer="1"/>
-<wire x1="51.435" y1="13.081" x2="45.847" y2="13.081" width="1.27" layer="1"/>
-<wire x1="45.847" y1="13.081" x2="42.672" y2="16.256" width="1.27" layer="1"/>
-<wire x1="42.672" y1="16.256" x2="42.672" y2="19.812" width="1.27" layer="1"/>
+<wire x1="51.1918875" y1="18.8186" x2="52.1053" y2="17.9051875" width="1.27" layer="16"/>
+<wire x1="52.1053" y1="17.9051875" x2="52.1053" y2="17.4907" width="1.27" layer="16"/>
+<wire x1="52.1053" y1="17.4907" x2="53.086" y2="16.51" width="1.27" layer="16"/>
+<wire x1="43.71238125" y1="23.622" x2="48.51578125" y2="18.8186" width="1.27" layer="16"/>
+<wire x1="48.51578125" y1="18.8186" x2="51.1918875" y2="18.8186" width="1.27" layer="16"/>
+<wire x1="19.304" y1="23.622" x2="43.71238125" y2="23.622" width="1.27" layer="16"/>
 </signal>
 <signal name="+3V3">
 <contactref element="R4" pad="2"/>
@@ -2475,11 +2468,6 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="MODE" pad="3"/>
 <wire x1="19.304" y1="64.262" x2="18.542" y2="64.262" width="0.508" layer="1"/>
 <wire x1="9.144" y1="23.622" x2="9.144" y2="21.844" width="1.27" layer="1"/>
-<wire x1="15.494" y1="7.112" x2="21.844" y2="7.112" width="0.508" layer="1"/>
-<via x="21.844" y="7.112" extent="1-16" drill="0.45"/>
-<wire x1="21.844" y1="7.112" x2="24.384" y2="7.112" width="0.508" layer="16"/>
-<wire x1="24.384" y1="7.112" x2="25.4" y2="6.096" width="0.508" layer="16"/>
-<via x="25.4" y="6.096" extent="1-16" drill="0.45"/>
 <wire x1="15.494" y1="15.494" x2="15.494" y2="7.112" width="1.27" layer="1"/>
 <wire x1="9.144" y1="21.844" x2="15.494" y2="15.494" width="1.27" layer="1"/>
 <wire x1="4.064" y1="33.782" x2="6.35" y2="33.782" width="1.27" layer="1"/>
@@ -2489,11 +2477,6 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="13.716" y1="41.148" x2="13.716" y2="61.468" width="1.27" layer="1"/>
 <wire x1="13.716" y1="61.468" x2="16.51" y2="64.262" width="1.27" layer="1"/>
 <wire x1="16.51" y1="64.262" x2="19.304" y2="64.262" width="1.27" layer="1"/>
-<wire x1="25.4" y1="6.096" x2="35.052" y2="6.096" width="0.508" layer="1"/>
-<wire x1="35.052" y1="6.096" x2="38.1" y2="9.144" width="0.508" layer="1"/>
-<wire x1="59.944" y1="7.62" x2="59.944" y2="5.588" width="0.508" layer="1"/>
-<wire x1="38.1" y1="9.144" x2="58.42" y2="9.144" width="0.508" layer="1"/>
-<wire x1="58.42" y1="9.144" x2="59.944" y2="7.62" width="0.508" layer="1"/>
 <wire x1="16.256" y1="66.548" x2="16.256" y2="70.104" width="0.508" layer="1"/>
 <wire x1="18.542" y1="64.262" x2="16.256" y2="66.548" width="0.508" layer="1"/>
 <wire x1="16.256" y1="70.104" x2="17.78" y2="71.628" width="0.508" layer="1"/>
@@ -2502,6 +2485,12 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="46.736" y1="62.865" x2="43.688" y2="65.913" width="0.508" layer="1"/>
 <wire x1="39.116" y1="71.628" x2="43.688" y2="67.056" width="0.508" layer="1"/>
 <wire x1="43.688" y1="67.056" x2="43.688" y2="65.913" width="0.508" layer="1"/>
+<wire x1="58.976" y1="7.00114375" x2="58.976" y2="6.556" width="1.27" layer="16"/>
+<wire x1="58.976" y1="6.556" x2="59.944" y2="5.588" width="1.27" layer="16"/>
+<wire x1="15.494" y1="7.112" x2="37.9479375" y2="7.112" width="1.27" layer="16"/>
+<wire x1="37.9479375" y1="7.112" x2="39.6054375" y2="8.7695" width="1.27" layer="16"/>
+<wire x1="39.6054375" y1="8.7695" x2="57.20764375" y2="8.7695" width="1.27" layer="16"/>
+<wire x1="57.20764375" y1="8.7695" x2="58.976" y2="7.00114375" width="1.27" layer="16"/>
 </signal>
 <signal name="+5V">
 <contactref element="U1" pad="VIN"/>
@@ -2547,21 +2536,25 @@ Everything else you will find on https://aisler.net/help</description>
 <signal name="N$6">
 <contactref element="U4" pad="2"/>
 <contactref element="T1" pad="DRAIN"/>
-<via x="53.34" y="29.972" extent="1-16" drill="1"/>
-<wire x1="53.34" y1="29.972" x2="43.18" y2="29.972" width="1.27" layer="16"/>
-<wire x1="43.18" y1="29.972" x2="42.672" y2="29.464" width="1.27" layer="16"/>
 <contactref element="R_SHUNT" pad="2"/>
-<wire x1="55.626" y1="24.13" x2="55.626" y2="25.654" width="1.27" layer="1"/>
-<wire x1="57.912" y1="27.94" x2="59.436" y2="27.94" width="1.27" layer="1"/>
-<wire x1="55.626" y1="25.654" x2="57.912" y2="27.94" width="1.27" layer="1"/>
-<wire x1="57.404" y1="29.972" x2="59.436" y2="27.94" width="1.27" layer="1"/>
-<wire x1="53.34" y1="29.972" x2="57.404" y2="29.972" width="1.27" layer="1"/>
 <contactref element="T2" pad="D"/>
 <wire x1="34.036" y1="29.464" x2="35.56" y2="29.464" width="1.27" layer="1"/>
 <wire x1="35.56" y1="29.464" x2="37.592" y2="27.432" width="1.27" layer="1"/>
 <wire x1="39.624" y1="27.432" x2="41.656" y2="29.464" width="1.27" layer="1"/>
 <wire x1="41.656" y1="29.464" x2="42.672" y2="29.464" width="1.27" layer="1"/>
 <wire x1="37.592" y1="27.432" x2="39.624" y2="27.432" width="1.27" layer="1"/>
+<wire x1="53.7318875" y1="21.8214" x2="54.6453" y2="22.7348125" width="1.27" layer="1"/>
+<wire x1="54.6453" y1="22.7348125" x2="54.6453" y2="23.1493" width="1.27" layer="1"/>
+<wire x1="54.6453" y1="23.1493" x2="55.626" y2="24.13" width="1.27" layer="1"/>
+<wire x1="43.7924" y1="23.54198125" x2="45.51298125" y2="21.8214" width="1.27" layer="1"/>
+<wire x1="45.51298125" y1="21.8214" x2="53.7318875" y2="21.8214" width="1.27" layer="1"/>
+<wire x1="42.672" y1="29.464" x2="43.7924" y2="28.3436" width="1.27" layer="1"/>
+<wire x1="43.7924" y1="28.3436" x2="43.7924" y2="23.54198125" width="1.27" layer="1"/>
+<wire x1="55.626" y1="24.13" x2="56.6067" y2="25.1107" width="1.27" layer="1"/>
+<wire x1="56.6067" y1="25.1107" x2="56.6067" y2="25.5251875" width="1.27" layer="1"/>
+<wire x1="56.6067" y1="25.5251875" x2="57.5201125" y2="26.4386" width="1.27" layer="1"/>
+<wire x1="57.5201125" y1="26.4386" x2="57.9346" y2="26.4386" width="1.27" layer="1"/>
+<wire x1="57.9346" y1="26.4386" x2="59.436" y2="27.94" width="1.27" layer="1"/>
 </signal>
 <signal name="N$11">
 <contactref element="R3" pad="1"/>
@@ -2656,13 +2649,12 @@ Everything else you will find on https://aisler.net/help</description>
 <signal name="JUMPER_SELECT_MODE">
 <contactref element="MODE" pad="2"/>
 <contactref element="U1" pad="32"/>
-<via x="9.144" y="1.905" extent="1-16" drill="0.45"/>
-<wire x1="9.144" y1="1.905" x2="8.763" y2="1.905" width="0.508" layer="16"/>
-<wire x1="8.763" y1="1.905" x2="4.064" y2="6.604" width="0.508" layer="16"/>
 <wire x1="4.064" y1="10.922" x2="4.064" y2="6.604" width="0.508" layer="16"/>
-<wire x1="9.144" y1="1.905" x2="55.753" y2="1.905" width="0.508" layer="1"/>
-<wire x1="57.404" y1="3.556" x2="57.404" y2="5.588" width="0.508" layer="1"/>
-<wire x1="55.753" y1="1.905" x2="57.404" y2="3.556" width="0.508" layer="1"/>
+<wire x1="4.064" y1="6.604" x2="8.636" y2="2.032" width="0.508" layer="16"/>
+<wire x1="56.134" y1="2.286" x2="57.404" y2="3.556" width="0.508" layer="16"/>
+<wire x1="57.404" y1="3.556" x2="57.404" y2="5.588" width="0.508" layer="16"/>
+<wire x1="8.636" y1="2.032" x2="55.88" y2="2.032" width="0.508" layer="16"/>
+<wire x1="55.88" y1="2.032" x2="56.134" y2="2.286" width="0.508" layer="16"/>
 </signal>
 <signal name="N$1">
 <contactref element="R_GAIN_25" pad="1"/>
@@ -2747,6 +2739,11 @@ which will not be processed correctly with this version.
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
 with this version.
+</note>
+<note version="8.3" severity="warning">
+Since Version 8.3, EAGLE supports Fusion synchronisation.
+This feature will not be available in this version and saving
+the document will break the link to the Fusion PCB feature.
 </note>
 <note version="8.3" severity="warning">
 Since Version 8.3, EAGLE supports URNs for individual library
