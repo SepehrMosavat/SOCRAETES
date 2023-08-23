@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="20" unitdist="mil" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mm"/>
@@ -78,7 +78,7 @@
 <wire x1="69.068" y1="0" x2="69.068" y2="71.044" width="0" layer="20"/>
 <wire x1="69.068" y1="71.044" x2="-0.508" y2="71.044" width="0" layer="20"/>
 <wire x1="-0.508" y1="71.044" x2="-0.508" y2="0" width="0" layer="20"/>
-<text x="64.516" y="70.104" size="1.016" layer="25" rot="R180">SOCRAETES Emulator v0.3.11
+<text x="64.516" y="70.104" size="1.016" layer="25" rot="R180">SOCRAETES Emulator v0.3.12
 Universität Duisburg-Essen - NES
 Hochschule Niederrhein - FB 03</text>
 <hole x="66.548" y="68.58" drill="3"/>
@@ -2392,13 +2392,8 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="18.669" y1="59.69" x2="19.812" y2="59.69" width="0.8128" layer="1"/>
 <wire x1="17.018" y1="61.341" x2="18.669" y2="59.69" width="0.508" layer="1"/>
 <wire x1="58.42" y1="8.636" x2="50.927" y2="1.143" width="0.8128" layer="1"/>
-<wire x1="18.161" y1="1.143" x2="16.256" y2="3.048" width="0.8128" layer="1"/>
-<via x="16.256" y="3.048" extent="1-16" drill="0.45"/>
-<wire x1="16.256" y1="3.048" x2="13.208" y2="6.096" width="0.8128" layer="16"/>
-<via x="13.208" y="6.096" extent="1-16" drill="0.45"/>
-<wire x1="13.208" y1="6.096" x2="9.652" y2="9.652" width="0.8128" layer="1"/>
-<wire x1="9.652" y1="9.652" x2="9.652" y2="19.05" width="0.8128" layer="1"/>
-<wire x1="50.927" y1="1.143" x2="18.161" y2="1.143" width="0.8128" layer="1"/>
+<wire x1="9.652" y1="19.05" x2="9.652" y2="9.652" width="0.8128" layer="1"/>
+<wire x1="30.988" y1="1.143" x2="50.927" y2="1.143" width="0.8128" layer="1"/>
 <wire x1="4.572" y1="29.21" x2="5.842" y2="29.21" width="1.27" layer="1"/>
 <wire x1="9.652" y1="19.05" x2="9.652" y2="25.4" width="1.27" layer="1"/>
 <wire x1="9.652" y1="25.4" x2="5.842" y2="29.21" width="1.27" layer="1"/>
@@ -2411,6 +2406,11 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="45.339" y1="55.372" x2="54.864" y2="55.372" width="0.508" layer="1"/>
 <wire x1="42.672" y1="66.548" x2="42.672" y2="58.039" width="0.508" layer="1"/>
 <wire x1="42.672" y1="58.039" x2="45.339" y2="55.372" width="0.508" layer="1"/>
+<wire x1="26.9624" y1="5.1686" x2="30.988" y2="1.143" width="0.8128" layer="1"/>
+<wire x1="17.79524375" y1="6.096" x2="18.72264375" y2="5.1686" width="0.8128" layer="1"/>
+<wire x1="18.72264375" y1="5.1686" x2="26.9624" y2="5.1686" width="0.8128" layer="1"/>
+<wire x1="9.652" y1="9.652" x2="13.208" y2="6.096" width="0.8128" layer="1"/>
+<wire x1="13.208" y1="6.096" x2="17.79524375" y2="6.096" width="0.8128" layer="1"/>
 </signal>
 <signal name="HARVESTER_EMULATION">
 <contactref element="T1" pad="DRAIN"/>
@@ -2418,14 +2418,6 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="R6" pad="2"/>
 <contactref element="EMULATOR_TERMINAL" pad="1"/>
 <contactref element="C8" pad="2"/>
-<wire x1="41.148" y1="39.116" x2="36.576" y2="39.116" width="1.27" layer="16"/>
-<via x="36.576" y="39.116" extent="1-16" drill="1"/>
-<wire x1="36.576" y1="39.116" x2="33.909" y2="39.116" width="1.27" layer="1"/>
-<wire x1="33.909" y1="39.116" x2="29.972" y2="43.053" width="1.27" layer="1"/>
-<wire x1="29.972" y1="43.053" x2="29.972" y2="50.038" width="1.27" layer="1"/>
-<wire x1="41.148" y1="39.116" x2="44.45" y2="39.116" width="1.27" layer="16"/>
-<wire x1="44.45" y1="39.116" x2="46.355" y2="41.021" width="1.27" layer="16"/>
-<via x="46.355" y="41.021" extent="1-16" drill="1"/>
 <wire x1="62.484" y1="20.8534" x2="64.5414" y2="20.8534" width="1.27" layer="1"/>
 <wire x1="67.056" y1="23.368" x2="64.5414" y2="20.8534" width="1.27" layer="1"/>
 <wire x1="62.484" y1="20.8534" x2="62.484" y2="16.129" width="1.27" layer="1"/>
@@ -2438,8 +2430,12 @@ Everything else you will find on https://aisler.net/help</description>
 <wire x1="66.04" y1="44.196" x2="67.056" y2="43.18" width="1.27" layer="1"/>
 <wire x1="59.182" y1="43.053" x2="60.325" y2="44.196" width="1.27" layer="1"/>
 <wire x1="67.056" y1="43.18" x2="67.056" y2="23.368" width="1.27" layer="1"/>
-<wire x1="46.355" y1="41.021" x2="46.482" y2="41.148" width="1.27" layer="1"/>
-<wire x1="46.482" y1="41.148" x2="59.182" y2="41.148" width="1.27" layer="1"/>
+<wire x1="29.972" y1="50.038" x2="30.5844" y2="49.4256" width="1.27" layer="16"/>
+<wire x1="30.5844" y1="49.4256" x2="30.5844" y2="43.60798125" width="1.27" layer="16"/>
+<wire x1="30.5844" y1="43.60798125" x2="35.07638125" y2="39.116" width="1.27" layer="16"/>
+<wire x1="35.07638125" y1="39.116" x2="41.148" y2="39.116" width="1.27" layer="16"/>
+<wire x1="41.148" y1="39.116" x2="57.15" y2="39.116" width="1.27" layer="16"/>
+<wire x1="57.15" y1="39.116" x2="59.182" y2="41.148" width="1.27" layer="16"/>
 </signal>
 <signal name="DAC_SC_CURRENT_EMULATION">
 <contactref element="U4" pad="3"/>
@@ -2502,14 +2498,13 @@ Everything else you will find on https://aisler.net/help</description>
 <signal name="N$6">
 <contactref element="R5" pad="2"/>
 <contactref element="U2" pad="1"/>
-<wire x1="51.6466625" y1="25.908" x2="49.6146625" y2="23.876" width="1.27" layer="16"/>
-<wire x1="49.6146625" y1="23.876" x2="46.482" y2="23.876" width="1.27" layer="16"/>
-<via x="46.482" y="23.876" extent="1-16" drill="1"/>
-<wire x1="46.482" y1="23.876" x2="40.132" y2="23.876" width="1.27" layer="1"/>
-<wire x1="40.132" y1="23.876" x2="39.116" y2="24.892" width="1.27" layer="1"/>
 <contactref element="C1" pad="2"/>
-<wire x1="38.354" y1="21.844" x2="39.116" y2="22.606" width="1.27" layer="1"/>
-<wire x1="39.116" y1="22.606" x2="39.116" y2="24.892" width="1.27" layer="1"/>
+<wire x1="43.86198125" y1="24.4884" x2="43.45838125" y2="24.892" width="1.27" layer="16"/>
+<wire x1="43.45838125" y1="24.892" x2="39.116" y2="24.892" width="1.27" layer="16"/>
+<wire x1="51.6466625" y1="25.908" x2="50.2270625" y2="24.4884" width="1.27" layer="16"/>
+<wire x1="50.2270625" y1="24.4884" x2="43.86198125" y2="24.4884" width="1.27" layer="16"/>
+<wire x1="39.116" y1="24.892" x2="39.116" y2="22.606" width="1.27" layer="16"/>
+<wire x1="39.116" y1="22.606" x2="38.354" y2="21.844" width="1.27" layer="16"/>
 </signal>
 <signal name="DAC_SC_CURRENT_EMULATION_BUFFERED">
 <contactref element="R3" pad="2"/>
@@ -2646,19 +2641,16 @@ Everything else you will find on https://aisler.net/help</description>
 <contactref element="C1" pad="1"/>
 <contactref element="U2" pad="2"/>
 <contactref element="R3" pad="1"/>
-<via x="51.435" y="28.702" extent="1-16" drill="1"/>
-<wire x1="51.435" y1="28.702" x2="44.323" y2="28.702" width="1.27" layer="16"/>
 <wire x1="43.053" y1="27.432" x2="39.116" y2="27.432" width="1.27" layer="16"/>
-<wire x1="44.323" y1="28.702" x2="43.053" y2="27.432" width="1.27" layer="16"/>
+<wire x1="43.053" y1="27.432" x2="44.323" y2="28.702" width="1.27" layer="16"/>
 <wire x1="35.814" y1="21.844" x2="35.814" y2="26.289" width="1.27" layer="1"/>
 <wire x1="36.957" y1="27.432" x2="39.116" y2="27.432" width="1.27" layer="1"/>
 <wire x1="35.814" y1="26.289" x2="36.957" y2="27.432" width="1.27" layer="1"/>
-<wire x1="51.435" y1="28.702" x2="53.086" y2="28.702" width="1.27" layer="1"/>
-<wire x1="53.086" y1="28.702" x2="54.356" y2="27.432" width="1.27" layer="1"/>
-<wire x1="54.356" y1="27.432" x2="54.356" y2="25.90800625" width="1.27" layer="1"/>
-<wire x1="54.356" y1="25.90800625" x2="54.35599375" y2="25.908" width="1.27" layer="1"/>
-<wire x1="54.35599375" y1="25.908" x2="54.35599375" y2="16.76400625" width="1.27" layer="1"/>
 <wire x1="54.35599375" y1="16.76400625" x2="54.356" y2="16.764" width="1.27" layer="1"/>
+<wire x1="51.56199375" y1="28.702" x2="54.35599375" y2="25.908" width="1.27" layer="16"/>
+<wire x1="44.323" y1="28.702" x2="51.56199375" y2="28.702" width="1.27" layer="16"/>
+<wire x1="54.356" y1="16.764" x2="54.356" y2="25.90799375" width="1.27" layer="16"/>
+<wire x1="54.356" y1="25.90799375" x2="54.35599375" y2="25.908" width="1.27" layer="16"/>
 </signal>
 <signal name="ERROR_LED">
 <contactref element="U1" pad="2"/>
