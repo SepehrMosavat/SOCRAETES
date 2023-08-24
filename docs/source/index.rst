@@ -47,3 +47,14 @@ or ideas for further improvements, please do not hesitate to contact us via
 e-mail! You can find our contact information on our 
 `web page <https://www.nes.uni-due.de/>`_.
 
+
+Sub-sites
+----------
+
+.. toctree::
+    :maxdepth: 1
+   
+   firmware
+   hardware
+   software
+
