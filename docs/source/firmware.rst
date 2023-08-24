@@ -48,25 +48,51 @@ Stand-alone mode
 If you choose the stand-alone mode, the data of the curves is stored on a sd card.
 The configuration, how long each measurement should run and where and under which
 condition it was created, is read in from a configuration textfile on the sd-card.
+The format needs to be as follows:
+
+.. code-block:: text
+
+    duration=20
+    Indoor/Oudoor=Indoor
+    Lux=50
+    weather=sunny
+    Country=N/A
+    City=N/A
+    Harvesting Source=solar cell
+
+Please take care to not use any comments and write your specifiactions directly behind
+the equal sign (no spaces). The configuration file must be placed in the root 
+folder of your sd card with the name configuration_file.txt .
+
+
+
 The data of the measurement, is stored in an seperate CSV-file for each measurement.
 A directory for these files will be created automatically, if it didn't existed before.
 When the measurement started and stopped will be also automatically stored on the 
 CSV-file of a measurement. the date will be correct, because of a built-in rtc-module,
 that the teensyboard has and an super-capacitor, which is on the hardware and will
 provide the clock for a period, even if the teensyboard is disconnected from a power supply.
-The conversion from CSV to a graphical view or a storing 
+The conversion from CSV to a graphical view or a conerson to a hdf5 file, is done by the software.
 
 
 Emulator firmware
 #################
 
+The emulator firmware is used to emulate curves, which were captured with the recorder firmware.
+It uses the short-circuit current and the open-loop voltage as an input and emulate these for the
+duratoin of the original curve capturing time.
+
+
 PC-mode
 ***********
 
+If the pc mode is used, the software sends the firmware the data and the firmware is checking,
+if the data was transmitted correctly. If so the data gets emulated, otherwise it is thrown away.
 
 
 Stand-alone mode
 *****************
+
 For emulation via SD-card the emulator reads a file named `emulator_file.txt` placed in a folder named `emulating_data` on your SD-card.
 The emulator reads the file line by line and restarts, when the number of lines are read. 
 
@@ -82,6 +108,9 @@ The format needs to be as follows:
 
 
 Take care of the delimiter `;` and don't put any comments in the file. 
+
+After reading it, it emulates each curve for a duration of the time in line 2 of the 
+configuration file (Time between each curve). 
 
 
 
