@@ -17,9 +17,9 @@ The main script of the firmware is running in the SOCRAETES_recorder.ino file.
 The selection between the stand-alone mode and the mode connected via a serial
 communication with a PC is made via a jumper on the hardware.  
 
-********************
+
 Recorder firmware
-*********************
+##################
 
 First of all everything gets initialized. After that, the range of the 
 MOSFET-transistor gets determined automatically. This has to be done, because
@@ -31,7 +31,7 @@ After the initialization of the hardware components, the firmware is depending
 on the chosen mode (stand-alone or PC). 
 
 PC-mode
-##########
+****************
 
 If the PC-mode is running, the firmware 
 is waiting for a starting signal from the corresponding software. If the 
@@ -43,7 +43,7 @@ assure that the curve points and their visualization are up to date and are not
 lagging behind because of buffers or a slower processing of the software.
  
 Stand-alone mode
-#################
+*****************
 
 If you choose the stand-alone mode, the data of the curves is stored on a sd card.
 The configuration, how long each measurement should run and where and under which
@@ -54,11 +54,11 @@ When the measurement started and stopped will be also automatically stored on th
 CSV-file of a measurement. the date will be correct, because of a built-in rtc-module,
 that the teensyboard has and an super-capacitor, which is on the hardware and will
 provide the clock for a period, even if the teensyboard is disconnected from a power supply.
-The 
+The conversion from CSV to a graphical view or a storing 
+
 
 Emulator firmware
-##################
-
+#################
 
 
 
