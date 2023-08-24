@@ -26,9 +26,41 @@ all of the components are available in through-hole packages, the soldering of
 the hardware should not be a great challenge, even for the users with little
 prior experience in electronics and soldering.
 
-Emulator
-----------
 
 Recorder
 ----------
+
+A 3D-rendering of the circuit board of the current recorder looks like this:
+
+.. image:: images/circuit_layout_recorder.png
+  :width: 400
+  :alt: 3D-rendering of the circuit board of the current recorder
+
+A build example of a minor older version(v. 0.2.6), so that you can imagine 
+the setup with teensyboard, could look like this:
+
+.. image:: images/example_build_recorder.jpg
+  :width: 400
+  :alt: Example build of recorder
+
+
+
+
+Emulator
+----------
+
+A 3D-rendering of the circuit board of the current emulator looks like this:
+
+.. image:: images/circuit_layout_emulator.png
+  :width: 400
+  :alt: 3D-rendering of the circuit board of the current emulator
+
+A build example of a minor older version(v. 0.2.7), so that you can imagine 
+the setup with teensyboard, could look like this:
+
+.. image:: images/example_build_emulator.jpg
+  :width: 400
+  :alt: Example build of emulator
+
+
 

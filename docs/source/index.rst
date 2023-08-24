@@ -51,7 +51,6 @@ Sub-sites
 ----------
 
 .. toctree::
-    :maxdepth: 1
    
    firmware
    hardware
