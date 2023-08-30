@@ -4,6 +4,7 @@ Hardware
 
 This document provides instructions for replicating the hardware of SOCRAETES.
 As far as the hardware is concerned, there are 2 options for the users:
+
 #. Using either a solderless breadboard or prototyping board (perfboard)
 #. Using the SOCRAETES PCB
 
