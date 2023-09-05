@@ -1,5 +1,6 @@
+##########
 Hardware
-=====================================================
+##########
 
 
 This document provides instructions for replicating the hardware of SOCRAETES.
@@ -30,7 +31,7 @@ prior experience in electronics and soldering.
 
 
 Recorder
-----------
+##################
 
 A 3D-rendering of the circuit board of the current recorder looks like this:
 
@@ -49,7 +50,7 @@ the setup with teensyboard, could look like this:
 
 
 Emulator
-----------
+##################
 
 A 3D-rendering of the circuit board of the current emulator looks like this:
 

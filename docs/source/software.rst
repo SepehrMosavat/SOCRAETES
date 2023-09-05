@@ -1,5 +1,6 @@
+##################
 Software
-==================================================
+##################
 
 This site provides the instructions for setting up and using the
 software of SOCRAETES. The software is meant for being run on a host system,
@@ -12,7 +13,8 @@ or emulate energy harvesting traces of a solar cell. Either functionality can be
 used as follows.
 
 Requirements
-------------
+##################
+
 The dependencies of the Python code can be found in *requirements.txt*. The
 dependencies can be installed using the following command:
 
@@ -21,7 +23,8 @@ dependencies can be installed using the following command:
     pip install -r requirements.txt
 
 Recording
----------
+##################
+
 The following examples demonstrate how to record traces in different modes.
 To record a trace and visualize it using a 2D plot:
 
@@ -73,7 +76,7 @@ to be 150 Lux:
     record.py --port <Serial Port> --mode commit-to-file --duration 30 --environment indoor --lux 150 --weather sunny --country Germany --city Berlin
 
 Emulation
------------
+##################
 
 The following examples demonstrate how to emulate energy harvesting traces using
 SOCRAETES. The emulation can be performed either by using a file containing

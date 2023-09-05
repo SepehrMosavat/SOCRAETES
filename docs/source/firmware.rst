@@ -6,10 +6,10 @@ This page provides instructions for compiling and flashing the firmware
 on the MCU of SOCRAETES.
 
 - The current SOCRAETES hardware utilizes a
-`Teensy 4.1 <https://www.pjrc.com/store/teensy41.html>`_ development board. 
+  `Teensy 4.1 <https://www.pjrc.com/store/teensy41.html>`_ development board. 
 
 - Compiling and flashing the Teensy board works with the Plugin
-`PlatformIO <https://docs.platformio.org/en/latest/what-is-platformio.html>`_.
+  `PlatformIO <https://docs.platformio.org/en/latest/what-is-platformio.html>`_.
 
 - The recorder is designed to measure the voltage/current curve of an energy source, for example of a solar cell.  
 
@@ -51,32 +51,32 @@ Stand-alone mode
 
 If you choose the stand-alone mode, the data of the curves is stored on a sd card.
 The configuration, how long each measurement should run and where and under which
-condition it was created, is read in from a configuration textfile on the sd-card.
+condition it was created, is read in from a configuration text file on the sd-card.
 The format needs to be as follows:
 
 .. code-block:: text
 
     duration=20
-    Indoor/Oudoor=Indoor
+    Indoor/Outdoor=Indoor
     Lux=50
     weather=sunny
     Country=N/A
     City=N/A
     Harvesting Source=solar cell
 
-Please take care to not use any comments and write your specifiactions directly behind
+Please take care to not use any comments and write your specifications directly behind
 the equal sign (no spaces). The configuration file must be placed in the root 
 folder of your sd card with the name configuration_file.txt .
 
 
 
-The data of the measurement, is stored in an seperate CSV-file for each measurement.
+The data of the measurement, is stored in an separate CSV-file for each measurement.
 A directory for these files will be created automatically, if it didn't existed before.
 When the measurement started and stopped will be also automatically stored on the 
 CSV-file of a measurement. the date will be correct, because of a built-in rtc-module,
 that the teensyboard has and an super-capacitor, which is on the hardware and will
 provide the clock for a period, even if the teensyboard is disconnected from a power supply.
-The conversion from CSV to a graphical view or a conerson to a hdf5 file, is done by the software.
+The conversion from CSV to a graphical view or a conversion to a hdf5 file, is done by the software.
 
 
 Emulator firmware
@@ -84,7 +84,7 @@ Emulator firmware
 
 The emulator firmware is used to emulate curves, which were captured with the recorder firmware.
 It uses the short-circuit current and the open-loop voltage as an input and emulate these for the
-duratoin of the original curve capturing time.
+duration of the original curve capturing time.
 
 
 PC-mode
