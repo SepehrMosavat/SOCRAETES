@@ -12,7 +12,7 @@
 #include <ADC.h>
 #include <ADC_util.h>
 #include "Functions.h"
-#include "MCP48xx/src/MCP48xx.h"
+#include "MCP48xx.h"
 #include "Definitions.h"
 #include <SD.h>
 #include <TimeLib.h>
@@ -26,7 +26,7 @@ static ADC *adc = new ADC();
 //start of data used for sd mode only
 
 
-static char filename[80];
+static char filename[128];
 
 static String harvesting_info[NUM_OF_CONFIGLINES];
 
@@ -228,9 +228,9 @@ void startupDelay()
 #endif
 }
 
-void modeSelection(int _mode)
+uint32_t modeSelection(int _mode)
 {
-	if (_mode== 0)
+	if (_mode == MODE_SD)
 	{
 		while( setupSD() != 0 )
 		{
@@ -243,11 +243,11 @@ void modeSelection(int _mode)
 		digitalWrite(ERROR_LED, LOW);
 		setupTime();
 		endFileRecord_s = createNewFile();
-		return;
+		return 5000u;
 	}
 	else
 	{
-		return;
+		return 500u;
 	}
 
 }
@@ -341,7 +341,7 @@ time_t createNewFile(void)
 
 	File rec_file = SD.open(filename, FILE_WRITE);
 
-	char header_info[800];
+	char header_info[255];
 
 	// convert duration to end date
 	time_t duration = fileRecDuration_s + now();

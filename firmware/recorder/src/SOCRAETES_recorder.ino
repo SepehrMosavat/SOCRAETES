@@ -2,7 +2,7 @@
 #include <Encoder.h>
 #include <ADC.h>
 #include <SPI.h>
-#include "MCP48xx/src/MCP48xx.h"
+#include "MCP48xx.h"
 
 #include <TimeLib.h>
 #include <elapsedMillis.h>
@@ -17,7 +17,7 @@ static elapsedMillis innerElapsedMillis;
 
 time_t endFileRecord_s;
 
-uint32_t outerCycleTime_ms = 2000;
+uint32_t outerCycleTime_ms;
 
 static elapsedMillis outerElapsedMillis;
 
@@ -27,7 +27,7 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-static int mode =1;
+static int mode = MODE_SD;
 
 MCP4822 dac(34);
 
@@ -45,7 +45,7 @@ void setup() {
 	pinMode(STATUS_LED, OUTPUT);
 	pinMode(ERROR_LED, OUTPUT);
 	
-	pinMode(MODE_JUMPER, INPUT_PULLUP);
+	pinMode(MODE_JUMPER, INPUT);
 	startupDelay();
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);
@@ -53,8 +53,8 @@ void setup() {
 	ivCurveSequenceNumber = 0; 
 	// Set DACs for first measurement
 	// 1 means PC, 0 means S/A;
-	mode=digitalRead(MODE_JUMPER);
-	modeSelection(mode);
+	mode = digitalRead(MODE_JUMPER);
+	outerCycleTime_ms = modeSelection(mode);
 	calculateMosfetValues();
 	updateHarvesterLoad(ivCurveSequenceNumber);
 	#ifdef DEBUG_MODE
@@ -70,23 +70,19 @@ void setup() {
 		}
 	}
 	#endif
-	
 }
 
 void loop() {
-	// Uncomment to measure maximum inner cycle time
-// 	static unsigned long innerMaxTaskTime_ms = 0;
-	// Uncomment to measure maximum outer cycle time
-//	static unsigned long outerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum inner cycle time
+  //static unsigned long innerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum outer cycle time
+  //static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
-
-	digitalToggle(LED_BUILTIN);
-	
+	digitalToggle(STATUS_LED);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 		innerElapsedMillis = 0;
-		digitalToggle(STATUS_LED);
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array

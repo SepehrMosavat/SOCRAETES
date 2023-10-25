@@ -42,7 +42,7 @@ time_t createNewFile(void);
 
 void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
 
-void modeSelection(int _mode);
+uint32_t modeSelection(int _mode);
 
 int  calculateMosfetValues();
 #endif /* FUNCTIONS_H_ */

@@ -14,6 +14,8 @@
 // In debug mode every measured point of curve is printed via serial
 // Cycle times are not taken into account
 //#define DEBUG_MODE
+//
+#define MODE_SD 0
 
 #ifdef DEBUG_MODE
 // define CALIBRATION_MODE if required
@@ -31,7 +33,7 @@
 
 // System-wide Parameter Definitions
 #define NUMBER_OF_CAPTURED_POINTS_IN_CURVE 40
-#define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_0
+#define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_irf1404
 
 #define VCC_VOLTAGE 3.326
 #define ADC_REFERENCE_VOLTAGE 3.326
