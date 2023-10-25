@@ -122,7 +122,6 @@ void loop()
 				isReceivingData = false;
 				Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
 				emulateVoltageAndCurrent(voltage, current);
-				digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle LED on each curve change
 			}
 			else
 			{
