@@ -28,7 +28,7 @@ static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-static int mode = 1;
+static int mode = MODE_SD;
 
 MCP4822 dac(34);
 
@@ -62,12 +62,11 @@ void setup() {
 }
 
 void loop() {
-	// Uncomment to measure maximum inner cycle time
-// 	static unsigned long innerMaxTaskTime_ms = 0;
-	// Uncomment to measure maximum outer cycle time
-//	static unsigned long outerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum inner cycle time
+  //static unsigned long innerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum outer cycle time
+  //static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
-
 	digitalToggle(STATUS_LED);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
