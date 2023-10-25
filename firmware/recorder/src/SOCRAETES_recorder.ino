@@ -63,18 +63,16 @@ void setup() {
 }
 
 void loop() {
-	// Uncomment to measure maximum inner cycle time
-// 	static unsigned long innerMaxTaskTime_ms = 0;
-	// Uncomment to measure maximum outer cycle time
-//	static unsigned long outerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum inner cycle time
+  //static unsigned long innerMaxTaskTime_ms = 0;
+  // Uncomment to measure maximum outer cycle time
+  //static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
-
-	digitalToggle(LED_BUILTIN);
+  digitalToggle(STATUS_LED);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
 		innerElapsedMillis = 0;
-		digitalToggle(STATUS_LED);
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
