@@ -5,7 +5,7 @@ import time
 
 import matplotlib.pyplot as plt
 
-plt.rcParams['toolbar'] = 'None'
+plt.rcParams["toolbar"] = "None"
 
 
 def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Event):
@@ -25,11 +25,10 @@ def plot_iv_curve(iv_curves_queue: queue.Queue, _stop_thread_event: threading.Ev
             plt.ylabel("Solar Cell Current (uA)")
             plt.title("Solar Cell IV Characteristics")
             plt.ion()
-            
 
-            plt.plot(v_value_list, i_value_list)
+            plt.stem(v_value_list, i_value_list)
             plt.draw()
-            #plt.show()
+            # plt.show()
             plt.pause(0.1)
             plt.clf()
 
@@ -42,13 +41,13 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
     z_axis = 0
     start_time = datetime.datetime.now()
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
+    ax = fig.add_subplot(projection="3d")
 
     plt.ion()
 
-    ax.set_xlabel('Solar Cell Voltage (V)')
-    ax.set_ylabel('Solar Cell Current (uA)')
-    ax.set_zlabel('Time (s)')
+    ax.set_xlabel("Solar Cell Voltage (V)")
+    ax.set_ylabel("Solar Cell Current (uA)")
+    ax.set_zlabel("Time (s)")
 
     ax.set_xlim3d(0, 4)
     ax.set_ylim3d(0, 1000)
@@ -72,7 +71,7 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
 
             current_time = datetime.datetime.now()
             time_difference = current_time - start_time
-            z_axis = time_difference.microseconds/1000000 + time_difference.seconds
+            z_axis = time_difference.microseconds / 1000000 + time_difference.seconds
 
             ax.plot3D(v_value_list, i_value_list, z_axis)
             plt.draw()
@@ -80,4 +79,3 @@ def plot_iv_surface(iv_curves_queue: queue.Queue, _stop_thread_event: threading.
             z_axis += 1
 
         time.sleep(0.001)
-
