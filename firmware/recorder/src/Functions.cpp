@@ -7,6 +7,8 @@
  *      Networked Embedded Systems (NES)
  */
 
+/////////////////////////////////////////////////////////////INCLUDES///////////////////////////////////////////////////////////
+
 #include <SPI.h>
 #include <Encoder.h>
 #include <ADC.h>
@@ -18,13 +20,12 @@
 #include <TimeLib.h>
 #include <usb_serial.h>
 
-
+/////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
 #define NUM_OF_CONFIGLINES 7
 
 static ADC *adc = new ADC();
 
-//start of data used for sd mode only
-
+// start of data used for sd mode only
 
 static char filename[128];
 
@@ -37,21 +38,26 @@ static time_t fileRecDuration_s = 60;
 
 static int mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
+extern MCP4822 dac;
+extern time_t endFileRecord_s;
+
+// voltage limit 185000 uV due to inaccurancy of the DAC
+static const int VOLTAGE_LIMIT_uV = 185000;
+
+/////////////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////////
+
 static void resetFunc(void)
 {
 	SCB_AIRCR = 0x05FA0004;
 }
 
-//end data used for sd mode only
-
-extern MCP4822 dac;
-extern time_t endFileRecord_s;
+// end data used for sd mode only
 
 float shortToVoltage(short _voltage)
 {
 	float returnValue;
-	returnValue = (float)_voltage/255;
-	return returnValue*VCC_VOLTAGE;
+	returnValue = (float)_voltage / 255;
+	return returnValue * VCC_VOLTAGE;
 }
 
 int getVoltageFromAdcValue(void)
@@ -80,8 +86,8 @@ int getCurrentFromAdcValue(void)
 {
 	double returnValue;
 	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
-	//Serial.println(_adcValue);
-	if(_adcValue < 0)
+	// Serial.println(_adcValue);
+	if (_adcValue < 0)
 	{
 		returnValue = 0;
 	}
@@ -89,7 +95,7 @@ int getCurrentFromAdcValue(void)
 	{
 		returnValue = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
-		returnValue *= 1000000; // Value in uA
+		returnValue *= 1000000;				  // Value in uA
 
 		returnValue /= CURRENT_SENSE_AMPLIFIER_GAIN;
 		returnValue /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
@@ -99,11 +105,11 @@ int getCurrentFromAdcValue(void)
 	return returnValue;
 }
 
-void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte* _buffer)
+void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte *_buffer)
 {
-	_buffer[0] = 0xaa; // Start byte
+	_buffer[0] = 0xaa;			   // Start byte
 	_buffer[1] = _sequence_number; // TODO: IV curve point sequence number
-	_buffer[10] = 0x55; // Finish byte
+	_buffer[10] = 0x55;			   // Finish byte
 
 	_buffer[2] = (_voltage >> 0) & 0xff;
 	_buffer[3] = (_voltage >> 8) & 0xff;
@@ -116,42 +122,38 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
 	_buffer[9] = (_current >> 24) & 0xff;
 }
 
-
-
-void transmitValuesAsByteArray(uint8_t SeqNo, int* voltage, int* current, unsigned int _transferredBytes)
+void transmitValuesAsByteArray(uint8_t SeqNo, int *voltage, int *current, unsigned int _transferredBytes)
 {
 	//_transferredBytes=6 for max speed, see https://www.pjrc.com/teensy/usb_serial.html
 	byte buffer[66] = {0};
-	for ( unsigned i = 0; i< _transferredBytes; i+=1)
+	for (unsigned i = 0; i < _transferredBytes; i += 1)
 	{
-		buffer[0+ 11*i] = 0xaa; // Start byte
-		buffer[1 +11*i] = SeqNo +i;
-		buffer[10 +11*i] = 0x55; // Finish byte
-		buffer[2 +11*i] = (voltage[SeqNo + i] >> 0) & 0xff;
-		buffer[3 +11*i] = (voltage[SeqNo + i] >> 8) & 0xff;
-		buffer[4 +11*i] = (voltage[SeqNo + i] >> 16) & 0xff;
-		buffer[5 +11*i] = (voltage[SeqNo + i] >> 24) & 0xff;
-		buffer[6 +11*i] = (current[SeqNo + i] >> 0) & 0xff;
-		buffer[7 +11*i] = (current[SeqNo + i] >> 8) & 0xff;
-		buffer[8 +11*i] = (current[SeqNo + i] >> 16) & 0xff;
-		buffer[9 +11*i] = (current[SeqNo + i] >> 24) & 0xff;
-
+		buffer[0 + 11 * i] = 0xaa; // Start byte
+		buffer[1 + 11 * i] = SeqNo + i;
+		buffer[10 + 11 * i] = 0x55; // Finish byte
+		buffer[2 + 11 * i] = (voltage[SeqNo + i] >> 0) & 0xff;
+		buffer[3 + 11 * i] = (voltage[SeqNo + i] >> 8) & 0xff;
+		buffer[4 + 11 * i] = (voltage[SeqNo + i] >> 16) & 0xff;
+		buffer[5 + 11 * i] = (voltage[SeqNo + i] >> 24) & 0xff;
+		buffer[6 + 11 * i] = (current[SeqNo + i] >> 0) & 0xff;
+		buffer[7 + 11 * i] = (current[SeqNo + i] >> 8) & 0xff;
+		buffer[8 + 11 * i] = (current[SeqNo + i] >> 16) & 0xff;
+		buffer[9 + 11 * i] = (current[SeqNo + i] >> 24) & 0xff;
 	}
-	usb_serial_write((void*) buffer, 66*sizeof(byte));
-
+	usb_serial_write((void *)buffer, 66 * sizeof(byte));
 }
 
 void initializeADC()
 {
 	// Initialize the current-sense and voltage-sense ADC
-	adc->adc1->setAveraging(0); // set number of averages
+	adc->adc1->setAveraging(0);					   // set number of averages
 	adc->adc1->setResolution(ADC_RESOLUTION_BITS); // set bits of resolution
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
 }
 
 int i = 1100;
-int _first=0, _second=0;
+int _first = 0, _second = 0;
 bool calibrated = 0;
 
 void updateHarvesterLoad(uint8_t SeqNo)
@@ -219,7 +221,7 @@ void startupDelay()
 	int ledDelay = 100;
 
 	digitalWrite(ERROR_LED, HIGH);
-	for(int i = 0; i < 50; i += 1)
+	for (int i = 0; i < 50; i += 1)
 	{
 		digitalToggle(STATUS_LED);
 		digitalToggle(ERROR_LED);
@@ -232,11 +234,11 @@ uint32_t modeSelection(int _mode)
 {
 	if (_mode == MODE_SD)
 	{
-		while( setupSD() != 0 )
+		while (setupSD() != 0)
 		{
 			delay(500);
 		}
-		while( readConfigFile() != 0 )
+		while (readConfigFile() != 0)
 		{
 			delay(500);
 		}
@@ -249,31 +251,30 @@ uint32_t modeSelection(int _mode)
 	{
 		return 500u;
 	}
-
 }
 
-//functions used for sd mode only
+// functions used for sd mode only
 
 int setupSD()
 {
 	const int chipSelect = BUILTIN_SDCARD;
-	//Check if a SD card is available
+	// Check if a SD card is available
 	if (!SD.begin(chipSelect))
 	{
-	    Serial.println("Card failed, or not present");
+		Serial.println("Card failed, or not present");
 		digitalWrite(ERROR_LED, HIGH);
-	    return -1;
+		return -1;
 	}
 
-	//Create directory for storing data
+	// Create directory for storing data
 	if (!SD.exists("/recording_data"))
 		SD.mkdir("/recording_data");
-	
-	//Create file name which isn't used already
+
+	// Create file name which isn't used already
 	for (unsigned int i = 0; i < UINT_MAX; i++)
 	{
 
-		sprintf(filename,"/recording_data/measurement%u.csv",i);
+		sprintf(filename, "/recording_data/measurement%u.csv", i);
 
 		if (!SD.exists(filename))
 		{
@@ -287,16 +288,16 @@ int setupSD()
 
 int readConfigFile(void)
 {
-	//read harvesting information from configuration file
+	// read harvesting information from configuration file
 	File config_file = SD.open("configuration_file.txt", FILE_READ);
 	if (!config_file)
 	{
-	    Serial.println("The configuration file couldn't be found");
-		digitalToggle(ERROR_LED); 
-	    return -1;
+		Serial.println("The configuration file couldn't be found");
+		digitalToggle(ERROR_LED);
+		return -1;
 	}
 
-	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
+	for (int i = 0; i < NUM_OF_CONFIGLINES; i++)
 	{
 		String harvesting_info_temp = config_file.readStringUntil('\n');
 		int index_of_sc = harvesting_info_temp.indexOf('=');
@@ -304,9 +305,9 @@ int readConfigFile(void)
 		// and check for DOS or unix line endings
 
 		int strLen = harvesting_info_temp.length();
-		
+
 		// harvesting_info_temp.charAt(strLen) is the null terminator '\0'
-		if ( harvesting_info_temp.charAt(strLen - 1) == '\r' )
+		if (harvesting_info_temp.charAt(strLen - 1) == '\r')
 		{
 			harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, strLen - 1);
 		}
@@ -314,15 +315,14 @@ int readConfigFile(void)
 		{
 			harvesting_info[i] = harvesting_info_temp.substring(index_of_sc + 1, strLen);
 		}
-
 	}
 
-	for(int i = 0; i < NUM_OF_CONFIGLINES; i++)
+	for (int i = 0; i < NUM_OF_CONFIGLINES; i++)
 	{
 		Serial.println(harvesting_info[i]);
 	}
 	fileRecDuration_s = harvesting_info[0].toInt();
-	//	harvesting_info[0] = duration 
+	//	harvesting_info[0] = duration
 	//	harvesting_info[1] = Indoor/Outdoor
 	//	harvesting_info[2] = Lux
 	//	harvesting_info[3] = weather
@@ -332,12 +332,11 @@ int readConfigFile(void)
 
 	config_file.close();
 	return 0;
-
 }
 
 time_t createNewFile(void)
 {
-	sprintf(filename,"/recording_data/measurement%u.csv", lastindex++ );
+	sprintf(filename, "/recording_data/measurement%u.csv", lastindex++);
 
 	File rec_file = SD.open(filename, FILE_WRITE);
 
@@ -357,27 +356,26 @@ time_t createNewFile(void)
 	int end_seconds = duration;
 
 	// Store harvesting information in recording file
-	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%s;%s;%s;%s;%s", day(), 
-			month(), year(), hour(), minute(), second(), end_hour, end_minutes, end_seconds, 
+	sprintf(header_info, "%02d.%02d.%4d;%02d:%02d:%02d;%02d:%02d:%02d;%s;%s;%s;%s;%s;%s", day(),
+			month(), year(), hour(), minute(), second(), end_hour, end_minutes, end_seconds,
 			harvesting_info[1].c_str(), harvesting_info[2].c_str(),
 			harvesting_info[3].c_str(), harvesting_info[4].c_str(),
-			harvesting_info[5].c_str(), harvesting_info[6].c_str() );
+			harvesting_info[5].c_str(), harvesting_info[6].c_str());
 	rec_file.println(header_info);
 	rec_file.close();
 
 	return retval;
-
 }
 
 void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
 {
-	if ( !SD.mediaPresent() )
+	if (!SD.mediaPresent())
 	{
-		while ( !SD.mediaPresent() )
+		while (!SD.mediaPresent())
 		{
 			delay(500);
 		}
-		resetFunc();	
+		resetFunc();
 	}
 
 	// 1 + 2 * sizeof(int) + 2 * ';' + '\n'
@@ -393,7 +391,7 @@ void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
 
 time_t getTeensy3Time()
 {
-  return Teensy3Clock.get();
+	return Teensy3Clock.get();
 }
 
 void setupTime()
@@ -401,20 +399,23 @@ void setupTime()
 
 	setSyncProvider(getTeensy3Time);
 
-	if (timeStatus()!= timeSet) {
-	    Serial.println("Unable to sync with the RTC");
-	  } else {
-	    Serial.println("RTC has set the system time");
-	  }
+	if (timeStatus() != timeSet)
+	{
+		Serial.println("Unable to sync with the RTC");
+	}
+	else
+	{
+		Serial.println("RTC has set the system time");
+	}
 }
 
-int  calculateMosfetValues()
+int calculateMosfetValues()
 {
-	
-	//determine open circuit voltage
+
+	// determine open circuit voltage
 	double tempCurrent;
-	uint step= 1000;
-	uint predCurrent; 
+	uint step = 1000;
+	uint predCurrent;
 	uint current;
 	uint predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
 	uint mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
@@ -423,23 +424,21 @@ int  calculateMosfetValues()
 	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 	tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 	tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
-	tempCurrent *= 1000000; // Value in uA
+	tempCurrent *= 1000000;				  // Value in uA
 	tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
-	tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
+	tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE; //
 	predCurrent = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
-	
-	
 
-
-	while (1) 
+	while (1)
 	{
-		
+
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
+		delay(1); // wait for voltage to settle
 		_adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 		tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
 		tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
-		tempCurrent *= 1000000; // Value in uA
+		tempCurrent *= 1000000;				  // Value in uA
 		tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
 		tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
 		current = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
@@ -449,7 +448,7 @@ int  calculateMosfetValues()
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 		}
-		if ((predCurrent <= 16) && (current > 16))
+		else if ((predCurrent <= 16) && (current > 16))
 		{
 			if (step < 3)
 			{
@@ -457,63 +456,85 @@ int  calculateMosfetValues()
 			}
 			else
 			{
-				step /=2;
-				predMosfetValue= mosfetValue;
+				step /= 2;
+				predMosfetValue = mosfetValue;
 				mosfetValue -= step;
-				predCurrent = current;	
+				predCurrent = current;
 			}
 		}
-		if ((predCurrent >16) && (current <=16))
+		else if ((predCurrent > 16) && (current <= 16))
 		{
 			predMosfetValue = mosfetValue;
+			step /= 2; // Changed step update location, to before the mosfetValue update
 			mosfetValue += step;
-			step /= 2;
-			predCurrent= current;
+			predCurrent = current;
 		}
-		if ((predCurrent >16) && (current >16))
+		else if ((predCurrent > 16) && (current > 16))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
 			predCurrent = current;
 		}
 	}
-	
-	#ifdef DEBUG_MODE
+
+#ifdef DEBUG_MODE
 	Serial.println("ende oc" + String(predMosfetValue));
-	#endif
-	
+#endif
+
 	int oc_voltage = predMosfetValue;
 	mosfetValues[0] = oc_voltage;
-	
 
-	//determine short circuit voltage
-	step= 500;
-	uint predVoltage; 
+	// determine short circuit voltage
+	step = 500;
+	uint predVoltage;
 	uint voltage;
 	predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
 	mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
-	predVoltage= getVoltageFromAdcValue();
-	//voltage limit 6502 due to inaccurancy	
-	while (1) 
+	predVoltage = getVoltageFromAdcValue();
+
+#ifdef DEBUG_MODE
+	Serial.println("start sc ");
+	int counter = 0;
+#endif
+
+	while (1)
 	{
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
-		voltage=getVoltageFromAdcValue();
-		if ((predVoltage <= 6502) && (voltage <= 6502))
+		delay(5); // wait for voltage to settle
+		voltage = getVoltageFromAdcValue();
+		if ((predVoltage <= VOLTAGE_LIMIT_uV) && (voltage <= VOLTAGE_LIMIT_uV))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
+			predVoltage = voltage; // Added this line
+
+#ifdef DEBUG_MODE
+			if (counter++ % 100 == 0)
+			{
+				Serial.println("1");
+				delay(5);
+			}
+#endif
 		}
-		if ((predVoltage <= 6502) && (voltage > 6502))
+		else if ((predVoltage <= VOLTAGE_LIMIT_uV) && (voltage > VOLTAGE_LIMIT_uV))
 		{
-			predMosfetValue= mosfetValue;
+			predMosfetValue = mosfetValue;
+			step /= 2; // Changed step update location, to before the mosfetValue update
 			mosfetValue += step;
-			predVoltage = voltage;	
-			step /=2;
+			predVoltage = voltage;
+
+#ifdef DEBUG_MODE
+			if (counter++ % 100 == 0)
+			{
+				Serial.println("2");
+				delay(5);
+			}
+#endif
 		}
-		if ((predVoltage >6502) && (voltage <=6502))
+		else if ((predVoltage > VOLTAGE_LIMIT_uV) && (voltage <= VOLTAGE_LIMIT_uV))
 		{
 			if (step < 3)
 			{
@@ -522,37 +543,51 @@ int  calculateMosfetValues()
 			predMosfetValue = mosfetValue;
 			step /= 2;
 			mosfetValue -= step;
-			predVoltage= voltage;
+			predVoltage = voltage;
+
+#ifdef DEBUG_MODE
+			if (counter++ % 100 == 0)
+			{
+				Serial.println("3");
+				delay(5);
+			}
+#endif
 		}
-		if ((predVoltage >6502) && (voltage >6502))
+		else if ((predVoltage > VOLTAGE_LIMIT_uV) && (voltage > VOLTAGE_LIMIT_uV))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 			predVoltage = voltage;
+
+#ifdef DEBUG_MODE
+			if (counter++ % 100 == 0)
+			{
+				Serial.println("4 with " + String(mosfetValue) + " Voltage: " + String(voltage));
+				delay(5);
+			}
+#endif
 		}
 	}
-	
-	#ifdef DEBUG_MODE
+
+#ifdef DEBUG_MODE
 	Serial.println("ende sc " + String(predMosfetValue));
 	Serial.println(mosfetValues[0]);
-	#endif
-	
+#endif
+
 	int sc_voltage = predMosfetValue;
 	mosfetValues[39] = sc_voltage;
-	
-	for (int i = 1; i< (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -1); i++)
+
+	for (int i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); i++)
 	{
-		int diffPerPoint = (sc_voltage - mosfetValues[i-1])/ (NUMBER_OF_CAPTURED_POINTS_IN_CURVE -i);
-		mosfetValues[i] = mosfetValues[i-1] + diffPerPoint;
-		
-		#ifdef DEBUG_MODE
+		int diffPerPoint = (sc_voltage - mosfetValues[i - 1]) / (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - i);
+		mosfetValues[i] = mosfetValues[i - 1] + diffPerPoint;
+
+#ifdef DEBUG_MODE
 		Serial.println(mosfetValues[i]);
-		#endif
-		
+#endif
 	}
-	#ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
 	Serial.println(mosfetValues[39]);
-	#endif
+#endif
 	return 0;
-	
 }
