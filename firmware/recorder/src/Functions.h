@@ -10,7 +10,6 @@
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
-
 #include "Definitions.h"
 #include <Arduino.h>
 
@@ -20,10 +19,10 @@ int getVoltageFromAdcValue(void);
 
 int getCurrentFromAdcValue(void);
 
-/* Transmits sequence number, voltage and current as a byte array 
+/* Transmits sequence number, voltage and current as a byte array
  * via serial
  */
-void transmitValuesAsByteArray(uint8_t SeqNo, int* voltage, int* current, unsigned int  _transferredBytes);
+void transmitValuesAsByteArray(uint8_t SeqNo, int *voltage, int *current, unsigned int _transferredBytes);
 
 void initializeADC();
 
@@ -44,5 +43,5 @@ void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
 
 uint32_t modeSelection(int _mode);
 
-int  calculateMosfetValues();
+void calcCurve(void);
 #endif /* FUNCTIONS_H_ */

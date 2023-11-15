@@ -19,6 +19,7 @@
 #include <SD.h>
 #include <TimeLib.h>
 #include <usb_serial.h>
+#include <math.h>
 
 /////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
 #define NUM_OF_CONFIGLINES 7
@@ -42,7 +43,16 @@ extern MCP4822 dac;
 extern time_t endFileRecord_s;
 
 // voltage limit 185000 uV due to inaccurancy of the DAC
-static const int VOLTAGE_LIMIT_uV = 185000;
+#define VOLTAGE_LIMIT_uV 185000
+// Current limit 16 uA
+#define CURRENT_LIMIT_uA 16
+
+// Curve parameters
+#define OC_VOLTAGE 0
+#define SC_VOLTAGE 1
+static uint voltageLimits[2] = {0, 0};
+#define SCALE_CURVE 0.95
+#define CURVE_STEEPNESS 0.02
 
 /////////////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////////
 
@@ -152,6 +162,7 @@ void initializeADC()
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
 }
 
+// TODO: Look if relevant otherwise remove
 int i = 1100;
 int _first = 0, _second = 0;
 bool calibrated = 0;
@@ -409,7 +420,7 @@ void setupTime()
 	}
 }
 
-int calculateMosfetValues()
+uint *findLimits(void)
 {
 
 	// determine open circuit voltage
@@ -443,12 +454,12 @@ int calculateMosfetValues()
 		tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
 		current = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
 
-		if ((predCurrent <= 16) && (current <= 16))
+		if ((predCurrent <= CURRENT_LIMIT_uA) && (current <= CURRENT_LIMIT_uA))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 		}
-		else if ((predCurrent <= 16) && (current > 16))
+		else if ((predCurrent <= CURRENT_LIMIT_uA) && (current > CURRENT_LIMIT_uA))
 		{
 			if (step < 3)
 			{
@@ -462,14 +473,14 @@ int calculateMosfetValues()
 				predCurrent = current;
 			}
 		}
-		else if ((predCurrent > 16) && (current <= 16))
+		else if ((predCurrent > CURRENT_LIMIT_uA) && (current <= CURRENT_LIMIT_uA))
 		{
 			predMosfetValue = mosfetValue;
 			step /= 2; // Changed step update location, to before the mosfetValue update
 			mosfetValue += step;
 			predCurrent = current;
 		}
-		else if ((predCurrent > 16) && (current > 16))
+		else if ((predCurrent > CURRENT_LIMIT_uA) && (current > CURRENT_LIMIT_uA))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
@@ -483,6 +494,12 @@ int calculateMosfetValues()
 
 	int oc_voltage = predMosfetValue;
 	mosfetValues[0] = oc_voltage;
+	voltageLimits[OC_VOLTAGE] = getVoltageFromAdcValue(); // Save open circuit voltage
+
+#ifdef DEBUG_MODE
+	Serial.printf("OC voltage: %d\n", voltageLimits[OC_VOLTAGE]);
+	delay(1000);
+#endif
 
 	// determine short circuit voltage
 	step = 500;
@@ -493,11 +510,6 @@ int calculateMosfetValues()
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
 	predVoltage = getVoltageFromAdcValue();
-
-#ifdef DEBUG_MODE
-	Serial.println("start sc ");
-	int counter = 0;
-#endif
 
 	while (1)
 	{
@@ -510,14 +522,6 @@ int calculateMosfetValues()
 			predMosfetValue = mosfetValue;
 			mosfetValue -= step;
 			predVoltage = voltage; // Added this line
-
-#ifdef DEBUG_MODE
-			if (counter++ % 100 == 0)
-			{
-				Serial.println("1");
-				delay(5);
-			}
-#endif
 		}
 		else if ((predVoltage <= VOLTAGE_LIMIT_uV) && (voltage > VOLTAGE_LIMIT_uV))
 		{
@@ -525,14 +529,6 @@ int calculateMosfetValues()
 			step /= 2; // Changed step update location, to before the mosfetValue update
 			mosfetValue += step;
 			predVoltage = voltage;
-
-#ifdef DEBUG_MODE
-			if (counter++ % 100 == 0)
-			{
-				Serial.println("2");
-				delay(5);
-			}
-#endif
 		}
 		else if ((predVoltage > VOLTAGE_LIMIT_uV) && (voltage <= VOLTAGE_LIMIT_uV))
 		{
@@ -544,28 +540,12 @@ int calculateMosfetValues()
 			step /= 2;
 			mosfetValue -= step;
 			predVoltage = voltage;
-
-#ifdef DEBUG_MODE
-			if (counter++ % 100 == 0)
-			{
-				Serial.println("3");
-				delay(5);
-			}
-#endif
 		}
 		else if ((predVoltage > VOLTAGE_LIMIT_uV) && (voltage > VOLTAGE_LIMIT_uV))
 		{
 			predMosfetValue = mosfetValue;
 			mosfetValue += step;
 			predVoltage = voltage;
-
-#ifdef DEBUG_MODE
-			if (counter++ % 100 == 0)
-			{
-				Serial.println("4 with " + String(mosfetValue) + " Voltage: " + String(voltage));
-				delay(5);
-			}
-#endif
 		}
 	}
 
@@ -576,18 +556,54 @@ int calculateMosfetValues()
 
 	int sc_voltage = predMosfetValue;
 	mosfetValues[39] = sc_voltage;
+	voltageLimits[SC_VOLTAGE] = getVoltageFromAdcValue(); // Save short circuit voltage
+
+#ifdef DEBUG_MODE
+	Serial.printf("SC voltage: %d\n", voltageLimits[SC_VOLTAGE]);
+	delay(1000);
+#endif
 
 	for (int i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); i++)
 	{
-		int diffPerPoint = (sc_voltage - mosfetValues[i - 1]) / (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - i);
-		mosfetValues[i] = mosfetValues[i - 1] + diffPerPoint;
-
-#ifdef DEBUG_MODE
-		Serial.println(mosfetValues[i]);
-#endif
 	}
 #ifdef DEBUG_MODE
 	Serial.println(mosfetValues[39]);
 #endif
-	return 0;
+	return voltageLimits;
+}
+
+void calcCurve(void)
+{
+	findLimits();
+	// define parameters of curve
+	int midpoint = 3200;						//((mosfetValues[39] - mosfetValues[0]) / 2) + mosfetValues[0]; // Calculate midpoint of curve
+	int offset = voltageLimits[SC_VOLTAGE];		// Set offset to short circuit voltage
+	int upperLimit = voltageLimits[OC_VOLTAGE]; // Set upper limit to open circuit voltage
+
+	// Define parameters for voltage value calculation
+	uint stepsize = (voltageLimits[OC_VOLTAGE] - voltageLimits[SC_VOLTAGE]) / (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); // Calculate stepsize
+	uint voltageSizes[NUMBER_OF_CAPTURED_POINTS_IN_CURVE] = {};															// Array for storing the voltage values
+	voltageSizes[0] = voltageLimits[SC_VOLTAGE];																		// Set first value to smallest voltage
+	voltageSizes[NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1] = voltageLimits[OC_VOLTAGE];									// set last value to highest voltage
+
+#ifdef DEBUG_MODE
+	Serial.printf("Midpoint: %d, Offset: %d, Upper limit: %d, Step size: %d\n", midpoint, offset, upperLimit, stepsize);
+	delay(1000);
+#endif
+	// iterate over the array and calculate the voltage values
+	for (uint8_t i = 1; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+	{
+		voltageSizes[i] = offset + (i * stepsize);
+	}
+
+	// calculate the mosfet values for the curve
+	for (uint8_t i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE); i++)
+	{
+		mosfetValues[i] = midpoint + (log((upperLimit / ((voltageSizes[i] / SCALE_CURVE) - offset)) - 1) / CURVE_STEEPNESS);
+#ifdef DEBUG_MODE
+		Serial.printf("Mosfet value %d: %d\n", i, mosfetValues[i]);
+#endif
+	}
+
+	return;
 }

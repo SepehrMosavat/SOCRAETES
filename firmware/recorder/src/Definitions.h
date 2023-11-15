@@ -13,7 +13,7 @@
 // In debug mode every measured point of curve is printed via serial
 // Cycle times are not taken into account
 // #define DEBUG_MODE
-//
+
 #define MODE_SD 0
 
 #ifdef DEBUG_MODE
