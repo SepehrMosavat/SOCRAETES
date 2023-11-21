@@ -1,3 +1,5 @@
+/////////////////////////////////////////////////////////INCLUDES///////////////////////////////////////////////////////////////
+
 #include <Arduino.h>
 #include <Encoder.h>
 #include <ADC.h>
@@ -9,6 +11,8 @@
 
 #include "Definitions.h"
 #include "Functions.h"
+
+///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
 // Cycle time for measuring points of curve
 static const uint32_t innerCycleTime_ms = 10;
@@ -31,6 +35,8 @@ static int mode = MODE_SD;
 
 MCP4822 dac(34);
 
+///////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
+
 void setup()
 {
 	Serial.begin(0);
@@ -51,13 +57,17 @@ void setup()
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);
 	initializeADC();
+
 	ivCurveSequenceNumber = 0;
+
 	// Set DACs for first measurement
-	// 1 means PC, 0 means S/A;
+	// 1 means PC, 0 means SD;
 	mode = digitalRead(MODE_JUMPER);
 	outerCycleTime_ms = modeSelection(mode);
+
 	calcCurve();
 	updateHarvesterLoad(ivCurveSequenceNumber);
+
 #ifdef DEBUG_MODE
 	delay(10000);
 #else
@@ -146,7 +156,7 @@ void loop()
 			}
 			else
 			{
-#if defined(DEBUG_MODE)
+#ifdef DEBUG_MODE
 				;
 #else
 				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 4);
@@ -174,7 +184,7 @@ void loop()
 			}
 			else
 			{
-#if defined(DEBUG_MODE)
+#ifdef DEBUG_MODE
 				;
 #else
 				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 6);

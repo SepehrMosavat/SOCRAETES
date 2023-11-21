@@ -27,10 +27,12 @@
 #define MODE_JUMPER 32
 
 // Teensy 4.1 Board Pin Definitions
+
 #define HARVESTER_VOLTAGE_ADC_PIN A15
 #define HARVESTER_CURRENT_ADC_PIN A14
 
 // System-wide Parameter Definitions
+
 #define NUMBER_OF_CAPTURED_POINTS_IN_CURVE 40
 #define LOAD_MOSFET_DAC_VALUES_LOOKUP_TABLE loadMosfetDACValuesLUT_40_points_irf1404
 

@@ -22,6 +22,7 @@
 #include <math.h>
 
 /////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
+
 #define NUM_OF_CONFIGLINES 7
 
 static ADC *adc = new ADC();
@@ -42,17 +43,21 @@ static int mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 extern MCP4822 dac;
 extern time_t endFileRecord_s;
 
-// voltage limit 185000 uV due to inaccurancy of the DAC
+// voltage limit 185000 uV due to inaccurancy of the DAC, value found by testing
 #define VOLTAGE_LIMIT_uV 185000
-// Current limit 16 uA
+// Current limit 16 uA, value found by testing
 #define CURRENT_LIMIT_uA 16
 
 // Curve parameters
-#define OC_VOLTAGE 0
-#define SC_VOLTAGE 1
-static uint voltageLimits[2] = {0, 0};
-#define SCALE_CURVE 0.95
-#define CURVE_STEEPNESS 0.02
+
+#define OC_VOLTAGE 0				   // Open circuit voltage index
+#define SC_VOLTAGE 1				   // Short circuit voltage index
+static uint voltageLimits[2] = {0, 0}; // Array for storing the voltage limits (OC and SC)
+
+// Values defined with testing
+#define SCALE_CURVE 0.95	 // Scale factor for the curve
+#define CURVE_STEEPNESS 0.02 // Steepness of the curve
+#define MIDPOINT 3200		 // Midpoint of the curve
 
 /////////////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////////
 
@@ -115,6 +120,13 @@ int getCurrentFromAdcValue(void)
 	return returnValue;
 }
 
+/**
+ * Saves the values of _sequence_number, _voltage and current to a byte array
+ * @param _sequence_number: Sequence number of point in curve
+ * @param _voltage: Voltage in uV
+ * @param _current: Current in uA
+ * @param _buffer: Byte array to store the values
+ */
 void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte *_buffer)
 {
 	_buffer[0] = 0xaa;			   // Start byte
@@ -161,11 +173,6 @@ void initializeADC()
 	adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
 	adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
 }
-
-// TODO: Look if relevant otherwise remove
-int i = 1100;
-int _first = 0, _second = 0;
-bool calibrated = 0;
 
 void updateHarvesterLoad(uint8_t SeqNo)
 {
@@ -400,6 +407,10 @@ void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
 	rec_file.close();
 }
 
+/**
+ * Returns the current time in seconds
+ * @return Current time in seconds
+ */
 time_t getTeensy3Time()
 {
 	return Teensy3Clock.get();
@@ -420,39 +431,35 @@ void setupTime()
 	}
 }
 
-uint *findLimits(void)
+/**
+ * Finds the open circuit voltage and the short circuit voltage
+ * and saves them in voltageLimits[]
+ */
+void findLimits(void)
 {
 
 	// determine open circuit voltage
-	double tempCurrent;
 	uint step = 1000;
 	uint predCurrent;
 	uint current;
 	uint predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
 	uint mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
+
+	// Set and upddate mosfet value
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
-	int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
-	tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
-	tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
-	tempCurrent *= 1000000;				  // Value in uA
-	tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
-	tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE; //
-	predCurrent = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
+	delay(1); // wait for voltage to settle
+
+	predCurrent = getCurrentFromAdcValue();
 
 	while (1)
 	{
 
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
-		delay(1); // wait for voltage to settle
-		_adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
-		tempCurrent = (double)_adcValue / (pow(2, ADC_RESOLUTION_BITS) - 1);
-		tempCurrent *= ADC_REFERENCE_VOLTAGE; // VACC
-		tempCurrent *= 1000000;				  // Value in uA
-		tempCurrent /= CURRENT_SENSE_AMPLIFIER_GAIN;
-		tempCurrent /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
-		current = (int)(tempCurrent * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
+		delay(1);
+
+		current = getCurrentFromAdcValue();
 
 		if ((predCurrent <= CURRENT_LIMIT_uA) && (current <= CURRENT_LIMIT_uA))
 		{
@@ -498,7 +505,7 @@ uint *findLimits(void)
 
 #ifdef DEBUG_MODE
 	Serial.printf("OC voltage: %d\n", voltageLimits[OC_VOLTAGE]);
-	delay(1000);
+	delay(100);
 #endif
 
 	// determine short circuit voltage
@@ -507,16 +514,21 @@ uint *findLimits(void)
 	uint voltage;
 	predMosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET;
 	mosfetValue = LOAD_MOSFET_DAC_VALUES_LUT_OFFSET + step;
+
 	dac.setVoltageA(predMosfetValue);
 	dac.updateDAC();
+	delay(1);
+
 	predVoltage = getVoltageFromAdcValue();
 
 	while (1)
 	{
 		dac.setVoltageA(mosfetValue);
 		dac.updateDAC();
-		delay(5); // wait for voltage to settle
+		delay(1);
+
 		voltage = getVoltageFromAdcValue();
+
 		if ((predVoltage <= VOLTAGE_LIMIT_uV) && (voltage <= VOLTAGE_LIMIT_uV))
 		{
 			predMosfetValue = mosfetValue;
@@ -551,7 +563,7 @@ uint *findLimits(void)
 
 #ifdef DEBUG_MODE
 	Serial.println("ende sc " + String(predMosfetValue));
-	Serial.println(mosfetValues[0]);
+	delay(100);
 #endif
 
 	int sc_voltage = predMosfetValue;
@@ -563,20 +575,15 @@ uint *findLimits(void)
 	delay(1000);
 #endif
 
-	for (int i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); i++)
-	{
-	}
-#ifdef DEBUG_MODE
-	Serial.println(mosfetValues[39]);
-#endif
-	return voltageLimits;
+	return;
 }
 
 void calcCurve(void)
 {
 	findLimits();
+
 	// define parameters of curve
-	int midpoint = 3200;						//((mosfetValues[39] - mosfetValues[0]) / 2) + mosfetValues[0]; // Calculate midpoint of curve
+
 	int offset = voltageLimits[SC_VOLTAGE];		// Set offset to short circuit voltage
 	int upperLimit = voltageLimits[OC_VOLTAGE]; // Set upper limit to open circuit voltage
 
@@ -599,10 +606,7 @@ void calcCurve(void)
 	// calculate the mosfet values for the curve
 	for (uint8_t i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE); i++)
 	{
-		mosfetValues[i] = midpoint + (log((upperLimit / ((voltageSizes[i] / SCALE_CURVE) - offset)) - 1) / CURVE_STEEPNESS);
-#ifdef DEBUG_MODE
-		Serial.printf("Mosfet value %d: %d\n", i, mosfetValues[i]);
-#endif
+		mosfetValues[i] = MIDPOINT + (log((upperLimit / ((voltageSizes[i] / SCALE_CURVE) - offset)) - 1) / CURVE_STEEPNESS);
 	}
 
 	return;
