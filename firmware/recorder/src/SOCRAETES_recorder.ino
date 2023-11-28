@@ -9,6 +9,9 @@
 #include <TimeLib.h>
 #include <elapsedMillis.h>
 
+#include <IntervalTimer.h>
+#include <Snooze.h>
+
 #include "Definitions.h"
 #include "Functions.h"
 
@@ -34,6 +37,13 @@ static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 static int mode = MODE_SD;
 
 MCP4822 dac(34);
+
+IntervalTimer myTimer;
+
+SnoozeTimer timer;
+SnoozeAlarm alarm;
+
+SnoozeBlock config_teensy40(alarm);
 
 ///////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
 
@@ -70,17 +80,25 @@ void setup()
 
 #ifdef DEBUG_MODE
 	delay(10000);
-#else
-	if (mode == 1)
-	{
-		while (1)
-		{
-			char _input = (char)Serial.read();
-			if (_input == 's')
-				break;
-		}
-	}
+// #else
+// 	if (mode == 1)
+// 	{
+// 		while (1)
+// 		{
+// 			char _input = (char)Serial.read();
+// 			if (_input == 's')
+// 				break;
+// 		}
+// 	}
 #endif
+	// myTimer.begin(toggle, 1000000);
+	// timer.setTimer(10);
+	alarm.setRtcTimer(0, 0, 5);
+}
+
+void toggle()
+{
+	digitalToggle(STATUS_LED);
 }
 
 void loop()
@@ -90,7 +108,10 @@ void loop()
 	// Uncomment to measure maximum outer cycle time
 	// static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
-	digitalToggle(STATUS_LED);
+
+	Snooze.deepSleep(config_teensy40);
+
+	// digitalToggle(STATUS_LED);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{

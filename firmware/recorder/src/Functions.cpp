@@ -594,7 +594,7 @@ void calcCurve(void)
 	voltageSizes[NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1] = voltageLimits[OC_VOLTAGE];									// set last value to highest voltage
 
 #ifdef DEBUG_MODE
-	Serial.printf("Midpoint: %d, Offset: %d, Upper limit: %d, Step size: %d\n", midpoint, offset, upperLimit, stepsize);
+	Serial.printf("Offset: %d, Upper limit: %d, Step size: %d\n", offset, upperLimit, stepsize);
 	delay(1000);
 #endif
 	// iterate over the array and calculate the voltage values

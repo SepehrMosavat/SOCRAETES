@@ -70,6 +70,8 @@ void startupDelay(void);
  */
 uint32_t modeSelection(int _mode);
 
+/////////////////////////////////////////////////////////////SD FUNCTIONS//////////////////////////////////////////////////////
+
 /**
  * Function to setup SD and folder structure
  * @return 0 if successful, -1 if not
