@@ -92,8 +92,10 @@ void setup()
 // 	}
 #endif
 	// myTimer.begin(toggle, 1000000);
-	// timer.setTimer(10);
-	alarm.setRtcTimer(0, 0, 5);
+
+	// Set up Snooze
+	// timer.setTimer(5); 		// sleep for 5 seconds
+	alarm.setRtcTimer(0, 0, 5); // sleep, in such a way that each cycle (measuring+sleep) takes 5 seconds
 }
 
 void toggle()
@@ -112,6 +114,8 @@ void loop()
 	Snooze.deepSleep(config_teensy40);
 
 	// digitalToggle(STATUS_LED);
+
+	digitalWrite(STATUS_LED, HIGH);
 
 	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
 	{
@@ -230,9 +234,7 @@ void loop()
 		//		outerMaxTaskTime_ms = outerElapsedMillis;
 		//		Serial.printf("outerMaxTaskTime_ms: %lu\n", outerMaxTaskTime_ms);
 		//	}
-		while (outerElapsedMillis < outerCycleTime_ms)
-		{
-			;
-		}
 	}
+
+	digitalWrite(STATUS_LED, LOW);
 }
