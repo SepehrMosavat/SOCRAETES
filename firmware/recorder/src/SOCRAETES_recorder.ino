@@ -9,7 +9,6 @@
 #include <TimeLib.h>
 #include <elapsedMillis.h>
 
-#include <IntervalTimer.h>
 #include <Snooze.h>
 
 #include "Definitions.h"
@@ -37,8 +36,6 @@ static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 static int mode = MODE_SD;
 
 MCP4822 dac(34);
-
-IntervalTimer myTimer;
 
 SnoozeTimer timer;
 SnoozeAlarm alarm;
@@ -91,10 +88,9 @@ void setup()
 // 		}
 // 	}
 #endif
-	// myTimer.begin(toggle, 1000000);
 
 	// Set up Snooze
-	// timer.setTimer(5); 		// sleep for 5 seconds
+	timer.setTimer(5);			// sleep for 5 seconds
 	alarm.setRtcTimer(0, 0, 5); // sleep, in such a way that each cycle (measuring+sleep) takes 5 seconds
 }
 
