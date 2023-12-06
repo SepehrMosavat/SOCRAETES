@@ -1,0 +1,39 @@
+--- hal.c	2023-12-06 14:24:06.710194441 +0100
++++ hal.c	2023-12-06 14:29:34.286028362 +0100
+@@ -212,16 +212,16 @@
+ //----------------------------------------------------------------------------------
+ FASTRUN void set_clock_rc_osc( void ) {
+     // Switch to RC-OSC
+-    XTALOSC24M_LOWPWR_CTRL_SET = XTALOSC24M_LOWPWR_CTRL_SET_OSC_SEL;
++    //XTALOSC24M_LOWPWR_CTRL_SET = XTALOSC24M_LOWPWR_CTRL_SET_OSC_SEL;
+     // Turn off XTAL-OSC
+-    CCM_ANALOG_MISC0_SET = CCM_ANALOG_MISC0_XTAL_24M_PWD;
++    //CCM_ANALOG_MISC0_SET = CCM_ANALOG_MISC0_XTAL_24M_PWD;
+     while ( CCM_CDHIPR != 0 );
+     for ( uint32_t i = 0; i < 5 * 50; i++ ) asm volatile( "nop \n" );
+ }
+ //----------------------------------------------------------------------------------
+ FASTRUN void power_down_subsytem( void ) {
+     // Power down
+-    CCM_ANALOG_MISC0_SET = CCM_ANALOG_MISC0_XTAL_24M_PWD;
++    //CCM_ANALOG_MISC0_SET = CCM_ANALOG_MISC0_XTAL_24M_PWD;
+     // Lower OSC current by 37.5%
+     CCM_ANALOG_MISC0_SET = 0x6000;//CCM_ANALOG_MISC0_OSC_I( 3 );
+     // Enable FET ODRIVE
+@@ -232,7 +232,7 @@
+     // TODO: See about STOP_MODE_CONFIG Bit in PMU_MIS0
+     PMU_MISC0_SET = 0x00000004;
+     XTALOSC24M_LOWPWR_CTRL_SET = XTALOSC24M_LOWPWR_CTRL_LPBG_SEL;
+-    PMU_MISC0_SET = CCM_ANALOG_MISC0_REFTOP_PWD;
++    //PMU_MISC0_SET = CCM_ANALOG_MISC0_REFTOP_PWD;
+     while ( CCM_CDHIPR != 0 );
+     for ( uint32_t i = 0; i < 5 * 50; i++ ) asm volatile( "nop \n" );
+     CCM_CCR = ( CCM_CCR_COSC_EN | CCM_CCR_OSCNT( 0xAF ) );
+@@ -649,6 +649,7 @@
+      __asm__ volatile( "MOV PC, LR" );*/
+ }
+ //----------------------------------------------------------------------------------
++FLASHMEM
+ void startup_early_hook( void ) {
+     uint32_t OR_D_GPR = IOMUXC_GPR_GPR4 | IOMUXC_GPR_GPR7 | IOMUXC_GPR_GPR8 | IOMUXC_GPR_GPR12;
+     if ( OR_D_GPR > 0x0 ) {
