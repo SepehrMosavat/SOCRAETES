@@ -19,7 +19,7 @@
 ///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
 // Cycle time for measuring points of curve
-static const uint32_t innerCycleTime_ms = 10;
+static const uint32_t innerCycleTime_ms = 5;
 
 static elapsedMillis innerElapsedMillis;
 
@@ -27,7 +27,7 @@ time_t endFileRecord_s;
 
 uint32_t outerCycleTime_ms;
 
-static elapsedMillis outerElapsedMillis;
+//static elapsedMillis outerElapsedMillis;
 
 static uint8_t ivCurveSequenceNumber;
 
@@ -112,7 +112,7 @@ void loop()
 	// static unsigned long innerMaxTaskTime_ms = 0;
 	// Uncomment to measure maximum outer cycle time
 	// static unsigned long outerMaxTaskTime_ms = 0;
-	outerElapsedMillis = 0;
+	// outerElapsedMillis = 0;
 
   //Snooze.deepSleep(config_teensy40);
   //Serial.printf("Going to sleep\n");
@@ -120,11 +120,12 @@ void loop()
   hal_deepSleep();
   // Set time again as somehow it is lost after sleeping
   setupTime();
+  calcCurve();
 
 #ifdef DEBUG_MODE
   Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
-#endif
   delay(50);
+#endif
   //Serial.printf("Waking up\n");
   //delay(100);
   //timer.disableDriver(2);
@@ -156,7 +157,6 @@ void loop()
 		if (ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
 		{
 			ivCurveSequenceNumber = 0;
-			calcCurve();
 		}
 
 		// Set new harvester load
@@ -181,61 +181,16 @@ void loop()
 		}
 	}
 
-	// Transmit the measured curve or store it on SD card
-	for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter += 6)
-	{
-		if ((Counter + 6) > NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
-		{
-			if (mode == MODE_SD)
-			{
-				while (Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
-				{
-					writeDataToSD(Counter, voltageArray[Counter], currentArray[Counter]);
-					delay(5);
-					Counter++;
-				}
-			}
-			else
-			{
-#ifdef DEBUG_MODE
-				;
-#else
-				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 4);
-				while (1)
-				{
-					char _input = (char)usb_serial_getchar();
-					if (_input == 'y' || _input == 's')
-					{
-						digitalToggle(LED_BUILTIN);
-						break;
-					}
-				}
-#endif
-			}
-		}
-		else
-		{
-			if (mode == MODE_SD)
-			{
-				for (int i = 0; i < 6; i++)
-				{
-					writeDataToSD(Counter + i, voltageArray[Counter + i], currentArray[Counter + i]);
-					delay(5);
-				}
-			}
-			else
-			{
-#ifdef DEBUG_MODE
-				;
-#else
-				transmitValuesAsByteArray(Counter, voltageArray, currentArray, 6);
-#endif
-			}
-		}
-	}
+	// Store measure curve on SD card
 
 	if (mode == MODE_SD)
 	{
+    uint8_t counter;
+    for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
+    {
+      writeDataToSD(counter, voltageArray[counter], currentArray[counter]);
+      delay(5);
+    }
 		// Create new file if required
     Serial.printf("now: %lu\n", now());
     if (now() > endFileRecord_s)
