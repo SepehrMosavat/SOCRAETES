@@ -1,8 +1,0 @@
-To fix the Snooze library, you need to modify the hal.c file in:
-~/.platformio/packages/framework_arduinoteensy/libraries/Snooze/src/hal/TEENSY_40/hal.c
-
-comment the four lines between 213-240 
-according to https://forum.pjrc.com/index.php?threads/teensy-4-1-using-snooze-library-with-deepsleep.70191/ out
-
-Furthermore you need to add FLASHMEM to line 652 in the same file
-according to https://forum.pjrc.com/index.php?threads/snooze-not-working-with-any-t4-x-on-td1-56.69432/ 

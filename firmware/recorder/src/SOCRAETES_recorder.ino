@@ -9,7 +9,9 @@
 #include <TimeLib.h>
 #include <elapsedMillis.h>
 
-#include <Snooze.h>
+//#include <Snooze.h>
+#include <SnoozeTimer.h>
+#include <hal.h>
 
 #include "Definitions.h"
 #include "Functions.h"
@@ -38,9 +40,9 @@ static int mode = MODE_SD;
 MCP4822 dac(34);
 
 SnoozeTimer timer;
-SnoozeAlarm alarm;
+//SnoozeAlarm alarm;
 
-SnoozeBlock config_teensy40(alarm);
+//SnoozeBlock config_teensy40(timer);
 
 ///////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
 
@@ -89,9 +91,14 @@ void setup()
 // 	}
 #endif
 
+  //Serial.printf("Set timer\n");
 	// Set up Snooze
 	timer.setTimer(5);			// sleep for 5 seconds
-	alarm.setRtcTimer(0, 0, 5); // sleep, in such a way that each cycle (measuring+sleep) takes 5 seconds
+    //alarm.setRtcTimer( 0, 0, 5);
+  //Serial.printf("Timer set\n");
+
+  hal_initialize( timer.clearIsrFlags );
+  timer.enableDriver(2);
 }
 
 void toggle()
@@ -107,7 +114,20 @@ void loop()
 	// static unsigned long outerMaxTaskTime_ms = 0;
 	outerElapsedMillis = 0;
 
-	Snooze.deepSleep(config_teensy40);
+  //Snooze.deepSleep(config_teensy40);
+  //Serial.printf("Going to sleep\n");
+  //delay(100);
+  hal_deepSleep();
+  // Set time again as somehow it is lost after sleeping
+  setupTime();
+
+#ifdef DEBUG_MODE
+  Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
+#endif
+  delay(50);
+  //Serial.printf("Waking up\n");
+  //delay(100);
+  //timer.disableDriver(2);
 
 	// digitalToggle(STATUS_LED);
 
@@ -166,7 +186,7 @@ void loop()
 	{
 		if ((Counter + 6) > NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
 		{
-			if (mode == 0)
+			if (mode == MODE_SD)
 			{
 				while (Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
 				{
@@ -195,7 +215,7 @@ void loop()
 		}
 		else
 		{
-			if (mode == 0)
+			if (mode == MODE_SD)
 			{
 				for (int i = 0; i < 6; i++)
 				{
@@ -214,10 +234,11 @@ void loop()
 		}
 	}
 
-	if (mode == 0)
+	if (mode == MODE_SD)
 	{
 		// Create new file if required
-		if (now() > endFileRecord_s)
+    Serial.printf("now: %lu\n", now());
+    if (now() > endFileRecord_s)
 		{
 			Serial.printf("new recording\n");
 			endFileRecord_s = createNewFile();
@@ -231,6 +252,5 @@ void loop()
 		//		Serial.printf("outerMaxTaskTime_ms: %lu\n", outerMaxTaskTime_ms);
 		//	}
 	}
-
 	digitalWrite(STATUS_LED, LOW);
 }

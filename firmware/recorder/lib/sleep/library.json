@@ -1,0 +1,13 @@
+{
+  "name": "sleeplib",
+  "version": "0.0.1",
+  "description": "Library for sleep support",
+  "keywords": "teensy41",
+  "build": {
+          "srcDir": "hal/TEENSY_40",
+          "includeDir": "hal/TEENSY_40"
+ },
+  "license": "BSD",
+  "frameworks": "arduino",
+  "platforms": "teensy"
+}
