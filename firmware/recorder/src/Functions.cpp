@@ -27,6 +27,8 @@
 
 static ADC *adc = new ADC();
 
+static MCP4822 dac(34);
+
 // start of data used for sd mode only
 
 static char filename[128];
@@ -38,9 +40,8 @@ static unsigned int lastindex;
 // Initialize this value unequal to zero. It is set in readConfigFile()
 static time_t fileRecDuration_s = 60;
 
-static int mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+static uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-extern MCP4822 dac;
 extern time_t endFileRecord_s;
 
 // voltage limit 185000 uV due to inaccurancy of the DAC, value found by testing
@@ -609,5 +610,17 @@ void calcCurve(void)
 		mosfetValues[i] = MIDPOINT + (log((upperLimit / ((voltageSizes[i] / SCALE_CURVE) - offset)) - 1) / CURVE_STEEPNESS);
 	}
 
+	for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+	{
+    Serial.printf("mosfetValue[%u] = %u\n", i, mosfetValues[i]);
+	}
+
 	return;
+}
+
+void initDAC(void)
+{
+  dac.init();
+  dac.turnOnChannelA();
+  dac.setGainA(MCP4822::High);
 }

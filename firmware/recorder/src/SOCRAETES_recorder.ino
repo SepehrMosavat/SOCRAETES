@@ -37,7 +37,6 @@ static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int mode = MODE_SD;
 
-MCP4822 dac(34);
 
 SnoozeTimer timer;
 //SnoozeAlarm alarm;
@@ -51,9 +50,7 @@ void setup()
 	Serial.begin(0);
 	SPI.begin();
 
-	dac.init();
-	dac.turnOnChannelA();
-	dac.setGainA(MCP4822::High);
+  initDAC();
 
 	pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
 	pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input

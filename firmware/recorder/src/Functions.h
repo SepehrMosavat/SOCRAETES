@@ -109,4 +109,8 @@ void setupTime(void);
  */
 void calcCurve(void);
 
+/**
+ */
+void initDAC(void);
+
 #endif /* FUNCTIONS_H_ */
