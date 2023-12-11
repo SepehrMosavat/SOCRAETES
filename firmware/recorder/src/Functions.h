@@ -30,13 +30,13 @@ float shortToVoltage(short);
  * Returns the voltage in uV
  * @return voltage in uV
  */
-int getVoltageFromAdcValue(void);
+uint32_t getVoltageFromAdcValue_uV(void);
 
 /**
  * Returns the current in uA
  * @return current in uA
  */
-int getCurrentFromAdcValue(void);
+uint32_t getCurrentFromAdcValue_uA(void);
 
 /**
  * Transmits sequence number, voltage and current as a byte array via serial

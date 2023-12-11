@@ -19,7 +19,7 @@
 ///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
 // Cycle time for measuring points of curve
-static const uint32_t innerCycleTime_ms = 5;
+static const uint32_t innerCycleTime_ms = 10;
 
 static elapsedMillis innerElapsedMillis;
 
@@ -31,9 +31,9 @@ uint32_t outerCycleTime_ms;
 
 static uint8_t ivCurveSequenceNumber;
 
-static int voltageArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+static uint32_t voltageArray_uV[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
-static int currentArray[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+static uint32_t currentArray_uA[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 static int mode = MODE_SD;
 
@@ -117,6 +117,10 @@ void loop()
   hal_deepSleep();
   // Set time again as somehow it is lost after sleeping
   setupTime();
+  // Throw away first measurement
+  getVoltageFromAdcValue_uV();
+  getCurrentFromAdcValue_uA();
+
   calcCurve();
 
 #ifdef DEBUG_MODE
@@ -137,15 +141,15 @@ void loop()
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
-		voltageArray[ivCurveSequenceNumber] = getVoltageFromAdcValue();
-		currentArray[ivCurveSequenceNumber] = getCurrentFromAdcValue();
+		voltageArray_uV[ivCurveSequenceNumber] = getVoltageFromAdcValue_uV();
+		currentArray_uA[ivCurveSequenceNumber] = getCurrentFromAdcValue_uA();
 
 #ifdef DEBUG_MODE
 #ifdef CALIBRATION_MODE
-		Serial.printf("Calibration mode: V: %d, I: %d\n", voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+		Serial.printf("Calibration mode: V: %lu, I: %lu\n", voltageArray_uV[ivCurveSequenceNumber], currentArray_uA[ivCurveSequenceNumber]);
 		delay(20);
 #else
-		Serial.printf("Seq. No.: %d, V: %d, I: %d\n ", ivCurveSequenceNumber, voltageArray[ivCurveSequenceNumber], currentArray[ivCurveSequenceNumber]);
+		Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", ivCurveSequenceNumber, voltageArray_uV[ivCurveSequenceNumber], currentArray_uA[ivCurveSequenceNumber]);
 #endif
 #endif
 
@@ -185,14 +189,15 @@ void loop()
     uint8_t counter;
     for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
     {
-      writeDataToSD(counter, voltageArray[counter], currentArray[counter]);
+      //Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", counter, voltageArray_uV[counter], currentArray_uA[counter]);
+      writeDataToSD(counter, voltageArray_uV[counter], currentArray_uA[counter]);
       delay(5);
     }
 		// Create new file if required
-    Serial.printf("now: %lu\n", now());
+    //Serial.printf("now: %lu\n", now());
     if (now() > endFileRecord_s)
 		{
-			Serial.printf("new recording\n");
+			//Serial.printf("new recording\n");
 			endFileRecord_s = createNewFile();
 			// Serial.printf("endFileRecord_s: %d \n", endFileRecord_s);
 		}

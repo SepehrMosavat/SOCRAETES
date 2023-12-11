@@ -40,6 +40,7 @@
 #define ADC_REFERENCE_VOLTAGE 3.326
 
 #define ADC_RESOLUTION_BITS 10
+#define ADC_MAX 1023.0
 
 // For choosing the suitable gain for the current sense amplifier
 // #define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 49.9 // Gain = 1003
@@ -49,7 +50,7 @@
 // #define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 1020 // Gain = 50
 // #define CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR 2100 // Gain = 25
 
-#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 2 // For modifying the measurement range
+#define CURRENT_SENSE_SHUNT_RESISTOR_VALUE 2.0 // For modifying the measurement range
 
 #define CURRENT_SENSE_AMPLIFIER_GAIN (1.0 + (50000.0 / CURRENT_SENSE_AMPLIFIER_GAIN_RESISTOR))
 
