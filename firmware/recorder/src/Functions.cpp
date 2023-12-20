@@ -24,6 +24,7 @@
 /////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
 
 #define NUM_OF_CONFIGLINES 7
+#define DAC_MAX (UINT16_MAX >> 1)
 
 static ADC *adc = new ADC();
 
@@ -87,7 +88,7 @@ uint32_t getVoltageFromAdcValue_uV(void)
 	else
 	{
 
-		returnValue = (double)_adcValue / ADC_MAX;
+		returnValue = (double)_adcValue / (double)ADC_MAX;
 		returnValue *= ADC_REFERENCE_VOLTAGE;
 
 #ifdef ADC_VOLTAGE_DIVIDER_USED
@@ -111,7 +112,7 @@ uint32_t getCurrentFromAdcValue_uA(void)
 	}
 	else
 	{
-		returnValue = (double)_adcValue / ADC_MAX;
+		returnValue = (double)_adcValue / (double)ADC_MAX;
 		returnValue *= ADC_REFERENCE_VOLTAGE; // VACC
 		returnValue *= 1000000.0;			  // Value in uA
 
@@ -454,7 +455,7 @@ void findLimits(void)
 	delay(10);
 
 	// Minimum load for the solar cell
-	mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1] = UINT16_MAX;
+	mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1] = DAC_MAX;
 	updateHarvesterLoad(NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1);
 	delay(10);												 // wait for voltage to settle
 	voltageLimits[SC_VOLTAGE] = getVoltageFromAdcValue_uV(); // Save short circuit voltage
@@ -483,35 +484,52 @@ void calcCurve(void)
 #endif
 
 	// iterate over the array and calculate the voltage values; The array contains voltages in descending order
-	for (uint8_t i = (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 2); i != 2; i--)
+	for (uint8_t i = (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 2); i != 0; i--)
 	{
 		voltageSizes[i] = voltageSizes[i + 1] + stepsize;
 	}
 
-	// calculate the mosfet values for the curve
-	for (uint8_t i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 2); i++)
-	{
-		double calc = MIDPOINT + (log((upperLimit / ((voltageSizes[i] / SCALE_CURVE) - offset)) - 1.0) / CURVE_STEEPNESS);
-		if ((uint16_t)calc <= UINT16_MAX && calc > 0.0)
-		{
-			mosfetValues[i] = (uint16_t)calc;
-			// Serial.printf("calc[%i] = %lf\n", i, calc);
-			// delay(10);
-		}
-		else
-		{
-			mosfetValues[i] = UINT16_MAX;
-		}
-	}
+  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+  {
+    Serial.printf("voltageSizes[%u] = %u\n", i, voltageSizes[i]);
+    delay(10);
+  }
 
-	/*
-	  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
-	  {
-	  Serial.printf("voltageSizes[%u] = %u ", i, voltageSizes[i]);
-	  Serial.printf("mosfetValues[%i] = %u\n", i, mosfetValues[i]);
-	  delay(10);
-	  }
-	*/
+	// calculate the mosfet values for the curve
+	for (uint8_t i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); i++)
+  {
+    double arg = ((double)upperLimit / (((double)voltageSizes[i] / SCALE_CURVE) - (double)offset)) - 1.0;
+
+    arg = arg > 0.0 ? arg : 0.0;
+
+    //Serial.printf("arg[%u] = %lf\n", i, arg);
+
+    double calc = MIDPOINT + (log(arg) / CURVE_STEEPNESS);
+
+
+    //if ((uint16_t)calc <= DAC_MAX && calc > 0.0)
+    if ((uint16_t)calc > DAC_MAX)
+    {
+      mosfetValues[i] = DAC_MAX;
+    }
+    else if (calc < 0.0)
+    {
+      mosfetValues[i] = 0;
+    }
+    else
+    {
+      mosfetValues[i] = (uint16_t)calc;
+    }
+  }
+
+	
+  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+  {
+    Serial.printf("voltageSizes[%u] = %u ", i, voltageSizes[i]);
+    Serial.printf("mosfetValues[%i] = %u\n", i, mosfetValues[i]);
+    delay(10);
+  }
+	
 }
 
 void initDAC(void)

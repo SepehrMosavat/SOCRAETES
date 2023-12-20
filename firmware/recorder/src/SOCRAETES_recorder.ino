@@ -64,7 +64,6 @@ void setup()
 	digitalWrite(ERROR_LED, LOW);
 	initializeADC();
 
-	ivCurveSequenceNumber = 0;
 
 	// Set DACs for first measurement
 	// 1 means PC, 0 means SD;
@@ -72,6 +71,7 @@ void setup()
 	outerCycleTime_ms = modeSelection(mode);
 
 	calcCurve();
+	ivCurveSequenceNumber = 0;
 	updateHarvesterLoad(ivCurveSequenceNumber);
 
 #ifdef DEBUG_MODE
@@ -121,7 +121,9 @@ void loop()
   getVoltageFromAdcValue_uV();
   getCurrentFromAdcValue_uA();
 
-  calcCurve();
+	calcCurve();
+	updateHarvesterLoad(0);
+  delay(innerCycleTime_ms);
 
 #ifdef DEBUG_MODE
   Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
@@ -141,27 +143,28 @@ void loop()
 
 		// Read ADCs and convert to voltage and current values
 		// Store measured point in an array
-		voltageArray_uV[ivCurveSequenceNumber] = getVoltageFromAdcValue_uV();
-		currentArray_uA[ivCurveSequenceNumber] = getCurrentFromAdcValue_uA();
+		voltageArray_uV[Counter] = getVoltageFromAdcValue_uV();
+		currentArray_uA[Counter] = getCurrentFromAdcValue_uA();
 
 #ifdef DEBUG_MODE
 #ifdef CALIBRATION_MODE
-		Serial.printf("Calibration mode: V: %lu, I: %lu\n", voltageArray_uV[ivCurveSequenceNumber], currentArray_uA[ivCurveSequenceNumber]);
+		Serial.printf("Calibration mode: V: %lu, I: %lu\n", voltageArray_uV[Counter], currentArray_uA[Counter]);
 		delay(20);
 #else
-		Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", ivCurveSequenceNumber, voltageArray_uV[ivCurveSequenceNumber], currentArray_uA[ivCurveSequenceNumber]);
+		Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", Counter, voltageArray_uV[Counter], currentArray_uA[Counter]);
 #endif
 #endif
 
-		ivCurveSequenceNumber++;
-
-		if (ivCurveSequenceNumber >= NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
-		{
-			ivCurveSequenceNumber = 0;
-		}
+    if ((Counter + 1) ==  NUMBER_OF_CAPTURED_POINTS_IN_CURVE)
+    {
+      updateHarvesterLoad(0);
+    }
+    else
+    {
+      updateHarvesterLoad(Counter + 1);
+    }
 
 		// Set new harvester load
-		updateHarvesterLoad(ivCurveSequenceNumber);
 
 #ifdef DEBUG_MODE
 		// Add some extra delay when in debug mode
@@ -189,8 +192,8 @@ void loop()
     uint8_t counter;
     for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
     {
-      //Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", counter, voltageArray_uV[counter], currentArray_uA[counter]);
-      writeDataToSD(counter, voltageArray_uV[counter], currentArray_uA[counter]);
+      Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", counter, voltageArray_uV[counter], currentArray_uA[counter]);
+      //writeDataToSD(counter, voltageArray_uV[counter], currentArray_uA[counter]);
       delay(5);
     }
 		// Create new file if required
