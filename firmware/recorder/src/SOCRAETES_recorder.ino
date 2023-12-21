@@ -169,5 +169,15 @@ void loop()
     }
 
   }
+  else
+  {
+    uint8_t counter;
+    for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
+    {
+      transmitValuesAsByteArray(counter, voltageArray_uV[counter], currentArray_uA[counter]);
+      delay(5);
+    }
+
+  }
   digitalWrite(STATUS_LED, LOW);
 }

@@ -20,13 +20,6 @@
 /////////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
 
 /**
- * Calculates the voltage in regard to given short and ADC reference voltage
- * @param _voltage: Voltage in short //TODO: find meaning of _voltage
- * @return voltage in V
- */
-float shortToVoltage(short);
-
-/**
  * Returns the voltage in uV
  * @return voltage in uV
  */
@@ -43,9 +36,8 @@ uint32_t getCurrentFromAdcValue_uA(void);
  * @param SeqNo: Sequence number of point in curve
  * @param voltage: Voltage in uV
  * @param current: Current in uA
- * @param _transferredBytes: Number of bytes to be transmitted
  */
-void transmitValuesAsByteArray(uint8_t SeqNo, int *voltage, int *current, unsigned int _transferredBytes);
+void transmitValuesAsByteArray(uint8_t SeqNo, uint32_t voltage, uint32_t current);
 
 /**
  * Initializes the ADC

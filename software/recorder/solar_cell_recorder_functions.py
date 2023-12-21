@@ -15,16 +15,13 @@ console_log_formatter = logging.Formatter('%(levelname)s - %(message)s')
 console_log_handler.setFormatter(console_log_formatter)
 logger.addHandler(console_log_handler)
 
-ser = None
-
 
 # Function for reading the COM port values
 def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, _stop_thread_event: threading.Event):
-    global ser
     try:
         ser = serial.Serial(
             port=_port,
-            baudrate=0,
+            baudrate=115200,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS
@@ -45,8 +42,6 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
     if ser.isOpen():
         logger.info("Serial port open")
         ser.flush()
-        s = b's'
-        ser.write(s)
         
     else:
         logger.error("Serial port could not be opened")
@@ -55,20 +50,13 @@ def read_byte_array_from_serial_port(raw_serial_data_queue: queue.Queue, _port, 
         if _stop_thread_event.isSet():
             ser.close()
             sys.exit()
-        serial_bytes_received = ser.read(66)
+        serial_bytes_received = ser.read(11)
         serial_bytes_received_as_bytearray = bytearray(serial_bytes_received)
 
-        for i in range(0,5):
-
-            if serial_bytes_received_as_bytearray[0] == 170 and serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
-                raw_serial_data_queue.put(serial_bytes_received_as_bytearray[:10])
-            serial_bytes_received_as_bytearray = serial_bytes_received_as_bytearray[11:]
-
-        if serial_bytes_received_as_bytearray[0] == 170 and serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
-            raw_serial_data_queue.put(serial_bytes_received_as_bytearray[:10])
-
-            
-    
+        if serial_bytes_received_as_bytearray[0] == 170 or serial_bytes_received_as_bytearray[10] == 85:  # 0xAA
+            raw_serial_data_queue.put(serial_bytes_received_as_bytearray)
+        else:
+            ser.flushInput()
 
 
 # Function for processing received byte arrays and extract the IV curves from them
@@ -77,14 +65,10 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
     
     is_iv_curve_being_captured = False
     curve_number_counter = 0
-    time.sleep(1)
-    global ser
-    _flag=False
-    while True:    
+    while True:
         if _stop_thread_event.isSet():
             sys.exit()
         if not raw_serial_data_queue.empty():
-            _flag = True
             serial_bytes_received_as_bytearray = raw_serial_data_queue.get()
 
             voltage_bytes = serial_bytes_received_as_bytearray[2:6]
@@ -110,9 +94,5 @@ def process_received_serial_data(raw_serial_data_queue: queue.Queue, captured_cu
                     curve_number_counter += 1
                     logger.info("Curve captured: " + str(captured_curve.curve_number))
                     continue
-        else:
-            y= b'y'
-            if _flag == True:
-                ser.write(y)
-                _flag = False   
+
         time.sleep(0.001)

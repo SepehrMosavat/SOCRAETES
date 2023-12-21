@@ -63,15 +63,6 @@ static void resetFunc(void)
   SCB_AIRCR = 0x05FA0004;
 }
 
-// end data used for sd mode only
-
-float shortToVoltage(short _voltage)
-{
-  float returnValue;
-  returnValue = (float)_voltage / 255.0;
-  return returnValue * VCC_VOLTAGE;
-}
-
 uint32_t getVoltageFromAdcValue_uV(void)
 {
   double returnValue;
@@ -139,25 +130,28 @@ void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage,
   _buffer[9] = (_current >> 24) & 0xff;
 }
 
-void transmitValuesAsByteArray(uint8_t SeqNo, int *voltage, int *current, unsigned int _transferredBytes)
+void transmitValuesAsByteArray(uint8_t SeqNo, uint32_t voltage, uint32_t current)
 {
-  //_transferredBytes=6 for max speed, see https://www.pjrc.com/teensy/usb_serial.html
-  byte buffer[66] = {0};
-  for (unsigned int i = 0; i < _transferredBytes; i += 1)
-  {
-    buffer[0 + 11 * i] = 0xaa; // Start byte
-    buffer[1 + 11 * i] = SeqNo + i;
-    buffer[10 + 11 * i] = 0x55; // Finish byte
-    buffer[2 + 11 * i] = (voltage[SeqNo + i] >> 0) & 0xff;
-    buffer[3 + 11 * i] = (voltage[SeqNo + i] >> 8) & 0xff;
-    buffer[4 + 11 * i] = (voltage[SeqNo + i] >> 16) & 0xff;
-    buffer[5 + 11 * i] = (voltage[SeqNo + i] >> 24) & 0xff;
-    buffer[6 + 11 * i] = (current[SeqNo + i] >> 0) & 0xff;
-    buffer[7 + 11 * i] = (current[SeqNo + i] >> 8) & 0xff;
-    buffer[8 + 11 * i] = (current[SeqNo + i] >> 16) & 0xff;
-    buffer[9 + 11 * i] = (current[SeqNo + i] >> 24) & 0xff;
-  }
-  usb_serial_write((void *)buffer, 66 * sizeof(byte));
+	uint8_t buffer[11];
+	buffer[0] = 0xaa; // Start byte
+	buffer[1] = SeqNo; 
+
+	buffer[2] = (voltage >> 0) & 0xff;
+	buffer[3] = (voltage >> 8) & 0xff;
+	buffer[4] = (voltage >> 16) & 0xff;
+	buffer[5] = (voltage >> 24) & 0xff;
+
+	buffer[6] = (current >> 0) & 0xff;
+	buffer[7] = (current >> 8) & 0xff;
+	buffer[8] = (current >> 16) & 0xff;
+	buffer[9] = (current >> 24) & 0xff;
+
+	buffer[10] = 0x55; // Finish byte
+
+	for(int i = 0; i < 11; i++)
+	{
+		Serial.write(buffer[i]);
+	}
 }
 
 void initializeADC()
