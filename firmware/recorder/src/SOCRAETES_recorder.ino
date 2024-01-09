@@ -17,6 +17,10 @@
 
 ///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
+#define PIN_MODE_JUMPER 32
+#define PIN_SWITCH_ANALOG 0
+#define MODE_SD 0
+
 // Cycle time for measuring points of curve
 static const uint32_t innerCycleTime_ms = 10;
 
@@ -40,33 +44,50 @@ SnoozeTimer timer;
 
 void setup()
 {
-  Serial.begin(0);
-  SPI.begin();
 
-  initDAC();
+  pinMode(PIN_MODE_JUMPER, INPUT);
 
-  pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
-  pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
+  pinMode(PIN_STATUS_LED, OUTPUT);
+  pinMode(PIN_ERROR_LED, OUTPUT);
+  pinMode(PIN_SWITCH_ANALOG, OUTPUT); // Pin to switch that en-/disables analog parts
 
-  pinMode(STATUS_LED, OUTPUT);
-  pinMode(ERROR_LED, OUTPUT);
-
-  pinMode(MODE_JUMPER, INPUT);
+  digitalWrite(PIN_SWITCH_ANALOG, HIGH);
   startupDelay();
-  digitalWrite(STATUS_LED, LOW);
-  digitalWrite(ERROR_LED, LOW);
+  initDAC();
   initializeADC();
 
-  // Set DACs for first measurement
-  // 1 means PC, 0 means SD;
-  mode = digitalRead(MODE_JUMPER);
-  outerCycleTime_ms = modeSelection(mode);
+  mode = digitalRead(PIN_MODE_JUMPER);
+
+  if (mode == MODE_SD)
+  {
+#ifdef DEBUG_MODE
+    Serial.begin(0);
+#endif
+    while (setupSD() != 0)
+    {
+      delay(500);
+    }
+    while (readConfigFile() != 0)
+    {
+      delay(500);
+    }
+    digitalWrite(PIN_ERROR_LED, LOW);
+    setupTime();
+    endFileRecord_s = createNewFile();
+    outerCycleTime_ms =  5000u;
+  }
+  else
+  {
+    Serial.begin(0);
+    outerCycleTime_ms = 2000u;
+  }
 
   calcCurve();
+
   updateHarvesterLoad(0);
 
 #ifdef DEBUG_MODE
-  delay(10000);
+  delay(1000);
 #endif
 
   // Set up Snooze
@@ -77,7 +98,7 @@ void setup()
 
 void toggle()
 {
-  digitalToggle(STATUS_LED);
+  digitalToggle(PIN_STATUS_LED);
 }
 
 void loop()
@@ -89,6 +110,10 @@ void loop()
   // outerElapsedMillis = 0;
 
   hal_deepSleep();
+  // Turn off analog circuitry
+  digitalWrite(PIN_SWITCH_ANALOG, HIGH);
+  delay(100);
+  initDAC();
   // Set RTC time again as somehow it is lost after sleeping
   setupTime();
   
@@ -104,7 +129,7 @@ void loop()
   Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
   delay(50);
 #endif
-  digitalWrite(STATUS_LED, HIGH);
+  digitalWrite(PIN_STATUS_LED, HIGH);
 
   for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
   {
@@ -114,15 +139,6 @@ void loop()
     // Store measured point in an array
     voltageArray_uV[Counter] = getVoltageFromAdcValue_uV();
     currentArray_uA[Counter] = getCurrentFromAdcValue_uA();
-
-#ifdef DEBUG_MODE
-#ifdef CALIBRATION_MODE
-    Serial.printf("Calibration mode: V: %lu, I: %lu\n", voltageArray_uV[Counter], currentArray_uA[Counter]);
-    delay(20);
-#else
-    Serial.printf("Seq. No.: %lu, V: %lu, I: %lu\n ", Counter, voltageArray_uV[Counter], currentArray_uA[Counter]);
-#endif
-#endif
 
     // Set new harvester load
     updateHarvesterLoad( (Counter + 1)%NUMBER_OF_CAPTURED_POINTS_IN_CURVE );
@@ -146,8 +162,12 @@ void loop()
     }
   }
 
+  // Turn off analog circuitry
+  turnOffDAC();
+  digitalWrite(PIN_STATUS_LED, LOW);
+  digitalWrite(PIN_SWITCH_ANALOG, LOW);
+  
   // Store measured curve on SD card
-
   if (mode == MODE_SD)
   {
     uint8_t counter;
@@ -172,12 +192,13 @@ void loop()
   else
   {
     uint8_t counter;
+    //for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1; counter++)
     for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
     {
+      //transmitValuesAsByteArray(counter, 1000 * mosfetValues[counter], voltageArray_uV[counter]);
       transmitValuesAsByteArray(counter, voltageArray_uV[counter], currentArray_uA[counter]);
       delay(5);
     }
 
   }
-  digitalWrite(STATUS_LED, LOW);
 }

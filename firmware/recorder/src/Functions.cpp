@@ -9,24 +9,38 @@
 
 /////////////////////////////////////////////////////////////INCLUDES///////////////////////////////////////////////////////////
 
+#include "Functions.h"
+#include "MCP48xx.h"
+#include "Definitions.h"
 #include <SPI.h>
 #include <Encoder.h>
 #include <ADC.h>
 #include <ADC_util.h>
-#include "Functions.h"
-#include "MCP48xx.h"
-#include "Definitions.h"
 #include <SD.h>
 #include <TimeLib.h>
 #include <usb_serial.h>
 #include <math.h>
 
 /////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
+//
+// Teensy 4.1 Board Pin Definitions
+
+#define HARVESTER_VOLTAGE_ADC_PIN A15
+#define HARVESTER_CURRENT_ADC_PIN A14
 
 #define NUM_OF_CONFIGLINES 7
-#define DAC_MAX (UINT16_MAX >> 1)
+#define DAC_MAX ((1ul << 12) - 1) // 12-BIT DAC
+                                  
+// Values defined with testing
+#define SCALE_CURVE 0.95	 // Scale factor for the curve
+#define CURVE_STEEPNESS 0.02 // Steepness of the curve
+#define DEFAULT_MIDPOINT 2700		 // Default midpoint of the curve
+
+#define ADC_RESOLUTION_BITS 12
+#define ADC_REFERENCE_VOLTAGE 3.3
 
 static ADC *adc = new ADC();
+static double adcMaxValue;
 
 static MCP4822 dac(34);
 
@@ -41,20 +55,10 @@ static uint16_t lastindex;
 // Initialize this value unequal to zero. It is set in readConfigFile()
 static time_t fileRecDuration_s = 60;
 
-static uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 
 extern time_t endFileRecord_s;
 
-// voltage limit 185000 uV due to inaccurancy of the DAC, value found by testing
-#define VOLTAGE_LIMIT_uV 185000
-// Current limit 16 uA, value found by testing
-#define CURRENT_LIMIT_uA 16
-
-
-// Values defined with testing
-#define SCALE_CURVE 0.95	 // Scale factor for the curve
-#define CURVE_STEEPNESS 0.02 // Steepness of the curve
-#define MIDPOINT 2800.0		 // Midpoint of the curve
 
 /////////////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////////
 
@@ -67,6 +71,9 @@ uint32_t getVoltageFromAdcValue_uV(void)
 {
   double returnValue;
   int _adcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
+
+  //Serial.printf("adcValueVoltage: %d\n", _adcValue);
+
   if (_adcValue < 0)
   {
     return 0;
@@ -74,11 +81,9 @@ uint32_t getVoltageFromAdcValue_uV(void)
   else
   {
 
-    returnValue = (double)_adcValue * 1000000.0 * ADC_REFERENCE_VOLTAGE / (double)ADC_MAX;
+    // Merged voltage divider value
+    returnValue = ((double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (500000.0 / adcMaxValue);
 
-#ifdef ADC_VOLTAGE_DIVIDER_USED
-    returnValue *= ADC_VOLTAGE_DIVIDER_CONVERSION_FACTOR;
-#endif
   }
 
   return (uint32_t)returnValue;
@@ -88,20 +93,19 @@ uint32_t getCurrentFromAdcValue_uA(void)
 {
   double returnValue;
   int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
-  // Serial.println(_adcValue);
+
+  //Serial.printf("adcValueVoltage: %d\n", _adcValue);
+
   if (_adcValue < 0)
   {
     return 0;
   }
   else
   {
-    returnValue = (double)_adcValue * 1000000.0 * ADC_REFERENCE_VOLTAGE / (double)ADC_MAX;
+    returnValue = ((double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (1000000.0 / adcMaxValue);
 
-    returnValue /= CURRENT_SENSE_AMPLIFIER_GAIN;
-    returnValue /= CURRENT_SENSE_SHUNT_RESISTOR_VALUE;
+    returnValue /= (CURRENT_SENSE_AMPLIFIER_GAIN * CURRENT_SENSE_SHUNT_RESISTOR_VALUE);
   }
-
-  returnValue = (returnValue * CURRENT_SENSE_CALIBRATION_FACTOR) + CURRENT_SENSE_CALIBRATION_OFFSET;
 
   return (uint32_t)returnValue;
 }
@@ -113,23 +117,6 @@ uint32_t getCurrentFromAdcValue_uA(void)
  * @param _current: Current in uA
  * @param _buffer: Byte array to store the values
  */
-void convertIntValuesToByteArrays(unsigned short _sequence_number, int _voltage, int _current, byte *_buffer)
-{
-  _buffer[0] = 0xaa;			   // Start byte
-  _buffer[1] = _sequence_number; // TODO: IV curve point sequence number
-  _buffer[10] = 0x55;			   // Finish byte
-
-  _buffer[2] = (_voltage >> 0) & 0xff;
-  _buffer[3] = (_voltage >> 8) & 0xff;
-  _buffer[4] = (_voltage >> 16) & 0xff;
-  _buffer[5] = (_voltage >> 24) & 0xff;
-
-  _buffer[6] = (_current >> 0) & 0xff;
-  _buffer[7] = (_current >> 8) & 0xff;
-  _buffer[8] = (_current >> 16) & 0xff;
-  _buffer[9] = (_current >> 24) & 0xff;
-}
-
 void transmitValuesAsByteArray(uint8_t SeqNo, uint32_t voltage, uint32_t current)
 {
 	uint8_t buffer[11];
@@ -156,111 +143,38 @@ void transmitValuesAsByteArray(uint8_t SeqNo, uint32_t voltage, uint32_t current
 
 void initializeADC()
 {
+  pinMode(HARVESTER_VOLTAGE_ADC_PIN, INPUT); // Harvester Voltage ADC Input
+  pinMode(HARVESTER_CURRENT_ADC_PIN, INPUT); // Harvester Current in uA-Range ADC Input
+                                             
   // Initialize the current-sense and voltage-sense ADC
-  adc->adc1->setAveraging(0);					   // set number of averages
+  adc->adc1->setReference(ADC_REFERENCE::REF_3V3);
+  adc->adc1->setAveraging(4);					   // set number of averages
   adc->adc1->setResolution(ADC_RESOLUTION_BITS); // set bits of resolution
-  adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::VERY_LOW_SPEED);
-  adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::VERY_LOW_SPEED);
+  adc->adc1->setConversionSpeed(ADC_CONVERSION_SPEED::LOW_SPEED);
+  adc->adc1->setSamplingSpeed(ADC_SAMPLING_SPEED::LOW_SPEED);
+  adcMaxValue = adc->adc1->getMaxValue();
+
 }
 
 void updateHarvesterLoad(uint8_t SeqNo)
 {
-#ifdef CALIBRATION_MODE
-  dac.setVoltageA(CALIBRATION_MODE_LOAD_MOSFET_VALUE);
-  dac.updateDAC();
-  delay(100);
-  // analogWrite(LOAD_MOSFET_DAC_PIN, CALIBRATION_MODE_LOAD_MOSFET_VALUE);
-
-  //		analogWrite(LOAD_MOSFET_DAC_PIN, i);
-
-  /*
-     int currentCalibrationValue = 0;
-
-     long long sum = 0;
-     if(!calibrated) {
-     dac.setVoltageA(0);
-     dac.updateDAC();
-     delay(100);
-     for(int i = 0; i < 500; i++) {
-     int temp = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
-     sum += temp;
-     }
-     currentCalibrationValue = sum / 500;
-     Serial.printf("Calibration value: %d\n", currentCalibrationValue);
-     calibrated = 1;
-     }
-
-     dac.setVoltageA(0);
-     dac.updateDAC();
-     delay(50);
-
-     int currentSenseAdcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1) - currentCalibrationValue;
-     int voltageAdcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
-
-     int current = getCurrentFromAdcValue_uA(currentSenseAdcValue);
-     int voltage = getVoltageFromAdcValue_uV(voltageAdcValue);
-
-  //	Serial.printf("V: %d, I: %d\n", voltageAdcValue, currentSenseAdcValue);
-  Serial.printf("V: %d, I: %d\n", voltage, current - 300);
-  */
-  /*
-     dac.setVoltageA(i);
-     dac.updateDAC();
-     delay(100);
-
-     i += 15;
-  //	Serial.printf("i: %d, _first: %d, _second: %d, diff: %d -> ", i, _first, _second, _second-_first);
-  //	_second=_first;
-  if(i > 1600) {
-  i = 1100;
-  }
-  */
-#else
   // Serial.printf("mosfetValues[%u]: %u\n", SeqNo, mosfetValues[SeqNo]);
   dac.setVoltageA(mosfetValues[SeqNo]);
   dac.updateDAC();
-#endif
 }
 
 void startupDelay()
 {
-#ifndef CALIBRATION_MODE
-  int ledDelay = 100;
-
-  digitalWrite(ERROR_LED, HIGH);
-  for (int i = 0; i < 50; i += 1)
+  digitalWrite(PIN_ERROR_LED, HIGH);
+  for (int i = 0; i < 10; i += 1)
   {
-    digitalToggle(STATUS_LED);
-    digitalToggle(ERROR_LED);
-    delay(ledDelay);
+    digitalToggle(PIN_STATUS_LED);
+    digitalToggle(PIN_ERROR_LED);
+    delay(500);
   }
-#endif
+  digitalWrite(PIN_STATUS_LED, LOW);
+  digitalWrite(PIN_ERROR_LED, LOW);
 }
-
-uint32_t modeSelection(int _mode)
-{
-  if (_mode == MODE_SD)
-  {
-    while (setupSD() != 0)
-    {
-      delay(500);
-    }
-    while (readConfigFile() != 0)
-    {
-      delay(500);
-    }
-    digitalWrite(ERROR_LED, LOW);
-    setupTime();
-    endFileRecord_s = createNewFile();
-    return 5000u;
-  }
-  else
-  {
-    return 1000u;
-  }
-}
-
-// functions used for sd mode only
 
 int setupSD()
 {
@@ -268,8 +182,10 @@ int setupSD()
   // Check if a SD card is available
   if (!SD.begin(chipSelect))
   {
+#ifdef DEBUG_MODE
     Serial.println("Card failed, or not present");
-    digitalWrite(ERROR_LED, HIGH);
+#endif
+    digitalWrite(PIN_ERROR_LED, HIGH);
     return -1;
   }
 
@@ -280,7 +196,6 @@ int setupSD()
   // Create file name which isn't used already
   for (unsigned int i = 0; i < UINT_MAX; i++)
   {
-
     sprintf(filename, "/recording_data/measurement%u.csv", i);
 
     if (!SD.exists(filename))
@@ -290,8 +205,7 @@ int setupSD()
     }
   }
 
-  return 0;
-}
+  return 0; }
 
 int readConfigFile(void)
 {
@@ -299,8 +213,10 @@ int readConfigFile(void)
   File config_file = SD.open("configuration_file.txt", FILE_READ);
   if (!config_file)
   {
+#ifdef DEBUG_MODE
     Serial.println("The configuration file couldn't be found");
-    digitalToggle(ERROR_LED);
+#endif
+    digitalToggle(PIN_ERROR_LED);
     return -1;
   }
 
@@ -324,10 +240,12 @@ int readConfigFile(void)
     }
   }
 
+#ifdef DEBUG_MODE
   for (int i = 0; i < NUM_OF_CONFIGLINES; i++)
   {
     Serial.println(harvesting_info[i]);
   }
+#endif
   fileRecDuration_s = harvesting_info[0].toInt();
   //	harvesting_info[0] = duration
   //	harvesting_info[1] = Indoor/Outdoor
@@ -374,7 +292,7 @@ time_t createNewFile(void)
   return retval;
 }
 
-void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
+void writeDataToSD(uint8_t _sequence_number, uint32_t _voltage, uint32_t _current)
 {
   if (!SD.mediaPresent())
   {
@@ -385,7 +303,7 @@ void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current)
     resetFunc();
   }
 
-  // 1 + 2 * sizeof(int) + 2 * ';' + '\n'
+  // 1 + 2 * sizeof(uint32_t) + 2 * ';' + '\n'
   // Writing around 1 + 2 * 4 + 2 * 1 + 1 = 12 byte
   File rec_file = SD.open(filename, FILE_WRITE);
   rec_file.print(_sequence_number);
@@ -433,7 +351,7 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
   *ocVoltage_uV = getVoltageFromAdcValue_uV(); // Save open circuit voltage
 
 #ifdef DEBUG_MODE
-  Serial.printf("OC voltage: %d\n", voltageLimits[OC_VOLTAGE]);
+  Serial.printf("OC voltage: %d\n", ocVoltage_uV);
   delay(10);
 #endif
 
@@ -444,19 +362,51 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
   *scVoltage_uV = getVoltageFromAdcValue_uV(); // Save short circuit voltage
 
 #ifdef DEBUG_MODE
-  Serial.printf("SC voltage: %d\n", voltageLimits[SC_VOLTAGE]);
+  Serial.printf("SC voltage: %d\n", scVoltage_uV);
   delay(10);
 #endif
+  updateHarvesterLoad(0);
+}
+
+void findMidpoint(uint32_t *ocVoltage_uV, uint16_t *midpoint)
+{
+
+  double currError_mV = 0.0;
+  double voltage_mV;
+  uint8_t counter = 0;
+  const double midVoltage_mV = (double)(*ocVoltage_uV >> 1)/1000.0;
+
+  const double tau = 0.1; 
+  /* Find midpoint */
+  do {
+    *midpoint = *midpoint + tau * currError_mV;
+    dac.setVoltageA(*midpoint);
+    dac.updateDAC();
+    delay(10);												 // wait for voltage to settle
+    voltage_mV = (double)getVoltageFromAdcValue_uV() / 1000.0;
+    currError_mV = (voltage_mV - midVoltage_mV);
+#ifdef DEBUG_MODE
+    Serial.printf("currError_mV: %lf, midpoint %u, midVoltage_mV %lf, voltage_mV %lf\n", currError_mV, *midpoint, midVoltage_mV, voltage_mV);
+#endif
+    counter++;
+    if (counter >= 49)
+    {
+      *midpoint = DEFAULT_MIDPOINT;
+      break;
+    }
+  } while (abs(currError_mV) > 1.0);
   updateHarvesterLoad(0);
 }
 
 void calcCurve(void)
 {
   // Curve parameters
+  static uint16_t midpoint = DEFAULT_MIDPOINT;
   uint32_t ocVoltage_uV; // Open circuit voltage
   uint32_t scVoltage_uV; // Open circuit voltage
-                              //
+                             
   measureLimits(&ocVoltage_uV, &scVoltage_uV);
+  findMidpoint(&ocVoltage_uV, &midpoint);
 
   // Define parameters for voltage value calculation
   uint32_t stepsize = (ocVoltage_uV - scVoltage_uV) / (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); // Calculate stepsize
@@ -488,21 +438,27 @@ void calcCurve(void)
   {
     double arg = ((double)ocVoltage_uV / (((double)voltageSizes[i] / SCALE_CURVE) - (double)scVoltage_uV)) - 1.0;
 
-    arg = arg > 0.0 ? arg : 0.0;
+    arg = arg > 1.0 ? arg : 1.0;
 
     //Serial.printf("arg[%u] = %lf\n", i, arg);
 
-    double calc = MIDPOINT + (log(arg) / CURVE_STEEPNESS);
-
+     double calc = (double)midpoint + (log(arg) / CURVE_STEEPNESS);
 
     //if ((uint16_t)calc <= DAC_MAX && calc > 0.0)
-    if ((uint16_t)calc > DAC_MAX)
+    if (calc <= 0.0)
+    {
+      if ( i == 1 )
+      {
+        mosfetValues[i] = midpoint / 2;
+      }
+      else
+      {
+        mosfetValues[i] = mosfetValues[i-1] + (midpoint << 1) / NUMBER_OF_CAPTURED_POINTS_IN_CURVE;
+      }
+    }
+    else if ((uint16_t)calc > DAC_MAX)
     {
       mosfetValues[i] = DAC_MAX;
-    }
-    else if (calc < 0.0)
-    {
-      mosfetValues[i] = 0;
     }
     else
     {
@@ -523,7 +479,17 @@ void calcCurve(void)
 
 void initDAC(void)
 {
+  SPI.begin();
   dac.init();
   dac.turnOnChannelA();
+  dac.shutdownChannelB();
   dac.setGainA(MCP4822::High);
+}
+
+extern void turnOffDAC(void)
+{
+  dac.shutdownChannelA();
+  dac.shutdownChannelB();
+  SPI.end();
+  digitalWrite(34, LOW);
 }

@@ -17,8 +17,12 @@
 
 /////////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
+#define PIN_STATUS_LED 1
+#define PIN_ERROR_LED 2
+
 /////////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
 
+extern uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
 /**
  * Returns the voltage in uV
  * @return voltage in uV
@@ -55,13 +59,6 @@ void updateHarvesterLoad(uint8_t SeqNo);
  */
 void startupDelay(void);
 
-/**
- * Function to select the mode either 0 (SD) or 1 (PC)
- * @param _mode: Mode to be selected
- * @return outerCycleTime_ms: Cycle time of the mode
- */
-uint32_t modeSelection(int _mode);
-
 /////////////////////////////////////////////////////////////SD FUNCTIONS//////////////////////////////////////////////////////
 
 /**
@@ -88,7 +85,7 @@ time_t createNewFile(void);
  * @param _voltage: Voltage in uV
  * @param _current: Current in uA
  */
-void writeDataToSD(uint8_t _sequence_number, int _voltage, int _current);
+void writeDataToSD(uint8_t _sequence_number, uint32_t _voltage, uint32_t _current);
 
 /**
  * Sync system time with RTC
@@ -104,5 +101,7 @@ void calcCurve(void);
 /**
  */
 void initDAC(void);
+
+void turnOffDAC(void);
 
 #endif /* FUNCTIONS_H_ */
