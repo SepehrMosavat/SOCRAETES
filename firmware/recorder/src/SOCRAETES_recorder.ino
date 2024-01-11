@@ -1,19 +1,19 @@
 /////////////////////////////////////////////////////////INCLUDES///////////////////////////////////////////////////////////////
 
-#include <Arduino.h>
-#include <Encoder.h>
-#include <ADC.h>
-#include <SPI.h>
-
-#include <TimeLib.h>
-#include <elapsedMillis.h>
-
-//#include <Snooze.h>
-#include <SnoozeTimer.h>
-#include <hal.h>
-
 #include "Definitions.h"
 #include "Functions.h"
+
+/* These two libraries are project local and changed for the 
+ * own purpose 
+ */
+#include "SnoozeTimer.h"
+#include "hal.h"
+
+#include <Arduino.h>
+#include <SPI.h>
+#include <elapsedMillis.h>
+
+
 
 ///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
@@ -25,8 +25,6 @@
 static const uint32_t innerCycleTime_ms = 10;
 
 static elapsedMillis innerElapsedMillis;
-
-time_t endFileRecord_s;
 
 uint32_t outerCycleTime_ms;
 
@@ -96,11 +94,6 @@ void setup()
   timer.enableDriver(2);
 }
 
-void toggle()
-{
-  digitalToggle(PIN_STATUS_LED);
-}
-
 void loop()
 {
   // Uncomment to measure maximum inner cycle time
@@ -109,13 +102,22 @@ void loop()
   // static unsigned long outerMaxTaskTime_ms = 0;
   // outerElapsedMillis = 0;
 
+  SPI.end();
+  digitalWrite(34, LOW);
+
   hal_deepSleep();
-  // Turn off analog circuitry
+
+  SPI.begin();
+  digitalWrite(34, HIGH);
+  delay(50);
+  // Turn on analog circuitry
+  digitalWrite(PIN_STATUS_LED, HIGH);
   digitalWrite(PIN_SWITCH_ANALOG, HIGH);
-  delay(100);
-  initDAC();
+  delay(50);
   // Set RTC time again as somehow it is lost after sleeping
   setupTime();
+  delay(50);
+  turnOnDAC();
   
   // Throw away first measurement
   getVoltageFromAdcValue_uV();
@@ -123,13 +125,12 @@ void loop()
 
   calcCurve();
   updateHarvesterLoad(0);
-  delay(innerCycleTime_ms);
+  delay(5);
 
 #ifdef DEBUG_MODE
   Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
   delay(50);
 #endif
-  digitalWrite(PIN_STATUS_LED, HIGH);
 
   for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
   {
@@ -142,11 +143,6 @@ void loop()
 
     // Set new harvester load
     updateHarvesterLoad( (Counter + 1)%NUMBER_OF_CAPTURED_POINTS_IN_CURVE );
-
-#ifdef DEBUG_MODE
-    // Add some extra delay when in debug mode
-    delay(2);
-#endif
 
     // Uncomment to measure maximum inner cycle time
     //		if ( innerMaxTaskTime_ms < innerElapsedMillis )
@@ -161,12 +157,13 @@ void loop()
       ;
     }
   }
-
+  
   // Turn off analog circuitry
   turnOffDAC();
-  digitalWrite(PIN_STATUS_LED, LOW);
   digitalWrite(PIN_SWITCH_ANALOG, LOW);
-  
+  digitalWrite(PIN_STATUS_LED, LOW);
+
+
   // Store measured curve on SD card
   if (mode == MODE_SD)
   {

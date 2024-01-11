@@ -14,15 +14,20 @@
 
 #include "Definitions.h"
 #include <Arduino.h>
+#include <TimeLib.h>
 
 /////////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
 #define PIN_STATUS_LED 1
 #define PIN_ERROR_LED 2
 
+extern uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+
+extern time_t endFileRecord_s;
+
 /////////////////////////////////////////////////////////////FUNCTIONS//////////////////////////////////////////////////////////
 
-extern uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
+
 /**
  * Returns the voltage in uV
  * @return voltage in uV
@@ -99,9 +104,18 @@ void setupTime(void);
 void calcCurve(void);
 
 /**
+ * Initialize DAC
  */
 void initDAC(void);
 
+/**
+ * Turns off channels of DAC
+ */
 void turnOffDAC(void);
+
+/**
+ * Turns on used channels of DAC
+ */
+void turnOnDAC(void);
 
 #endif /* FUNCTIONS_H_ */

@@ -9,16 +9,15 @@
 
 /////////////////////////////////////////////////////////////INCLUDES///////////////////////////////////////////////////////////
 
-#include "Functions.h"
-#include "MCP48xx.h"
 #include "Definitions.h"
+#include "Functions.h"
+/* This library is project local and contains a bug fix
+ */
+#include "MCP48xx.h"
+
 #include <SPI.h>
-#include <Encoder.h>
 #include <ADC.h>
-#include <ADC_util.h>
 #include <SD.h>
-#include <TimeLib.h>
-#include <usb_serial.h>
 #include <math.h>
 
 /////////////////////////////////////////////////////////////DEFINES///////////////////////////////////////////////////////////
@@ -55,10 +54,9 @@ static uint16_t lastindex;
 // Initialize this value unequal to zero. It is set in readConfigFile()
 static time_t fileRecDuration_s = 60;
 
+time_t endFileRecord_s;
+
 uint16_t mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE];
-
-extern time_t endFileRecord_s;
-
 
 /////////////////////////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////////
 
@@ -166,11 +164,11 @@ void updateHarvesterLoad(uint8_t SeqNo)
 void startupDelay()
 {
   digitalWrite(PIN_ERROR_LED, HIGH);
-  for (int i = 0; i < 10; i += 1)
+  for (int i = 0; i < 20; i += 1)
   {
     digitalToggle(PIN_STATUS_LED);
     digitalToggle(PIN_ERROR_LED);
-    delay(500);
+    delay(200);
   }
   digitalWrite(PIN_STATUS_LED, LOW);
   digitalWrite(PIN_ERROR_LED, LOW);
@@ -296,6 +294,10 @@ void writeDataToSD(uint8_t _sequence_number, uint32_t _voltage, uint32_t _curren
 {
   if (!SD.mediaPresent())
   {
+#ifdef DEBUG_MODE
+  Serial.printf("SD Card not found");
+  delay(50);
+#endif
     while (!SD.mediaPresent())
     {
       delay(500);
@@ -347,7 +349,7 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
 {
   mosfetValues[0] = 0;
   updateHarvesterLoad(0);
-  delay(10);												 // wait for voltage to settle
+  delay(5);												 // wait for voltage to settle
   *ocVoltage_uV = getVoltageFromAdcValue_uV(); // Save open circuit voltage
 
 #ifdef DEBUG_MODE
@@ -358,7 +360,7 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
   // Minimum load for the solar cell
   mosfetValues[NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1] = DAC_MAX;
   updateHarvesterLoad(NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1);
-  delay(10);												 // wait for voltage to settle
+  delay(5);												 // wait for voltage to settle
   *scVoltage_uV = getVoltageFromAdcValue_uV(); // Save short circuit voltage
 
 #ifdef DEBUG_MODE
@@ -382,19 +384,19 @@ void findMidpoint(uint32_t *ocVoltage_uV, uint16_t *midpoint)
     *midpoint = *midpoint + tau * currError_mV;
     dac.setVoltageA(*midpoint);
     dac.updateDAC();
-    delay(10);												 // wait for voltage to settle
+    delay(5);												 // wait for voltage to settle
     voltage_mV = (double)getVoltageFromAdcValue_uV() / 1000.0;
     currError_mV = (voltage_mV - midVoltage_mV);
 #ifdef DEBUG_MODE
     Serial.printf("currError_mV: %lf, midpoint %u, midVoltage_mV %lf, voltage_mV %lf\n", currError_mV, *midpoint, midVoltage_mV, voltage_mV);
 #endif
-    counter++;
-    if (counter >= 49)
+    if (counter >= 19)
     {
       *midpoint = DEFAULT_MIDPOINT;
       break;
     }
-  } while (abs(currError_mV) > 1.0);
+    counter++;
+  } while (abs(currError_mV) > 10.0);
   updateHarvesterLoad(0);
 }
 
@@ -486,10 +488,14 @@ void initDAC(void)
   dac.setGainA(MCP4822::High);
 }
 
-extern void turnOffDAC(void)
+void turnOffDAC(void)
 {
   dac.shutdownChannelA();
+}
+
+void turnOnDAC(void)
+{
+  dac.turnOnChannelA();
   dac.shutdownChannelB();
-  SPI.end();
-  digitalWrite(34, LOW);
+  dac.setGainA(MCP4822::High);
 }
