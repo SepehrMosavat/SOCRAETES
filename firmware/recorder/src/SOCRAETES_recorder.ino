@@ -69,7 +69,6 @@ void setup()
     {
       delay(500);
     }
-    digitalWrite(PIN_ERROR_LED, LOW);
     setupTime();
     endFileRecord_s = createNewFile();
     outerCycleTime_ms =  5000u;
@@ -103,13 +102,14 @@ void loop()
   // outerElapsedMillis = 0;
 
   SPI.end();
-  digitalWrite(34, LOW);
+  delay(5);
 
   hal_deepSleep();
 
   SPI.begin();
+  delay(5);
   digitalWrite(34, HIGH);
-  delay(50);
+  delay(5);
   // Turn on analog circuitry
   digitalWrite(PIN_STATUS_LED, HIGH);
   digitalWrite(PIN_SWITCH_ANALOG, HIGH);
@@ -127,10 +127,10 @@ void loop()
   updateHarvesterLoad(0);
   delay(5);
 
-#ifdef DEBUG_MODE
-  Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
-  delay(50);
-#endif
+//#ifdef DEBUG_MODE
+//  Serial.printf("mode: %s\n", mode == MODE_SD ? "SD":"PC");
+//  delay(50);
+//#endif
 
   for (uint8_t Counter = 0; Counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; Counter++)
   {
@@ -161,6 +161,8 @@ void loop()
   // Turn off analog circuitry
   turnOffDAC();
   digitalWrite(PIN_SWITCH_ANALOG, LOW);
+  delay(5);
+  digitalWrite(34, LOW);
   digitalWrite(PIN_STATUS_LED, LOW);
 
 
@@ -192,8 +194,10 @@ void loop()
     //for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1; counter++)
     for(counter = 0; counter < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; counter++)
     {
+#ifndef DEBUG_MODE
       //transmitValuesAsByteArray(counter, 1000 * mosfetValues[counter], voltageArray_uV[counter]);
       transmitValuesAsByteArray(counter, voltageArray_uV[counter], currentArray_uA[counter]);
+#endif
       delay(5);
     }
 

@@ -33,7 +33,7 @@
 // Values defined with testing
 #define SCALE_CURVE 0.95	 // Scale factor for the curve
 #define CURVE_STEEPNESS 0.02 // Steepness of the curve
-#define DEFAULT_MIDPOINT 2700		 // Default midpoint of the curve
+#define DEFAULT_MIDPOINT 2800		 // Default midpoint of the curve
 
 #define ADC_RESOLUTION_BITS 12
 #define ADC_REFERENCE_VOLTAGE 3.3
@@ -70,7 +70,6 @@ uint32_t getVoltageFromAdcValue_uV(void)
   double returnValue;
   int _adcValue = adc->analogRead(HARVESTER_VOLTAGE_ADC_PIN, ADC_1);
 
-  //Serial.printf("adcValueVoltage: %d\n", _adcValue);
 
   if (_adcValue < 0)
   {
@@ -80,9 +79,12 @@ uint32_t getVoltageFromAdcValue_uV(void)
   {
 
     // Merged voltage divider value
-    returnValue = ((double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (500000.0 / adcMaxValue);
+    returnValue = (2.0 * (double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (1000000.0 / adcMaxValue);
 
   }
+#ifdef DEBUG_MODE
+//  Serial.printf("adcValueVoltage: %d, voltageValue_uV %lf\n", _adcValue, returnValue);
+#endif
 
   return (uint32_t)returnValue;
 }
@@ -92,7 +94,6 @@ uint32_t getCurrentFromAdcValue_uA(void)
   double returnValue;
   int _adcValue = adc->analogRead(HARVESTER_CURRENT_ADC_PIN, ADC_1);
 
-  //Serial.printf("adcValueVoltage: %d\n", _adcValue);
 
   if (_adcValue < 0)
   {
@@ -100,10 +101,13 @@ uint32_t getCurrentFromAdcValue_uA(void)
   }
   else
   {
-    returnValue = ((double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (1000000.0 / adcMaxValue);
+    returnValue = ((double)_adcValue *  ADC_REFERENCE_VOLTAGE) * (1000000.0 / (CURRENT_SENSE_AMPLIFIER_GAIN * CURRENT_SENSE_SHUNT_RESISTOR_VALUE) / adcMaxValue);
 
-    returnValue /= (CURRENT_SENSE_AMPLIFIER_GAIN * CURRENT_SENSE_SHUNT_RESISTOR_VALUE);
   }
+
+#ifdef DEBUG_MODE
+  //Serial.printf("adcValueCurrent: %d, voltageValue_uA %lf\n", _adcValue, returnValue);
+#endif
 
   return (uint32_t)returnValue;
 }
@@ -163,11 +167,11 @@ void updateHarvesterLoad(uint8_t SeqNo)
 
 void startupDelay()
 {
-  digitalWrite(PIN_ERROR_LED, HIGH);
+  //digitalWrite(PIN_ERROR_LED, HIGH);
   for (int i = 0; i < 20; i += 1)
   {
     digitalToggle(PIN_STATUS_LED);
-    digitalToggle(PIN_ERROR_LED);
+    //digitalToggle(PIN_ERROR_LED);
     delay(200);
   }
   digitalWrite(PIN_STATUS_LED, LOW);
@@ -245,13 +249,13 @@ int readConfigFile(void)
   }
 #endif
   fileRecDuration_s = harvesting_info[0].toInt();
-  //	harvesting_info[0] = duration
+  //	harvesting_info[0] = duration_s
   //	harvesting_info[1] = Indoor/Outdoor
   //	harvesting_info[2] = Lux
-  //	harvesting_info[3] = weather
+  //	harvesting_info[3] = Season
   //	harvesting_info[4] = Country
   //	harvesting_info[5] = City
-  // 	harvesting_info[6] = harvesting source
+  // 	harvesting_info[6] = Source
 
   config_file.close();
   return 0;
@@ -331,14 +335,14 @@ void setupTime()
   setSyncProvider(getTeensy3Time);
 
 #ifdef DEBUG_MODE
-  if (timeStatus() != timeSet)
-  {
-    Serial.println("Unable to sync with the RTC");
-  }
-  else
-  {
-    Serial.println("RTC has set the system time");
-  }
+//  if (timeStatus() != timeSet)
+//  {
+//    Serial.println("Unable to sync with the RTC");
+//  }
+//  else
+//  {
+//    Serial.println("RTC has set the system time");
+//  }
 #endif
 }
 
@@ -353,7 +357,7 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
   *ocVoltage_uV = getVoltageFromAdcValue_uV(); // Save open circuit voltage
 
 #ifdef DEBUG_MODE
-  Serial.printf("OC voltage: %d\n", ocVoltage_uV);
+  Serial.printf("OC voltage: %lu\n", *ocVoltage_uV);
   delay(10);
 #endif
 
@@ -364,7 +368,7 @@ void measureLimits(uint32_t *ocVoltage_uV, uint32_t *scVoltage_uV)
   *scVoltage_uV = getVoltageFromAdcValue_uV(); // Save short circuit voltage
 
 #ifdef DEBUG_MODE
-  Serial.printf("SC voltage: %d\n", scVoltage_uV);
+  Serial.printf("SC voltage: %lu\n", *scVoltage_uV);
   delay(10);
 #endif
   updateHarvesterLoad(0);
@@ -378,10 +382,26 @@ void findMidpoint(uint32_t *ocVoltage_uV, uint16_t *midpoint)
   uint8_t counter = 0;
   const double midVoltage_mV = (double)(*ocVoltage_uV >> 1)/1000.0;
 
-  const double tau = 0.1; 
+  //const double tau = 0.15; 
+
+
   /* Find midpoint */
   do {
-    *midpoint = *midpoint + tau * currError_mV;
+
+    //*midpoint = *midpoint + tau * currError_mV;
+    if ( currError_mV > 0.0 )
+    {
+      (*midpoint)++;
+    }
+    else if ( currError_mV < 0.0 )
+    {
+      (*midpoint)--;
+    }
+    else
+    {
+
+    }
+
     dac.setVoltageA(*midpoint);
     dac.updateDAC();
     delay(5);												 // wait for voltage to settle
@@ -390,13 +410,13 @@ void findMidpoint(uint32_t *ocVoltage_uV, uint16_t *midpoint)
 #ifdef DEBUG_MODE
     Serial.printf("currError_mV: %lf, midpoint %u, midVoltage_mV %lf, voltage_mV %lf\n", currError_mV, *midpoint, midVoltage_mV, voltage_mV);
 #endif
-    if (counter >= 19)
+    if (counter >= 200)
     {
-      *midpoint = DEFAULT_MIDPOINT;
+      //*midpoint = DEFAULT_MIDPOINT;
       break;
     }
     counter++;
-  } while (abs(currError_mV) > 10.0);
+  } while (abs(currError_mV) > 100.0);
   updateHarvesterLoad(0);
 }
 
@@ -427,20 +447,20 @@ void calcCurve(void)
     voltageSizes[i] = voltageSizes[i + 1] + stepsize;
   }
 
-#ifdef DEBUG_MODE
-  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
-  {
-    Serial.printf("voltageSizes[%u] = %u\n", i, voltageSizes[i]);
-    delay(10);
-  }
-#endif
+//#ifdef DEBUG_MODE
+//  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+//  {
+//    Serial.printf("voltageSizes[%u] = %u\n", i, voltageSizes[i]);
+//    delay(10);
+//  }
+//#endif
 
   // calculate the mosfet values for the curve
   for (uint8_t i = 1; i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 1); i++)
   {
     double arg = ((double)ocVoltage_uV / (((double)voltageSizes[i] / SCALE_CURVE) - (double)scVoltage_uV)) - 1.0;
 
-    arg = arg > 1.0 ? arg : 1.0;
+    arg = arg > 0.0 ? arg : 1e-10;
 
     //Serial.printf("arg[%u] = %lf\n", i, arg);
 
@@ -449,14 +469,7 @@ void calcCurve(void)
     //if ((uint16_t)calc <= DAC_MAX && calc > 0.0)
     if (calc <= 0.0)
     {
-      if ( i == 1 )
-      {
-        mosfetValues[i] = midpoint / 2;
-      }
-      else
-      {
-        mosfetValues[i] = mosfetValues[i-1] + (midpoint << 1) / NUMBER_OF_CAPTURED_POINTS_IN_CURVE;
-      }
+        mosfetValues[i] = 0;
     }
     else if ((uint16_t)calc > DAC_MAX)
     {
@@ -464,17 +477,24 @@ void calcCurve(void)
     }
     else
     {
-      mosfetValues[i] = (uint16_t)calc;
+      if ( i >= (NUMBER_OF_CAPTURED_POINTS_IN_CURVE >> 1) && i < (NUMBER_OF_CAPTURED_POINTS_IN_CURVE - 2))
+      {
+        mosfetValues[i] = mosfetValues[i-1] + 2;
+      }
+      else
+      {
+        mosfetValues[i] = (uint16_t)calc;
+      }
     }
   }
 
 #ifdef DEBUG_MODE
-  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
-  {
-    Serial.printf("voltageSizes[%u] = %u ", i, voltageSizes[i]);
-    Serial.printf("mosfetValues[%i] = %u\n", i, mosfetValues[i]);
-    delay(10);
-  }
+//  for (uint8_t i = 0; i < NUMBER_OF_CAPTURED_POINTS_IN_CURVE; i++)
+//  {
+//    Serial.printf("voltageSizes[%u] = %u ", i, voltageSizes[i]);
+//    Serial.printf("mosfetValues[%i] = %u\n", i, mosfetValues[i]);
+//    delay(10);
+//  }
 #endif
 
 }
@@ -482,6 +502,7 @@ void calcCurve(void)
 void initDAC(void)
 {
   SPI.begin();
+  delay(10);
   dac.init();
   dac.turnOnChannelA();
   dac.shutdownChannelB();
