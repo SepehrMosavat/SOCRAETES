@@ -1,0 +1,7 @@
+duration_s=598
+Indoor/Outdoor=Outdoor
+Lux=none
+Season=Winter
+Country=Germany
+City=Hamburg
+Source=solar_cell

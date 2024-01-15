@@ -60,6 +60,8 @@ void setup()
   {
 #ifdef DEBUG_MODE
     Serial.begin(0);
+#else
+    Serial.end();
 #endif
     while (setupSD() != 0)
     {
@@ -103,9 +105,12 @@ void loop()
 
   SPI.end();
   delay(5);
+  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
 
   hal_deepSleep();
 
+  delay(5);
   SPI.begin();
   delay(5);
   digitalWrite(34, HIGH);
