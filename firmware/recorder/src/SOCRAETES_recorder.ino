@@ -18,7 +18,6 @@
 ///////////////////////////////////////////////////////////DEFINES////////////////////////////////////////////////////////////
 
 #define PIN_MODE_JUMPER 32
-#define PIN_SWITCH_ANALOG 0
 #define MODE_SD 0
 
 // Cycle time for measuring points of curve
@@ -47,9 +46,7 @@ void setup()
 
   pinMode(PIN_STATUS_LED, OUTPUT);
   pinMode(PIN_ERROR_LED, OUTPUT);
-  pinMode(PIN_SWITCH_ANALOG, OUTPUT); // Pin to switch that en-/disables analog parts
 
-  digitalWrite(PIN_SWITCH_ANALOG, HIGH);
   startupDelay();
   initDAC();
   initializeADC();
@@ -103,26 +100,16 @@ void loop()
   // static unsigned long outerMaxTaskTime_ms = 0;
   // outerElapsedMillis = 0;
 
-  SPI.end();
-  delay(5);
-  digitalWrite(13, LOW);
-  digitalWrite(11, LOW);
+  digitalWrite(PIN_STATUS_LED, LOW);
 
   hal_deepSleep();
 
-  delay(5);
-  SPI.begin();
-  delay(5);
-  digitalWrite(34, HIGH);
-  delay(5);
   // Turn on analog circuitry
   digitalWrite(PIN_STATUS_LED, HIGH);
-  digitalWrite(PIN_SWITCH_ANALOG, HIGH);
-  delay(50);
+  delay(5);
   // Set RTC time again as somehow it is lost after sleeping
   setupTime();
-  delay(50);
-  turnOnDAC();
+  delay(5);
   
   // Throw away first measurement
   getVoltageFromAdcValue_uV();
@@ -163,13 +150,6 @@ void loop()
     }
   }
   
-  // Turn off analog circuitry
-  turnOffDAC();
-  digitalWrite(PIN_SWITCH_ANALOG, LOW);
-  delay(5);
-  digitalWrite(34, LOW);
-  digitalWrite(PIN_STATUS_LED, LOW);
-
 
   // Store measured curve on SD card
   if (mode == MODE_SD)

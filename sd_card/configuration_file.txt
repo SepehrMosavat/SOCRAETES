@@ -1,7 +1,7 @@
-duration_s=598
+duration_s=1798
 Indoor/Outdoor=Outdoor
 Lux=none
 Season=Winter
-Country=Germany
+Side=North
 City=Hamburg
 Source=solar_cell
