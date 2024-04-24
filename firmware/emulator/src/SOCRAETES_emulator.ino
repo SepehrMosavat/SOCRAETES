@@ -4,19 +4,19 @@
 
 MCP4822 dac(34);
 
-#define	MODE_PC  0
-#define	MODE_SD  1
+#define MODE_PC 0
+#define MODE_SD 1
 
 static int voltage = 0;
 static int current = 0;
-//byte incomingByteArray[4];
-static byte byteCounter = 0;
+// byte incomingByteArray[4];
+static uint8_t byteCounter = 0;
 static int incommingVoltageAndCurrentBuffer = 0;
 static bool isReceivingData = false;
-static bool isEmulating = true;
-static unsigned long emuDuration_s;
+static uint8_t initConfig = 0;
+static unsigned long emuDuration_ms = 0;
 
-static int mode = MODE_PC;
+static uint8_t mode = MODE_PC;
 
 void setup()
 {
@@ -39,7 +39,7 @@ void setup()
 	pinMode(MODE_JUMPER, INPUT_PULLDOWN);
 
 	digitalWrite(STATUS_LED, LOW);
-	digitalWrite(ERROR_LED, LOW);	
+	digitalWrite(ERROR_LED, LOW);
 
 	for (counter = 0; counter < 10; counter++)
 	{
@@ -48,11 +48,12 @@ void setup()
 		delay(500);
 	}
 
-	mode =  digitalRead(MODE_JUMPER);
+	mode = digitalRead(MODE_JUMPER);
 
+#ifdef DEBUG
 	Serial.printf("Starting in mode %s\n", mode ? "SD" : "PC");
+#endif
 }
-
 
 void loop()
 {
@@ -60,64 +61,55 @@ void loop()
 
 	if (mode == MODE_SD)
 	{
-		if (isEmulating)
+		while (initConfig != 1)
 		{
-			while( setupSD() != 0 )
-			{	
-				digitalWrite(ERROR_LED, HIGH);
-				delay(500);
-			}
+			digitalWrite(ERROR_LED, HIGH);
+			delay(500);
+			initConfig = setupSD();
 			digitalWrite(ERROR_LED, LOW);
-
-			updateEmulationValues();
-			emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
-			Serial.println(emu_parameters.emu_voltage);
-			Serial.println(emu_parameters.emu_current);
-			isEmulating = false;
-			emuDuration_s = emu_parameters.emu_duration + millis();
-			counter = 1;
 		}
-		else
+
+		if (millis() > emuDuration_ms)
 		{
-			if (millis() > emuDuration_s)
+			if (counter < emu_parameters.number_curves)
 			{
-				if (counter < emu_parameters.number_curves)
-				{
-					updateEmulationValues();
-					emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
-					emuDuration_s = emu_parameters.emu_duration + millis();
-					Serial.println(emu_parameters.emu_voltage);
-					Serial.println(emu_parameters.emu_current);
-					counter++;
-					digitalToggle(STATUS_LED);
-				}
-				else
-				{
-					digitalWrite(STATUS_LED, HIGH);
-					initializeOutputToZero();
-					Serial.println("finished");
-					delay(1000);
-					Serial.println("again");
-					digitalWrite(STATUS_LED, LOW);
-					isEmulating = true;
-				}
-			}	
+				updateEmulationValues();
+				Serial.println("Emulating: V: " + String(emu_parameters.emu_voltage) + " uV, I: " + String(emu_parameters.emu_current) + " uA");
+				emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
+				emuDuration_ms = emu_parameters.emu_duration + millis();
+
+				counter++;
+				digitalToggle(STATUS_LED);
+			}
+			else
+			{
+				digitalWrite(STATUS_LED, HIGH);
+				initializeOutputToZero();
+
+				// Serial.println("finished");
+				delay(1000);
+				// Serial.println("restart file");
+
+				digitalWrite(STATUS_LED, LOW);
+				initConfig = 0;
+				counter = 0;
+			}
 		}
 	}
 	else
 	{
-		if(Serial.available() > 0)
-		{	
+		if (Serial.available() > 0)
+		{
 			digitalWrite(ERROR_LED, LOW);
 			byte lastReceivedByte = Serial.read();
-			if(lastReceivedByte == START_OF_CURVE_DATA)
+			if (lastReceivedByte == START_OF_CURVE_DATA)
 			{
 				byteCounter = 0;
 				voltage = 0;
 				current = 0;
 				isReceivingData = true;
 			}
-			else if(lastReceivedByte == END_OF_CURVE_DATA)
+			else if (lastReceivedByte == END_OF_CURVE_DATA)
 			{
 				isReceivingData = false;
 				Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
@@ -125,14 +117,14 @@ void loop()
 			}
 			else
 			{
-				if(isReceivingData)
+				if (isReceivingData)
 				{
 					incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer | lastReceivedByte;
-					if(byteCounter == 3)
+					if (byteCounter == 3)
 					{
 						voltage = incommingVoltageAndCurrentBuffer;
 					}
-					else if(byteCounter == 7)
+					else if (byteCounter == 7)
 					{
 						current = incommingVoltageAndCurrentBuffer;
 					}
@@ -147,5 +139,6 @@ void loop()
 			digitalWrite(ERROR_LED, HIGH);
 		}
 	}
+
 	delay(1);
 }

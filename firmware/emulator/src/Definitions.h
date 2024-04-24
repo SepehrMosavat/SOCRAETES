@@ -10,6 +10,8 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#define DEBUG
+
 #define STATUS_LED 1
 #define ERROR_LED 2
 #define MODE_JUMPER 32
@@ -23,13 +25,12 @@
  * At the moment this value needs to be figured out experimentally for each piece of emulator
  * hardware due to the component tolerances.
  */
-#define CURREN_EMULATION_DAC_OFFSET 0
+#define CURRENT_EMULATION_DAC_OFFSET 0
 
 enum SignalCode
 {
 	START_OF_CURVE_DATA = 0xAA,
 	END_OF_CURVE_DATA = 0x55,
 };
-
 
 #endif /* DEFINITIONS_H_ */

@@ -13,7 +13,8 @@
 #include "Definitions.h"
 #include "MCP48xx.h"
 
-typedef struct emulation_s {
+typedef struct emulation_s
+{
     int number_curves;
     int emu_voltage;
     int emu_current;
@@ -32,10 +33,8 @@ extern void emulateVoltageAndCurrent(int, int);
 
 extern void initializeOutputToZero();
 
-extern int setupSD();
+extern uint8_t setupSD();
 
 extern void updateEmulationValues(void);
-
-
 
 #endif /* FUNCTIONS_H_ */
