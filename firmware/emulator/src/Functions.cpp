@@ -31,7 +31,7 @@ int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 
 int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
 {
-	double dacVoltage = (double)_SCCurrentForEmulation / 1000.;
+	double dacVoltage = (double)_SCCurrentForEmulation / 1000.0;
 	dacVoltage *= (double)CURRENT_EMULATION_RANGE_RESISTOR;
 	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 	//	return (int)(dacVoltage * 4095) + CURREN_EMULATION_DAC_OFFSET;
@@ -44,8 +44,6 @@ void emulateVoltageAndCurrent(int _OCVoltage, int _SCCurrent)
 	dac.setVoltageB(calculateDACvalueForSCCurrentEmulation(_SCCurrent));
 	dac.updateDAC();
 
-	//	analogWrite(OC_VOLTAGE_EMULATION_DAC_PIN, calculateDACvalueForOCVoltageEmulation(_OCVoltage));
-	//	analogWrite(SC_CURRENT_EMULATION_DAC_PIN, calculateDACvalueForSCCurrentEmulation(_SCCurrent));
 }
 
 void initializeOutputToZero()
@@ -53,9 +51,6 @@ void initializeOutputToZero()
 	dac.setVoltageA(0);
 	dac.setVoltageB(0);
 	dac.updateDAC();
-
-	//	analogWrite(OC_VOLTAGE_EMULATION_DAC_PIN, 0);
-	//	analogWrite(SC_CURRENT_EMULATION_DAC_PIN, 0);
 }
 
 uint8_t setupSD()
@@ -70,18 +65,19 @@ uint8_t setupSD()
 	// Check if directory with emulated data exists
 	if (!SD.exists("/emulating_data"))
 	{
-		Serial.println("SD card not configured properly (no directory with correct name present)");
+		Serial.println("SD card not configured properly (no directory with name *emulating_data* present)");
 		return 0;
 	}
-
-	const char *filename = "emulating_data/emulator_file.txt";
 
 	if (config_file)
 	{
 		config_file.close();
 	}
+    File config_dir = SD.open("/emulating_data");
 
-	config_file = SD.open(filename, FILE_READ);
+    // Read emulator_file
+	config_file = config_dir.openNextFile(FILE_READ);
+    //SD.open(filename, FILE_READ);
 
 	if (!config_file)
 	{
@@ -144,7 +140,22 @@ extern void updateEmulationValues(void)
 		emulating_info_temp = emulating_info_temp.substring(0, strLen);
 	}
 
+    // Look for separator
 	index_of_sc = emulating_info_temp.indexOf(';');
+
+    if (index_of_sc < 0)
+    {
+        // Try with comma
+        index_of_sc = emulating_info_temp.indexOf(',');
+    }
+
+    if (index_of_sc < 0)
+    {
+			digitalWrite(ERROR_LED, HIGH);
+            emu_parameters.emu_voltage = 0;
+            emu_parameters.emu_current = 0;
+            return;
+    }
 
 	emu_parameters.emu_voltage = (emulating_info_temp.substring(0, index_of_sc)).toInt();
 
