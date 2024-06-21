@@ -13,47 +13,32 @@
 #include <TimeLib.h>
 #define NUM_OF_CONFIGLINES 2
 
+// global variable
 emulation_t emu_parameters;
 
 static String emulating_info[NUM_OF_CONFIGLINES];
 
 static File config_file;
 
-int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
-{
-	double dacVoltage = (double)_OCVoltageForEmulation / 3; // Factor 3 is produced by voltage divider in circuit
-	dacVoltage /= 1000.;									// Convert to mV
-	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
-	//	Serial.println(dacVoltage*4095);
-	//	return (int)(dacVoltage * 4095);
-	return (int)dacVoltage;
-}
+static int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation_uV);
+static int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation);
 
-int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
+extern void emulateVoltageAndCurrent(int _OCVoltage_uV, int _SCCurrent_uA)
 {
-	double dacVoltage = (double)_SCCurrentForEmulation / 1000.0;
-	dacVoltage *= (double)CURRENT_EMULATION_RANGE_RESISTOR;
-	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
-	//	return (int)(dacVoltage * 4095) + CURREN_EMULATION_DAC_OFFSET;
-	return (int)dacVoltage + CURRENT_EMULATION_DAC_OFFSET;
-}
-
-void emulateVoltageAndCurrent(int _OCVoltage, int _SCCurrent)
-{
-	dac.setVoltageA(calculateDACvalueForOCVoltageEmulation(_OCVoltage));
-	dac.setVoltageB(calculateDACvalueForSCCurrentEmulation(_SCCurrent));
+	dac.setVoltageA(calculateDACvalueForOCVoltageEmulation(_OCVoltage_uV));
+	dac.setVoltageB(calculateDACvalueForSCCurrentEmulation(_SCCurrent_uA));
 	dac.updateDAC();
 
 }
 
-void initializeOutputToZero()
+extern void initializeOutputToZero(void)
 {
 	dac.setVoltageA(0);
 	dac.setVoltageB(0);
 	dac.updateDAC();
 }
 
-uint8_t setupSD()
+extern uint8_t setupSD(void)
 {
 	const int chipSelect = BUILTIN_SDCARD;
 	// Check if a SD card is available
@@ -105,12 +90,19 @@ uint8_t setupSD()
 			emulating_info[i] = emulating_info_temp.substring(index_of_eq + 1, strLen);
 		}
 	}
+    // Give a little startup boost
+    emulateVoltageAndCurrent(2500000ul, 1500ul);
+    delay(10);
 	// emulating_info[0] = number of curves
 	// emulating_info[1] = duration between each curve
 	emu_parameters.number_curves = (emulating_info[0].toInt());
+#ifdef DEBUG
 	Serial.println("number_curves " + String(emu_parameters.number_curves));
+#endif
 	emu_parameters.emu_duration = (emulating_info[1].toFloat()) * 1000.0;
+#ifdef DEBUG
 	Serial.println("duration " + String(emu_parameters.emu_duration) + "ms");
+#endif
 
 	return 1;
 }
@@ -126,6 +118,10 @@ extern void updateEmulationValues(void)
 	// Read one line of the file and update voltage and current
 	String emulating_info_temp = config_file.readStringUntil('\n');
 
+#ifdef DEBUG
+            Serial.print("Read: ");
+            Serial.println(emulating_info_temp);
+#endif
 	// Check for DOS or unix line endings
 
 	int strLen = emulating_info_temp.length();
@@ -154,10 +150,32 @@ extern void updateEmulationValues(void)
 			digitalWrite(ERROR_LED, HIGH);
             emu_parameters.emu_voltage = 0;
             emu_parameters.emu_current = 0;
+#ifdef DEBUG
+				Serial.println("Couldn't read from file");
+#endif
             return;
     }
 
 	emu_parameters.emu_voltage = (emulating_info_temp.substring(0, index_of_sc)).toInt();
 
 	emu_parameters.emu_current = (emulating_info_temp.substring(index_of_sc + 1, emulating_info_temp.length())).toInt();
+}
+
+static int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation_uV)
+{
+	double dacVoltage = (double)_OCVoltageForEmulation_uV / 3.0; // Factor 3 is produced by voltage divider in circuit
+	dacVoltage /= 1000.0;									// Convert to mV
+	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
+	//	Serial.println(dacVoltage*4095);
+	//	return (int)(dacVoltage * 4095);
+	return (int)dacVoltage;
+}
+
+static int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
+{
+	double dacVoltage = (double)_SCCurrentForEmulation / 1000.0;
+	dacVoltage *= (double)CURRENT_EMULATION_RANGE_RESISTOR;
+	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
+	//	return (int)(dacVoltage * 4095) + CURREN_EMULATION_DAC_OFFSET;
+	return (int)dacVoltage + CURRENT_EMULATION_DAC_OFFSET;
 }

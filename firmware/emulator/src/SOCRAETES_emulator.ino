@@ -15,6 +15,7 @@ static int incommingVoltageAndCurrentBuffer = 0;
 static bool isReceivingData = false;
 static uint8_t initConfig = 0;
 static unsigned long emuDuration_ms = 0;
+static uint8_t emuFileLineCounter;
 
 static uint8_t mode = MODE_PC;
 
@@ -47,54 +48,59 @@ void setup()
 		digitalToggle(STATUS_LED);
 		delay(500);
 	}
+	digitalWrite(STATUS_LED, LOW);
 
 	mode = digitalRead(MODE_JUMPER);
 
 #ifdef DEBUG
 	Serial.printf("Starting in mode %s\n", mode ? "SD" : "PC");
 #endif
+
+    while ( mode == MODE_SD && initConfig != 1)
+    {
+        digitalWrite(ERROR_LED, HIGH);
+        delay(500);
+        initConfig = setupSD();
+        digitalWrite(ERROR_LED, LOW);
+    }
+
 }
 
 void loop()
 {
-	static int counter;
 
 	if (mode == MODE_SD)
 	{
-		while (initConfig != 1)
-		{
-			digitalWrite(ERROR_LED, HIGH);
-			delay(500);
-			initConfig = setupSD();
-			digitalWrite(ERROR_LED, LOW);
-		}
-
-		if (millis() > emuDuration_ms)
-		{
-			if (counter < emu_parameters.number_curves)
+			if (emuFileLineCounter < emu_parameters.number_curves)
 			{
 				updateEmulationValues();
+#ifdef DEBUG
 				Serial.println("Emulating: V: " + String(emu_parameters.emu_voltage) + " uV, I: " + String(emu_parameters.emu_current) + " uA");
+#endif
 				emulateVoltageAndCurrent(emu_parameters.emu_voltage, emu_parameters.emu_current);
 				emuDuration_ms = emu_parameters.emu_duration + millis();
 
-				counter++;
+				emuFileLineCounter++;
 				digitalToggle(STATUS_LED);
+                // Burn time
+                while(millis() < emuDuration_ms);
 			}
 			else
 			{
-				digitalWrite(STATUS_LED, HIGH);
-				initializeOutputToZero();
-
-				// Serial.println("finished");
+#ifdef DEBUG
+				Serial.println("finished");
+#endif
+				digitalWrite(ERROR_LED, HIGH);
+                // start from the beginning
+                initializeOutputToZero();
 				delay(1000);
-				// Serial.println("restart file");
-
-				digitalWrite(STATUS_LED, LOW);
-				initConfig = 0;
-				counter = 0;
+                setupSD();
+				emuFileLineCounter = 0;
+#ifdef DEBUG
+				Serial.println("reset file");
+#endif
+				digitalWrite(ERROR_LED, LOW);
 			}
-		}
 	}
 	else
 	{

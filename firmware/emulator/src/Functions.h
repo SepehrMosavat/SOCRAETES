@@ -25,15 +25,11 @@ extern MCP4822 dac;
 
 extern emulation_t emu_parameters;
 
-extern int calculateDACvalueForOCVoltageEmulation(int);
+extern void emulateVoltageAndCurrent(int _OCVoltage_uV, int _SCCurrent_uA);
 
-extern int calculateDACvalueForSCCurrentEmulation(int);
+extern void initializeOutputToZero(void);
 
-extern void emulateVoltageAndCurrent(int, int);
-
-extern void initializeOutputToZero();
-
-extern uint8_t setupSD();
+extern uint8_t setupSD(void);
 
 extern void updateEmulationValues(void);
 
