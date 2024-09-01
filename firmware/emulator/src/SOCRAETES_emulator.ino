@@ -23,109 +23,41 @@ void setup()
 
 	digitalWrite(STATUS_LED, LOW);
 	digitalWrite(ERROR_LED, LOW);	
+
+	delay(50); // Initial delay to let the jumper input pull-up settle
 }
 
-int voltage, current = 0;
-//byte incomingByteArray[4];
-byte byteCounter = 0;
-int incommingVoltageAndCurrentBuffer = 0;
-bool isReceivingData = false;
-bool isEmulating = true;
-unsigned long emuDuration_s;
-// 1 means PC, 0 means S/A;
-static int mode = digitalRead(MODE_JUMPER);
+// *************** Experiment Configuration ***************
+unsigned int traceDuration_s = 60;
+unsigned int onCycleDuration_ms = 20;
+// *************** Experiment Configuration ***************
+
+unsigned int emulationVoltage_uv = 3000000; // VCC: 3 V
+unsigned int emulationCurrent_ua = 45000;   // Maximum current: 45 mA
 
 void loop()
 {
-	static int counter;
-
-	if (mode == 0)
-	{
-		if (isEmulating)
-		{
-			while( setupSD() != 0 )
-			{	
-				digitalWrite(ERROR_LED, HIGH);
-				delay(500);
-			}
-			digitalWrite(ERROR_LED, LOW);
-
-		emulateVoltageAndCurrent(emu_parameters.emu_voltage[0], emu_parameters.emu_current[0]);
-		isEmulating = false;
-		emuDuration_s = emu_parameters.emu_duration + millis();
-		counter = 1;
-		}
-		else
-		{
-			if (millis() > emuDuration_s)
-			{
-				if (counter < emu_parameters.number_curves)
-				{
-				emulateVoltageAndCurrent(emu_parameters.emu_voltage[counter], emu_parameters.emu_current[counter]);
-				emuDuration_s = emu_parameters.emu_duration + millis();
-				Serial.println(emu_parameters.emu_voltage[counter]);
-				Serial.println(emu_parameters.emu_current[counter]);
-				counter++;
-				digitalToggle(STATUS_LED);
-				}
-				else
-				{
-				digitalWrite(STATUS_LED, HIGH);
-				initializeOutputToZero();
-				Serial.println("finished");
-				delay(1000);
-				Serial.println("again");
-				digitalWrite(STATUS_LED, LOW);
-				isEmulating = true;
-
-
-				}
-			}	
-		}
+	while(digitalRead(MODE_JUMPER)) {
+		initializeOutputToZero();
+		digitalWrite(ERROR_LED, HIGH);
+		delay(1000);
 	}
-	else
-	{
-		if(Serial.available() > 0)
-		{	
-			digitalWrite(ERROR_LED, LOW);
-			byte lastReceivedByte = Serial.read();
-			if(lastReceivedByte == START_OF_CURVE_DATA)
-			{
-				byteCounter = 0;
-				voltage = 0;
-				current = 0;
-				isReceivingData = true;
-			}
-			else if(lastReceivedByte == END_OF_CURVE_DATA)
-			{
-				isReceivingData = false;
-				Serial.printf("Emulating: V: %d uV, I: %d uA\r\n", voltage, current);
-				emulateVoltageAndCurrent(voltage, current);
-				digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN)); // Toggle LED on each curve change
-			}
-			else
-			{
-				if(isReceivingData)
-				{
-					incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer | lastReceivedByte;
-					if(byteCounter == 3)
-					{
-						voltage = incommingVoltageAndCurrentBuffer;
-					}
-					else if(byteCounter == 7)
-					{
-						current = incommingVoltageAndCurrentBuffer;
-					}
-					incommingVoltageAndCurrentBuffer = incommingVoltageAndCurrentBuffer << 8;
+	digitalWrite(ERROR_LED, LOW);
 
-					byteCounter++;
-				}
-			}
-		}
-		else
-		{
-			digitalWrite(ERROR_LED, HIGH);
-		}
+	signed long timerCounter = (traceDuration_s * 1000) / (2 * onCycleDuration_ms);
+	while(timerCounter-- > 0) {
+		emulateVoltageAndCurrent(emulationVoltage_uv, emulationCurrent_ua);
+		digitalWrite(STATUS_LED, HIGH);
+		delay(onCycleDuration_ms);
+
+		emulateVoltageAndCurrent(0, 0);
+		digitalWrite(STATUS_LED, LOW);
+		delay(onCycleDuration_ms);
 	}
-	delay(1);
+
+	while(!digitalRead(MODE_JUMPER)) {
+		initializeOutputToZero();
+		digitalWrite(ERROR_LED, HIGH);
+		delay(1000);
+	}
 }
