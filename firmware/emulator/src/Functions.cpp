@@ -163,8 +163,8 @@ extern void updateEmulationValues(void)
 
 static int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation_uV)
 {
-	double dacVoltage = (double)_OCVoltageForEmulation_uV / 3.0; // Factor 3 is produced by voltage divider in circuit
-	dacVoltage /= 1000.0;									// Convert to mV
+	double dacVoltage = (double)_OCVoltageForEmulation_uV / 3000.0; // Factor 3 is produced by voltage divider in circuit
+	 // dacVoltage /= 1000.0;									// Convert to mV
 	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 	//	Serial.println(dacVoltage*4095);
 	//	return (int)(dacVoltage * 4095);
@@ -173,8 +173,8 @@ static int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation_uV)
 
 static int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
 {
-	double dacVoltage = (double)_SCCurrentForEmulation / 1000.0;
-	dacVoltage *= (double)CURRENT_EMULATION_RANGE_RESISTOR;
+	double dacVoltage = (double)_SCCurrentForEmulation * (double)CURRENT_EMULATION_RANGE_RESISTOR;
+	dacVoltage = (double) dacVoltage / 1000.0;
 	//	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 	//	return (int)(dacVoltage * 4095) + CURREN_EMULATION_DAC_OFFSET;
 	return (int)dacVoltage + CURRENT_EMULATION_DAC_OFFSET;

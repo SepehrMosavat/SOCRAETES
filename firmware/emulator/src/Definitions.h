@@ -10,7 +10,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-#define DEBUG
+//#define DEBUG
 
 #define STATUS_LED 1
 #define ERROR_LED 2
