@@ -21,8 +21,8 @@ static File config_file;
 
 int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 {
-	double dacVoltage = (double)_OCVoltageForEmulation / 3; // TODO magic number
-	dacVoltage /= 1000.;
+	double dacVoltage = (double)_OCVoltageForEmulation / 3.0; // TODO magic number
+	dacVoltage /= 1000.0;
 //	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 //	Serial.println(dacVoltage*4095);
 //	return (int)(dacVoltage * 4095);
@@ -31,7 +31,7 @@ int calculateDACvalueForOCVoltageEmulation(int _OCVoltageForEmulation)
 
 int calculateDACvalueForSCCurrentEmulation(int _SCCurrentForEmulation)
 {
-	double dacVoltage = (double)_SCCurrentForEmulation / 1000.;
+	double dacVoltage = (double)_SCCurrentForEmulation / 1000.0;
 	dacVoltage *= (double)CURRENT_EMULATION_RANGE_RESISTOR;
 //	dacVoltage /= MAXIMUM_DAC_VOLTAGE;
 //	return (int)(dacVoltage * 4095) + CURREN_EMULATION_DAC_OFFSET;

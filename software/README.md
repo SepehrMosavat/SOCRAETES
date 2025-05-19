@@ -66,13 +66,17 @@ The following command will emulate a trace from a file:
 ```
 emulate.py --port <Serial Port> --source file --file <File Name>
 ```
+An example under Linux would be:
+```
+emulate.py --port /dev/ttyACM0 --source file --file recorded_trace.hdf5
+```
 On the other hand, the following command can be used for emulating a user-defined
 set of operation parameters:
 ```
 emulate.py --port <Serial Port> --source array --array [[0.5, 0], [1, 1000], [2, 2000]]
 ```
 The user-defined array has the following format: ``[[<DELAY BETWEEN CURVES (s)>,0],[OPEN CIRCUIT VOLTAGE (V)>,<SHORT CIRCUIT CURRENT (uA)>],...]``
-In the previous example two curves will the emulated with a delay of 0.5 seconds
+In the previous example two curves will be emulated with a delay of 0.5 seconds
 between each. The first curve will have an open-circuit voltage of 1V and a
 short-circuit current of 1000uA. The second curve will have an open-circuit
 voltage of 2V and a short-circuit current of 2000uA.

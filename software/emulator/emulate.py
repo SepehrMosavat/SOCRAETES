@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import logging
 import queue
 import signal
@@ -67,7 +68,7 @@ if __name__ == '__main__':
     fire.Fire(cli)
     if sdMode:
         write_curve_info_to_sd(trace_emulation_source, stop_thread_event)
-    
+
     else:
         serial_port_handling_thread = threading.Thread(target=serial_port_handling, args=[trace_emulation_queue,
                                                                                       stop_thread_event, serial_port])
